@@ -17,7 +17,7 @@ export function fetchCases(count = 10) {
 			caseType: arrayElement(['W', 'D']),
 			caseStatus: arrayElement(Object.values(APPEAL_CASE_STATUS)),
 			caseProcedure: arrayElement(Object.values(APPEAL_CASE_PROCEDURE)),
-			lpaCode: faker.string.alphanumeric(6),
+			lpaCode: faker.string.alpha({ length: 1, casing: 'upper' }) + faker.string.numeric(5),
 			allocationBand,
 			allocationLevel: randomAllocationLevel(allocationBand),
 			caseSpecialisms: arrayElement([
