@@ -1,0 +1,21 @@
+{
+  "name": "@pins/inspector-programming-poc-lib",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@azure/msal-node": "*",
+    "@microsoft/microsoft-graph-client": "*",
+    "express-session": "*",
+    "pino": "*",
+    "pino-pretty": "*"
+  },
+  "devDependencies": {
+    "sass": "*"
+  }
+}

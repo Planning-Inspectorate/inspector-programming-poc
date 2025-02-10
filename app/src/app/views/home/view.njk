@@ -1,0 +1,46 @@
+{% extends "views/layouts/main.njk" %}
+
+{% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/tag/macro.njk" import govukTag %}
+
+{% block pageContent %}
+
+    {% set caseRows = [] %}
+
+    {% for c in cases %}
+        {% set caseRows = (caseRows.push([
+            {
+                text: c.reference
+            },
+            {
+                text: c.location
+            },
+            {
+                text: c.assignment
+            },
+            {
+                html: '<a href="' + c.reference + '" class="govuk-link">Assign</a>'
+            }
+        ]), caseRows) %}
+    {% endfor %}
+
+    {{ govukTable({
+        head: [
+            {
+                text: "Reference"
+            },
+            {
+                text: "Location"
+            },
+            {
+                text: "Assigned"
+            },
+            {
+                text: "Action"
+            }
+        ],
+        rows: caseRows
+    }) }}
+
+{% endblock %}
