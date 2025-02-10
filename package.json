@@ -33,6 +33,7 @@
     "govuk-frontend": "^5.8.0",
     "helmet": "^8.0.0",
     "nunjucks": "^3.2.4",
+    "ospoint": "^0.2.1",
     "pino": "^9.6.0",
     "pino-pretty": "^13.0.0"
   },

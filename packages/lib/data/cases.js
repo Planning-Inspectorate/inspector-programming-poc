@@ -2,12 +2,14 @@ import { fakerEN_GB as faker } from '@faker-js/faker';
 import { APPEAL_CASE_PROCEDURE, APPEAL_CASE_STATUS } from 'pins-data-model';
 
 const arrayElement = faker.helpers.arrayElement;
+const fakerPostCode = async () => faker.location.zipCode();
 
 /**
- * @param count
- * @returns {import('./types.js').AppealCase[]}
+ * @param {number} count
+ * @param {() => Promise<string>} randomPostcode
+ * @returns {Promise<import('./types.js').AppealCase[]>}
  */
-export function fetchCases(count = 10) {
+export async function fetchCases(count = 10, randomPostcode = fakerPostCode) {
 	/** @type {import('./types.js').AppealCase[]} */
 	const cases = [];
 	for (let i = 0; i < count; i++) {
@@ -29,7 +31,7 @@ export function fetchCases(count = 10) {
 			]),
 			caseSubmittedDate: faker.date.past(),
 			caseValidDate: faker.date.past(),
-			siteAddressPostcode: faker.location.zipCode()
+			siteAddressPostcode: await randomPostcode()
 		});
 	}
 	return cases;

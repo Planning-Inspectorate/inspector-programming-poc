@@ -25,6 +25,7 @@
     "govuk-frontend": "*",
     "helmet": "*",
     "nunjucks": "*",
+    "ospoint": "*",
     "pino": "*",
     "pino-pretty": "*"
   },

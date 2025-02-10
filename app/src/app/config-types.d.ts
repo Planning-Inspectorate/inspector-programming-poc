@@ -20,6 +20,10 @@ interface Config {
 	};
 	gitSha?: string;
 	logLevel: string;
+	maps: {
+		key: string;
+		secret: string;
+	};
 	NODE_ENV: string;
 	httpPort: number;
 	session: {

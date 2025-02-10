@@ -1,7 +1,7 @@
 import { Router as createRouter } from 'express';
 import { createRoutesAndGuards as createAuthRoutesAndGuards } from './auth/router.js';
 import { createMonitoringRoutes } from '@pins/inspector-programming-poc-lib/controllers/monitoring.js';
-import { buildViewHome } from './views/home/controller.js';
+import { buildViewHome, buildViewMap } from './views/home/controller.js';
 import { asyncHandler } from '@pins/inspector-programming-poc-lib/util/async-handler.js';
 
 /**
@@ -39,8 +39,10 @@ export function buildRouter({ logger, config }) {
 	}
 
 	const viewHome = buildViewHome({ logger });
+	const viewMap = buildViewMap({ logger, config });
 
 	router.get('/', asyncHandler(viewHome));
+	router.get('/map', asyncHandler(viewMap));
 
 	return router;
 }

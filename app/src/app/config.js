@@ -40,6 +40,8 @@ export function loadConfig() {
 		GIT_SHA,
 		LOG_LEVEL,
 		PORT,
+		MAPS_API_KEY,
+		MAPS_API_SECRET,
 		NODE_ENV,
 		REDIS_CONNECTION_STRING,
 		SESSION_SECRET
@@ -97,6 +99,10 @@ export function loadConfig() {
 		gitSha: GIT_SHA,
 		// the log level to use
 		logLevel: LOG_LEVEL || 'info',
+		maps: {
+			key: MAPS_API_KEY,
+			secret: MAPS_API_SECRET
+		},
 		NODE_ENV: NODE_ENV || 'development',
 		// the HTTP port to listen on
 		httpPort: httpPort,

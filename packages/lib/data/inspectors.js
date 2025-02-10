@@ -1,12 +1,14 @@
 import { fakerEN_GB as faker } from '@faker-js/faker';
 
 const arrayElement = faker.helpers.arrayElement;
+const fakerPostCode = async () => faker.location.zipCode();
 
 /**
- * @param count
- * @returns {import('./types.js').Inspector[]}
+ * @param {number} count
+ * @param {() => Promise<string>} randomPostcode
+ * @returns {Promise<import('./types.js').Inspector[]>}
  */
-export function fetchInspectors(count = 10) {
+export async function fetchInspectors(count = 10, randomPostcode = fakerPostCode) {
 	/** @type {import('./types.js').Inspector[]} */
 	const inspectors = [];
 	for (let i = 0; i < count; i++) {
@@ -19,14 +21,16 @@ export function fetchInspectors(count = 10) {
 			emailAddress: faker.internet.email({ firstName, lastName, provider: 'fake.pins.gov.uk' }),
 			address: {
 				addressLine1: faker.location.streetAddress(),
-				postcode: faker.location.zipCode()
+				postcode: await randomPostcode()
 			},
 			grade: arrayElement(['B1', 'B2', 'B3']),
 			fte: faker.number.float({ min: 0.3, max: 1, fractionDigits: 1 }),
 			inspectorManager: faker.datatype.boolean(),
 			chartingOfficerId: faker.string.uuid(),
 			specialisms: faker.datatype.boolean() ? [specialism()] : [],
-			preclusions: faker.datatype.boolean() ? [preclusion(), preclusion(), preclusion()] : []
+			preclusions: faker.datatype.boolean()
+				? [await preclusion(randomPostcode), await preclusion(randomPostcode), await preclusion(randomPostcode)]
+				: []
 		});
 	}
 	return inspectors;
@@ -46,7 +50,11 @@ function specialism() {
 	};
 }
 
-function preclusion() {
+/**
+ * @param {() => Promise<string>} randomPostcode
+ * @returns {Promise<import('./types.js').Preclusion>}
+ */
+async function preclusion(randomPostcode) {
 	switch (faker.number.int({ min: 1, max: 3 })) {
 		case 1:
 			return {
@@ -54,7 +62,7 @@ function preclusion() {
 			};
 		case 2:
 			return {
-				postcode: faker.location.zipCode()
+				postcode: await randomPostcode()
 			};
 		case 3:
 			return {

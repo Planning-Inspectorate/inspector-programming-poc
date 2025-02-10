@@ -1,7 +1,7 @@
 import bodyParser from 'body-parser';
 import crypto from 'node:crypto';
 import express from 'express';
-import helmet from 'helmet';
+// import helmet from 'helmet';
 import { buildRouter } from './router.js';
 import { configureNunjucks } from './nunjucks.js';
 import { buildLogRequestsMiddleware } from '@pins/inspector-programming-poc-lib/middleware/log-requests.js';
@@ -41,20 +41,21 @@ export function getApp(config, logger) {
 		next();
 	});
 
-	// Secure apps by setting various HTTP headers
-	app.use(helmet());
-	app.use(
-		helmet.contentSecurityPolicy({
-			directives: {
-				// @ts-ignore
-				scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.cspNonce}'`],
-				defaultSrc: ["'self'"],
-				'font-src': ["'self'"],
-				'img-src': ["'self'"],
-				'style-src': ["'self'"]
-			}
-		})
-	);
+	//Secure apps by setting various HTTP headers
+	// TODO: fix maps with helmet
+	// app.use(helmet());
+	// app.use(
+	// 	helmet.contentSecurityPolicy({
+	// 		directives: {
+	// 			// @ts-ignore
+	// 			scriptSrc: ["'self'", (req, res) => `'nonce-${res.locals.cspNonce}'`],
+	// 			defaultSrc: ["'self'"],
+	// 			'font-src': ["'self'"],
+	// 			'img-src': ["'self'"],
+	// 			'style-src': ["'self'"]
+	// 		}
+	// 	})
+	// );
 
 	const nunjucksEnvironment = configureNunjucks();
 	// Set the express view engine to nunjucks
