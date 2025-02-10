@@ -1,0 +1,48 @@
+import { fakerEN_GB as faker } from '@faker-js/faker';
+import { APPEAL_CASE_PROCEDURE, APPEAL_CASE_STATUS } from 'pins-data-model';
+
+const arrayElement = faker.helpers.arrayElement;
+
+/**
+ * @param count
+ * @returns {import('./types.js').AppealCase[]}
+ */
+export function fetchCases(count = 10) {
+	/** @type {import('./types.js').AppealCase[]} */
+	const cases = [];
+	for (let i = 0; i < count; i++) {
+		const allocationBand = arrayElement([1, 2, 3]);
+		cases.push({
+			caseId: faker.string.numeric(7),
+			caseType: arrayElement(['W', 'D']),
+			caseStatus: arrayElement(Object.values(APPEAL_CASE_STATUS)),
+			caseProcedure: arrayElement(Object.values(APPEAL_CASE_PROCEDURE)),
+			lpaCode: faker.string.alphanumeric(6),
+			allocationBand,
+			allocationLevel: randomAllocationLevel(allocationBand),
+			caseSpecialisms: arrayElement([
+				'Access',
+				'Listed building and enforcement',
+				'Roads and traffics',
+				'Natural heritage',
+				'Schedule 1'
+			]),
+			caseSubmittedDate: faker.date.past(),
+			caseValidDate: faker.date.past(),
+			siteAddressPostcode: faker.location.zipCode()
+		});
+	}
+	return cases;
+}
+
+function randomAllocationLevel(band) {
+	switch (band) {
+		case 1:
+			return arrayElement(['E', 'F', 'G', 'H']);
+		case 2:
+			return arrayElement(['C', 'D']);
+		case 3:
+			return arrayElement(['A', 'B']);
+	}
+	return null;
+}

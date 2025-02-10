@@ -11,13 +11,25 @@
     {% for c in cases %}
         {% set caseRows = (caseRows.push([
             {
-                text: c.reference
+                text: c.caseId
             },
             {
-                text: c.location
+                text: c.caseType
             },
             {
-                text: c.assignment
+                text: c.siteAddressPostcode
+            },
+            {
+                text: c.caseProcedure
+            },
+            {
+                text: c.allocationBand
+            },
+            {
+                text: c.allocationLevel
+            },
+            {
+                text: c.caseSpecialisms
             },
             {
                 html: '<a href="' + c.reference + '" class="govuk-link">Assign</a>'
@@ -31,7 +43,19 @@
                 text: "Reference"
             },
             {
+                text: "Type"
+            },
+            {
                 text: "Location"
+            },
+            {
+                text: "Procedure"
+            },
+            {
+                text: "Allocation band"
+            },
+            {
+                text: "Allocation level"
             },
             {
                 text: "Assigned"
