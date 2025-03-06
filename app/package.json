@@ -24,12 +24,16 @@
     "express-validator": "*",
     "govuk-frontend": "*",
     "helmet": "*",
+    "jest-fetch-mock": "^3.0.3",
+    "node-fetch": "^3.3.2",
     "nunjucks": "*",
     "ospoint": "*",
     "pino": "*",
-    "pino-pretty": "*"
+    "pino-pretty": "*",
+    "sinon": "^19.0.2"
   },
   "devDependencies": {
+    "jest": "^29.7.0",
     "nodemon": "*",
     "sass": "*",
     "supertest": "*"
