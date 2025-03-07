@@ -12,7 +12,7 @@ describe('maps', () => {
 	});
 
 	afterEach(() => {
-		// Restore the original fetch after each test
+		// Restore the original fetch after all tests
 		fetchStub.restore();
 	});
 
@@ -32,10 +32,10 @@ describe('maps', () => {
 		});
 
 		const latLong = await getLatLongForPostcode({ key: 'fake-api-key' }, 'BS28 4EY');
-		const tolerance = 1; // adjustable tolerance for test
 
-		assert(Math.abs(latLong.lat - 51.227847) < tolerance);
-		assert(Math.abs(latLong.long - -2.8067021) < tolerance);
+		assert.strictEqual(latLong.lat, 51.33612253930903);
+		assert.strictEqual(latLong.long, -2.8339674380729813);
+
 		assert(fetchStub.calledOnce); // ensure fetch was called once
 	});
 });

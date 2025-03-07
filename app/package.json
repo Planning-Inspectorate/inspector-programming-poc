@@ -24,19 +24,19 @@
     "express-validator": "*",
     "govuk-frontend": "*",
     "helmet": "*",
-    "jest-fetch-mock": "^3.0.3",
     "node-fetch": "^3.3.2",
     "nunjucks": "*",
     "ospoint": "*",
     "pino": "*",
-    "pino-pretty": "*",
-    "sinon": "^19.0.2"
+    "pino-pretty": "*"
   },
   "devDependencies": {
     "jest": "^29.7.0",
+    "jest-fetch-mock": "^3.0.3",
     "nodemon": "*",
     "sass": "*",
-    "supertest": "*"
+    "supertest": "*",
+    "sinon": "^19.0.2"
   },
   "imports": {
     "#util/*": "./src/util/*"
