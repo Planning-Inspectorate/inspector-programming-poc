@@ -50,6 +50,7 @@
     "prettier": "^3.4.2",
     "prettier-plugin-prisma": "^5.0.0",
     "sass": "^1.83.4",
+    "sinon": "^19.0.2",
     "supertest": "^7.0.0"
   },
   "lint-staged": {
