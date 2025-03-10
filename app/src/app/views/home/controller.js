@@ -12,14 +12,11 @@ export function buildViewHome({ logger }) {
 		logger.info('view home');
 
 		const cases = await fetchCases(10);
-		logger.info('fetchInspectors');
-		const inspectors = await fetchInspectors(10);
 
 		return res.render('views/home/view-tabs.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
-			cases,
-			inspectors: inspectors.map(inspectorViewModel)
+			cases
 		});
 	};
 }
