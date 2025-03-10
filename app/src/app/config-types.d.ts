@@ -24,6 +24,9 @@ interface Config {
 		key: string;
 		secret: string;
 	};
+	notify: {
+		key: string;
+	};
 	NODE_ENV: string;
 	httpPort: number;
 	session: {

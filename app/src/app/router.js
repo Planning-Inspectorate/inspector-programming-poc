@@ -3,6 +3,7 @@ import { createRoutesAndGuards as createAuthRoutesAndGuards } from './auth/route
 import { createMonitoringRoutes } from '@pins/inspector-programming-poc-lib/controllers/monitoring.js';
 import { buildViewHome, buildViewMap } from './views/home/controller.js';
 import { asyncHandler } from '@pins/inspector-programming-poc-lib/util/async-handler.js';
+import { buildNotify } from './views/notify/controller.js';
 
 /**
  * @param {Object} params
@@ -40,9 +41,11 @@ export function buildRouter({ logger, config }) {
 
 	const viewHome = buildViewHome({ logger });
 	const viewMap = buildViewMap({ logger, config });
+	const viewNotify = buildNotify({ config, logger });
 
 	router.get('/', asyncHandler(viewHome));
 	router.get('/map', asyncHandler(viewMap));
+	router.get('/notify', asyncHandler(viewNotify));
 
 	return router;
 }
