@@ -33,7 +33,13 @@ export async function fetchCases(count = 10, randomPostcode = fakerPostCode) {
 			caseSubmittedDate: faker.date.past(),
 			caseValidDate: faker.date.past(),
 			siteAddressPostcode: await randomPostcode(),
-			caseAge
+			caseLevel: arrayElement(['1', '2', '3']),
+			lpaRegion: arrayElement(['North', 'South', 'East', 'West']),
+			caseAge,
+			linkedCases: faker.string.numeric(7),
+			finalCommentsDate: faker.date.future(),
+			programmingStatus: arrayElement(['P', 'D', 'S']),
+			programmingNotes: faker.lorem.sentence()
 		});
 	}
 	return cases;
