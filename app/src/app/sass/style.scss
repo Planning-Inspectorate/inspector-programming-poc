@@ -29,12 +29,27 @@ $font-family: arial, helvetica, sans-serif;
 	white-space: pre-wrap;
 }
 
+/* This will make the filter and tables display side by side */
+.filter-container {
+	display: flex;
+	gap: 20px;
+}
+
 .app-filter {
+	flex: 1;
 	background-color: #f3f2f1; // GOV.UK light grey background
 	padding: 16px;
 	border: 1px solid #b1b4b6; // GOV.UK grey border
 	border-radius: 4px;
 	margin-bottom: 20px;
+}
+
+.cases-inspectors-container {
+	flex: 3; /* Adjust the width proportion as needed */
+}
+
+.govuk-table {
+	margin-top: 20px;
 }
 
 .app-filter__header {
