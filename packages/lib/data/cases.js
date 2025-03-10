@@ -14,6 +14,7 @@ export async function fetchCases(count = 10, randomPostcode = fakerPostCode) {
 	const cases = [];
 	for (let i = 0; i < count; i++) {
 		const allocationBand = arrayElement([1, 2, 3]);
+		const caseAge = faker.number.int({ min: 1, max: 52 });
 		cases.push({
 			caseId: faker.string.numeric(7),
 			caseType: arrayElement(['W', 'D']),
@@ -31,7 +32,8 @@ export async function fetchCases(count = 10, randomPostcode = fakerPostCode) {
 			]),
 			caseSubmittedDate: faker.date.past(),
 			caseValidDate: faker.date.past(),
-			siteAddressPostcode: await randomPostcode()
+			siteAddressPostcode: await randomPostcode(),
+			caseAge
 		});
 	}
 	return cases;
