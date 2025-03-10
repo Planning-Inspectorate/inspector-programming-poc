@@ -35,35 +35,34 @@ $font-family: arial, helvetica, sans-serif;
 	border: 1px solid #b1b4b6; // GOV.UK grey border
 	border-radius: 4px;
 	margin-bottom: 20px;
-  }
-  
-  .app-filter__header {
+}
+
+.app-filter__header {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	border-bottom: 1px solid #b1b4b6;
 	padding-bottom: 8px;
 	margin-bottom: 16px;
-  }
-  
-  .app-filter__header-title h2 {
+}
+
+.app-filter__header-title h2 {
 	margin: 0;
 	font-size: 1.25rem;
-  }
-  
-  .app-filter__content {
+}
+
+.app-filter__content {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
-  }
-  
-  .govuk-button {
+}
+
+.govuk-button {
 	background-color: #00703c; // GOV.UK green button
 	border-color: #005a30;
-  }
-  
-  .govuk-button:hover {
+}
+
+.govuk-button:hover {
 	background-color: #005a30;
 	border-color: #003e20;
-  }
-  
+}
