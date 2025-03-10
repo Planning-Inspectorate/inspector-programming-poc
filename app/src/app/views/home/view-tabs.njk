@@ -47,25 +47,40 @@
                 text: c.caseType
             },
             {
-                text: c.lpaCode
-            },
-            {
-                text: c.siteAddressPostcode
-            },
-            {
                 text: c.caseProcedure
             },
             {
                 text: c.allocationBand
             },
             {
-                text: c.allocationLevel
+                text: c.caseLevel
             },
             {
-                text: c.caseSpecialisms
+                text: c.siteAddressPostcode
             },
             {
-                text: c.caseAge  
+                text: c.lpaCode
+            },
+            {
+                text: c.lpaRegion
+            },
+            {
+                text: c.caseStatus
+            },
+            {
+                text: c.caseAge
+            },
+            {
+                text: c.linkedCases
+            },
+            {
+                text: c.finalCommentsDate
+            },
+            {
+                text: c.programmingStatus
+            },
+            {
+                text: c.programmingNotes
             },
             {
                 html: '<a href="' + c.reference + '" class="govuk-link">Assign</a>'
@@ -73,120 +88,7 @@
         ]), caseRows) %}
     {% endfor %}
 
-    {% set casesTable %}
-        <table id="casesTable">
-        {{ govukTable({
-            head: [
-                {
-                    text: "Reference"
-                },
-                {
-                    text: "Type"
-                },
-                {
-                    text: "LPA"
-                },
-                {
-                    text: "Location"
-                },
-                {
-                    text: "Procedure"
-                },
-                {
-                    text: "Band"
-                },
-                {
-                    text: "Level"
-                },
-                {
-                    text: "Assigned"
-                },
-                {
-                    text: "Age"
-                },
-                {
-                    text: "Action"
-                }
-            ],
-            rows: caseRows
-        }) }}
-    {% endset -%}
-
-
-    {% set inspectorRows = [] %}
-
-    {% for inspector in inspectors %}
-        {% set inspectorRows = (inspectorRows.push([
-            {
-                text: inspector.firstName + " " + inspector.lastName
-            },
-            {
-                text: inspector.emailAddress
-            },
-            {
-                text: inspector.address.postcode
-            },
-            {
-                text: inspector.grade
-            },
-            {
-                text: inspector.fte
-            },
-            {
-                text: inspector.inspectorManager
-            },
-            {
-                text: inspector.chartingOfficerId
-            },
-            {
-                text: inspector.specialisms
-            },
-            {
-                text: inspector.preclusions
-            },
-            {
-                html: '<a href="' + inspector.id + '" class="govuk-link">Assign</a>'
-            }
-        ]), inspectorRows) %}
-    {% endfor %}
-
-    {% set inspectorsTable %}
-        {{ govukTable({
-            head: [
-                {
-                    text: "Name"
-                },
-                {
-                    text: "Email"
-                },
-                {
-                    text: "Location"
-                },
-                {
-                    text: "Grade"
-                },
-                {
-                    text: "FTE"
-                },
-                {
-                    text: "Is Manager"
-                },
-                {
-                    text: "Charting Officer ID"
-                },
-                {
-                    text: "Specialisms"
-                },
-                {
-                    text: "Preclusions"
-                },
-                {
-                    text: "Action"
-                }
-            ],
-            rows: inspectorRows
-        }) }}
-    {% endset -%}
+    
 
     {% block pageContent %}
   <!-- Create a container that holds both filter and tables -->
@@ -229,24 +131,57 @@
 
     <!-- Cases and Inspectors Section -->
     <div class="cases-inspectors-container">
-      {{ govukTabs({
-        items: [
-          {
-            label: "Cases",
-            id: "cases",
-            panel: {
-              html: casesTable
+      {{ govukTable({
+        classes: "govuk-!-font-size-14",
+        head: [
+            {
+                text: "Reference"
+            },
+            {
+                text: "Type"
+            },
+            {
+                text: "Procedure"
+            },
+            {
+                text: "Band"
+            },
+            {
+                text: "Level"
+            },
+            {
+                text: "Location"
+            },
+            {
+                text: "LPA"
+            },
+            {
+                text: "Region"
+            },
+            {
+                text: "Case Status"
+            },
+            {
+                text: "Age"
+            },
+            {
+                text: "Linked cases"
+            },
+            {
+                text: "Final comments date"
+            },
+            {
+                text: "Programming Status"
+            },
+            {
+                text: "Programming Notes"
+            },
+            {
+                text: "Assign"
             }
-          },
-          {
-            label: "Inspectors",
-            id: "inspectors",
-            panel: {
-              html: inspectorsTable
-            }
-          }
-        ]
-      }) }}
+        ],
+        rows: caseRows
+    }) }}
     </div>
   </div>
 
