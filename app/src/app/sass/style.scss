@@ -19,6 +19,12 @@ $font-family: arial, helvetica, sans-serif;
 	}
 }
 
+@media (min-width: 1800px) {
+	.pins-container-wide {
+		max-width: 1600px;
+	}
+}
+
 .pins-white-space-pre-wrap {
 	white-space: pre-wrap;
 }
