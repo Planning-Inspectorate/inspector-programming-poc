@@ -30,9 +30,12 @@
     "pino-pretty": "*"
   },
   "devDependencies": {
+    "jest": "*",
+    "jest-fetch-mock": "^3.0.3",
     "nodemon": "*",
     "sass": "*",
-    "supertest": "*"
+    "supertest": "*",
+    "sinon": "^19.0.2"
   },
   "imports": {
     "#util/*": "./src/util/*"
