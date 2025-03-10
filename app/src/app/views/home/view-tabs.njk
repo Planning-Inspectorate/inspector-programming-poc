@@ -83,25 +83,40 @@
                 text: c.caseType
             },
             {
-                text: c.lpaCode
-            },
-            {
-                text: c.siteAddressPostcode
-            },
-            {
                 text: c.caseProcedure
             },
             {
                 text: c.allocationBand
             },
             {
-                text: c.allocationLevel
+                text: c.caseLevel
             },
             {
-                text: c.caseSpecialisms
+                text: c.siteAddressPostcode
             },
             {
-                text: c.caseAge  
+                text: c.lpaCode
+            },
+            {
+                text: c.lpaRegion
+            },
+            {
+                text: c.caseStatus
+            },
+            {
+                text: c.caseAge
+            },
+            {
+                text: c.linkedCases
+            },
+            {
+                text: c.finalCommentsDate
+            },
+            {
+                text: c.programmingStatus
+            },
+            {
+                text: c.programmingNotes
             },
             {
                 html: '<a href="' + c.reference + '" class="govuk-link">Assign</a>'
@@ -120,12 +135,6 @@
                     text: "Type"
                 },
                 {
-                    text: "LPA"
-                },
-                {
-                    text: "Location"
-                },
-                {
                     text: "Procedure"
                 },
                 {
@@ -133,15 +142,36 @@
                 },
                 {
                     text: "Level"
+                }
+                {
+                    text: "Location"
                 },
                 {
-                    text: "Assigned"
+                    text: "LPA"
+                },
+                {
+                    text: "Region"
+                },
+                {
+                    text: "Case Status"
                 },
                 {
                     text: "Age"
                 },
                 {
-                    text: "Action"
+                    text: "Linked cases"
+                },
+                {
+                    text: "Final comments date"
+                },
+                {
+                    text: "Programming Status"
+                },
+                {
+                    text: "Programming Notes"
+                },
+                {
+                    text: "Assign"
                 }
             ],
             rows: caseRows
