@@ -15,7 +15,7 @@
       <button class="govuk-button govuk-button--primary" data-module="govuk-button">
         Apply filters
       </button>
-      
+
       {# Add filter checkboxes here as needed #}
       <div class="govuk-form-group">
         <fieldset class="govuk-fieldset">
@@ -38,7 +38,6 @@
   </div>
 </div>
 
-
     {% if apiKey %}
         <style>
             #map {
@@ -54,15 +53,15 @@
                 padding-top: calc(9 / 16 * 100%);
             }
             .pins-map__container {
-                    position: absolute;
-                    top: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 100%;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
             }
             .pins-map__content {
-                    width: 100%;
-                    height: 100%;
+                width: 100%;
+                height: 100%;
             }
         </style>
         <div class="pins-map">
@@ -124,153 +123,56 @@
         ]), caseRows) %}
     {% endfor %}
 
-    {% set casesTable %}
-        <table id="casesTable">
-        {{ govukTable({
-            head: [
-                {
-                    text: "Reference"
-                },
-                {
-                    text: "Type"
-                },
-                {
-                    text: "Procedure"
-                },
-                {
-                    text: "Band"
-                },
-                {
-                    text: "Level"
-                },
-                {
-                    text: "Location"
-                },
-                {
-                    text: "LPA"
-                },
-                {
-                    text: "Region"
-                },
-                {
-                    text: "Case Status"
-                },
-                {
-                    text: "Age"
-                },
-                {
-                    text: "Linked cases"
-                },
-                {
-                    text: "Final comments date"
-                },
-                {
-                    text: "Programming Status"
-                },
-                {
-                    text: "Programming Notes"
-                },
-                {
-                    text: "Assign"
-                }
-            ],
-            rows: caseRows
-        }) }}
-    {% endset -%}
-
-
-    {% set inspectorRows = [] %}
-
-    {% for inspector in inspectors %}
-        {% set inspectorRows = (inspectorRows.push([
+    <table id="casesTable">
+    {{ govukTable({
+        head: [
             {
-                text: inspector.firstName + " " + inspector.lastName
+                text: "Reference"
             },
             {
-                text: inspector.emailAddress
+                text: "Type"
             },
             {
-                text: inspector.address.postcode
+                text: "Procedure"
             },
             {
-                text: inspector.grade
+                text: "Band"
             },
             {
-                text: inspector.fte
+                text: "Level"
             },
             {
-                text: inspector.inspectorManager
+                text: "Location"
             },
             {
-                text: inspector.chartingOfficerId
+                text: "LPA"
             },
             {
-                text: inspector.specialisms
+                text: "Region"
             },
             {
-                text: inspector.preclusions
+                text: "Case Status"
             },
             {
-                html: '<a href="' + inspector.id + '" class="govuk-link">Assign</a>'
+                text: "Age"
+            },
+            {
+                text: "Linked cases"
+            },
+            {
+                text: "Final comments date"
+            },
+            {
+                text: "Programming Status"
+            },
+            {
+                text: "Programming Notes"
+            },
+            {
+                text: "Assign"
             }
-        ]), inspectorRows) %}
-    {% endfor %}
-
-    {% set inspectorsTable %}
-        {{ govukTable({
-            head: [
-                {
-                    text: "Name"
-                },
-                {
-                    text: "Email"
-                },
-                {
-                    text: "Location"
-                },
-                {
-                    text: "Grade"
-                },
-                {
-                    text: "FTE"
-                },
-                {
-                    text: "Is Manager"
-                },
-                {
-                    text: "Charting Officer ID"
-                },
-                {
-                    text: "Specialisms"
-                },
-                {
-                    text: "Preclusions"
-                },
-                {
-                    text: "Action"
-                }
-            ],
-            rows: inspectorRows
-        }) }}
-    {% endset -%}
-
-    {{ govukTabs({
-        items: [
-            {
-                label: "Cases",
-                id: "cases",
-                panel: {
-                    html: casesTable
-                }
-            },
-            {
-                label: "Inspectors",
-                id: "inspectors",
-                panel: {
-                    html: inspectorsTable
-                }
-            }
-        ]
+        ],
+        rows: caseRows
     }) }}
 
     <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@0.3.1/os-api-branding.js"></script>
