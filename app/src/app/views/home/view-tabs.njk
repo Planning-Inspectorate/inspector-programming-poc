@@ -3,42 +3,6 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 
-{% block pageContent %}
-<div class="app-filter">
-  <div class="app-filter__header">
-    <div class="app-filter__header-title">
-      <h2 class="govuk-heading-m">Filter</h2>
-    </div>
-  </div>
-  <div class="app-filter__content">
-    <form method="get" novalidate>
-      <button class="govuk-button govuk-button--primary" data-module="govuk-button">
-        Apply filters
-      </button>
-      
-      {# Add filter checkboxes here as needed #}
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-            Age
-          </legend>
-          <div class="govuk-checkboxes govuk-checkboxes--small">
-            <div class="govuk-checkboxes__item">
-              <input class="govuk-checkboxes__input" id="filter1" name="filter1" type="checkbox" value="option1">
-              <label class="govuk-label govuk-checkboxes__label" for="filter1">Oldest to Newest</label>
-            </div>
-            <div class="govuk-checkboxes__item">
-              <input class="govuk-checkboxes__input" id="filter2" name="filter2" type="checkbox" value="option2">
-              <label class="govuk-label govuk-checkboxes__label" for="filter2">Newest to Oldest</label>
-            </div>
-          </div>
-        </fieldset>
-      </div>
-    </form>
-  </div>
-</div>
-
-
     {% if apiKey %}
         <style>
             #map {
@@ -224,24 +188,67 @@
         }) }}
     {% endset -%}
 
-    {{ govukTabs({
+    {% block pageContent %}
+  <!-- Create a container that holds both filter and tables -->
+  <div class="filter-container">
+    
+    <!-- Filter Section -->
+    <div class="app-filter">
+      <div class="app-filter__header">
+        <div class="app-filter__header-title">
+          <h2 class="govuk-heading-m">Filter</h2>
+        </div>
+      </div>
+      <div class="app-filter__content">
+        <form method="get" novalidate>
+          <button class="govuk-button govuk-button--primary" data-module="govuk-button">
+            Apply filters
+          </button>
+          
+          {# Add filter checkboxes here as needed #}
+          <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset">
+              <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+                Age
+              </legend>
+              <div class="govuk-checkboxes govuk-checkboxes--small">
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="filter1" name="filter1" type="checkbox" value="option1">
+                  <label class="govuk-label govuk-checkboxes__label" for="filter1">Oldest to Newest</label>
+                </div>
+                <div class="govuk-checkboxes__item">
+                  <input class="govuk-checkboxes__input" id="filter2" name="filter2" type="checkbox" value="option2">
+                  <label class="govuk-label govuk-checkboxes__label" for="filter2">Newest to Oldest</label>
+                </div>
+              </div>
+            </fieldset>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Cases and Inspectors Section -->
+    <div class="cases-inspectors-container">
+      {{ govukTabs({
         items: [
-            {
-                label: "Cases",
-                id: "cases",
-                panel: {
-                    html: casesTable
-                }
-            },
-            {
-                label: "Inspectors",
-                id: "inspectors",
-                panel: {
-                    html: inspectorsTable
-                }
+          {
+            label: "Cases",
+            id: "cases",
+            panel: {
+              html: casesTable
             }
+          },
+          {
+            label: "Inspectors",
+            id: "inspectors",
+            panel: {
+              html: inspectorsTable
+            }
+          }
         ]
-    }) }}
+      }) }}
+    </div>
+  </div>
 
     <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@0.3.1/os-api-branding.js"></script>
     <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
