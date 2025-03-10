@@ -4,40 +4,11 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 
 {% block pageContent %}
-<div class="app-filter">
-  <div class="app-filter__header">
-    <div class="app-filter__header-title">
-      <h2 class="govuk-heading-m">Filter</h2>
+    <div class="govuk-grid-row">
+        <div class="govuk-grid-column-full">
+            <a href="/" class="govuk-link">Table View</a>
+        </div>
     </div>
-  </div>
-  <div class="app-filter__content">
-    <form method="get" novalidate>
-      <button class="govuk-button govuk-button--primary" data-module="govuk-button">
-        Apply filters
-      </button>
-      
-      {# Add filter checkboxes here as needed #}
-      <div class="govuk-form-group">
-        <fieldset class="govuk-fieldset">
-          <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-            Age
-          </legend>
-          <div class="govuk-checkboxes govuk-checkboxes--small">
-            <div class="govuk-checkboxes__item">
-              <input class="govuk-checkboxes__input" id="filter1" name="filter1" type="checkbox" value="option1">
-              <label class="govuk-label govuk-checkboxes__label" for="filter1">Oldest to Newest</label>
-            </div>
-            <div class="govuk-checkboxes__item">
-              <input class="govuk-checkboxes__input" id="filter2" name="filter2" type="checkbox" value="option2">
-              <label class="govuk-label govuk-checkboxes__label" for="filter2">Newest to Oldest</label>
-            </div>
-          </div>
-        </fieldset>
-      </div>
-    </form>
-  </div>
-</div>
-
 
     {% if apiKey %}
         <style>
@@ -72,177 +43,9 @@
         </div>
     {% endif %}
 
-    {% set caseRows = [] %}
 
-    {% for c in cases %}
-        {% set caseRows = (caseRows.push([
-            {
-                text: c.caseId
-            },
-            {
-                text: c.caseType
-            },
-            {
-                text: c.lpaCode
-            },
-            {
-                text: c.siteAddressPostcode
-            },
-            {
-                text: c.caseProcedure
-            },
-            {
-                text: c.allocationBand
-            },
-            {
-                text: c.allocationLevel
-            },
-            {
-                text: c.caseSpecialisms
-            },
-            {
-                text: c.caseAge  
-            },
-            {
-                html: '<a href="' + c.reference + '" class="govuk-link">Assign</a>'
-            }
-        ]), caseRows) %}
-    {% endfor %}
-
-    {% set casesTable %}
-        <table id="casesTable">
-        {{ govukTable({
-            head: [
-                {
-                    text: "Reference"
-                },
-                {
-                    text: "Type"
-                },
-                {
-                    text: "LPA"
-                },
-                {
-                    text: "Location"
-                },
-                {
-                    text: "Procedure"
-                },
-                {
-                    text: "Band"
-                },
-                {
-                    text: "Level"
-                },
-                {
-                    text: "Assigned"
-                },
-                {
-                    text: "Age"
-                },
-                {
-                    text: "Action"
-                }
-            ],
-            rows: caseRows
-        }) }}
-    {% endset -%}
-
-
-    {% set inspectorRows = [] %}
-
-    {% for inspector in inspectors %}
-        {% set inspectorRows = (inspectorRows.push([
-            {
-                text: inspector.firstName + " " + inspector.lastName
-            },
-            {
-                text: inspector.emailAddress
-            },
-            {
-                text: inspector.address.postcode
-            },
-            {
-                text: inspector.grade
-            },
-            {
-                text: inspector.fte
-            },
-            {
-                text: inspector.inspectorManager
-            },
-            {
-                text: inspector.chartingOfficerId
-            },
-            {
-                text: inspector.specialisms
-            },
-            {
-                text: inspector.preclusions
-            },
-            {
-                html: '<a href="' + inspector.id + '" class="govuk-link">Assign</a>'
-            }
-        ]), inspectorRows) %}
-    {% endfor %}
-
-    {% set inspectorsTable %}
-        {{ govukTable({
-            head: [
-                {
-                    text: "Name"
-                },
-                {
-                    text: "Email"
-                },
-                {
-                    text: "Location"
-                },
-                {
-                    text: "Grade"
-                },
-                {
-                    text: "FTE"
-                },
-                {
-                    text: "Is Manager"
-                },
-                {
-                    text: "Charting Officer ID"
-                },
-                {
-                    text: "Specialisms"
-                },
-                {
-                    text: "Preclusions"
-                },
-                {
-                    text: "Action"
-                }
-            ],
-            rows: inspectorRows
-        }) }}
-    {% endset -%}
-
-    {{ govukTabs({
-        items: [
-            {
-                label: "Cases",
-                id: "cases",
-                panel: {
-                    html: casesTable
-                }
-            },
-            {
-                label: "Inspectors",
-                id: "inspectors",
-                panel: {
-                    html: inspectorsTable
-                }
-            }
-        ]
-    }) }}
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@0.3.1/os-api-branding.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@0.3.1/os-api-branding.js"></script>
     <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
@@ -251,6 +54,9 @@
     <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %}>
 
 			const apiKey = '{{ apiKey }}';
+            const casesLatLong = {{ casesLatLong | dump | safe}};
+            const inspectorsLatLong = {{ inspectorsLatLong | dump | safe }};
+
 			function epsg27700map() {
                 // Setup the EPSG:27700 (British National Grid) projection.
                 const crs = new L.Proj.CRS('EPSG:27700', '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs', {
@@ -291,7 +97,7 @@
                     minZoom: 0,
                     maxZoom: 9,
                     center: transformCoords([ 343767 , 147938]),
-                    zoom: 7,
+                    zoom: 1,
                     maxBounds: [
                         transformCoords([ -238375.0, 0.0 ]),
                         transformCoords([ 900000.0, 1376256.0 ])
@@ -303,6 +109,13 @@
 
                 // Load and display WMTS tile layer on the map.
                 const basemap = L.tileLayer('https://api.os.uk/maps/raster/v1/wmts?' + queryString).addTo(map);
+
+                for (const {lat, long} of inspectorsLatLong) {
+                    new L.marker([lat, long]).addTo(map);
+                }
+                for (const {lat, long} of casesLatLong) {
+                    new L.marker([lat, long]).addTo(map);
+                }
             }
 			function epsg3857Map() {
                 const vectorStyle = 'https://api.os.uk/maps/vector/v1/vts/resources/styles?srs=3857&key=' + apiKey;
@@ -343,9 +156,6 @@
                 new maplibregl.Marker()
                     .setLngLat([-2.8067021, 51.227847])
                     .addTo(map);
-
-                const casesLatLong = {{ casesLatLong | dump | safe}};
-                const inspectorsLatLong = {{ inspectorsLatLong | dump | safe }};
 
                 // for (const {lat, long} of inspectorsLatLong) {
                 //     new maplibregl.Marker()
