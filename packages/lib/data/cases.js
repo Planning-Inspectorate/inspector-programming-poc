@@ -7,42 +7,47 @@ const fakerPostCode = async () => faker.location.zipCode();
 /**
  * @param {number} count
  * @param {() => Promise<string>} randomPostcode
+ * @param {Record<string, string | string[]>} filters
  * @returns {Promise<import('./types.js').AppealCase[]>}
  */
-export async function fetchCases(count = 10, randomPostcode = fakerPostCode) {
-	/** @type {import('./types.js').AppealCase[]} */
+export async function fetchCases(count = 10, filters = {}, randomPostcode = fakerPostCode) {
 	const cases = [];
 	for (let i = 0; i < count; i++) {
-		const allocationBand = arrayElement([1, 2, 3]);
-		const caseAge = faker.number.int({ min: 1, max: 52 });
-		cases.push({
-			caseId: faker.string.numeric(7),
-			caseType: arrayElement(['W', 'D']),
-			caseStatus: arrayElement(Object.values(APPEAL_CASE_STATUS)),
-			caseProcedure: arrayElement(Object.values(APPEAL_CASE_PROCEDURE)),
-			lpaCode: faker.string.alpha({ length: 1, casing: 'upper' }) + faker.string.numeric(5),
-			allocationBand,
-			allocationLevel: randomAllocationLevel(allocationBand),
-			caseSpecialisms: arrayElement([
-				'Access',
-				'Listed building and enforcement',
-				'Roads and traffics',
-				'Natural heritage',
-				'Schedule 1'
-			]),
-			caseSubmittedDate: faker.date.past(),
-			caseValidDate: faker.date.past(),
-			siteAddressPostcode: await randomPostcode(),
-			caseLevel: arrayElement(['1', '2', '3']),
-			lpaRegion: arrayElement(['North', 'South', 'East', 'West']),
-			caseAge,
-			linkedCases: faker.string.numeric(7),
-			finalCommentsDate: faker.date.future(),
-			programmingStatus: arrayElement(['P', 'D', 'S']),
-			programmingNotes: faker.lorem.sentence()
-		});
+		cases.push(await createCase(randomPostcode));
 	}
-	return cases;
+
+	return cases.filter(applyFilters(filters)).toSorted(sortCasesByAge);
+}
+
+async function createCase(randomPostcode) {
+	const allocationBand = arrayElement([1, 2, 3]);
+	const caseAge = faker.number.int({ min: 1, max: 52 });
+	return {
+		caseId: faker.string.numeric(7),
+		caseType: arrayElement(['W', 'D']),
+		caseStatus: arrayElement(Object.values(APPEAL_CASE_STATUS)),
+		caseProcedure: arrayElement(Object.values(APPEAL_CASE_PROCEDURE)),
+		lpaCode: faker.string.alpha({ length: 1, casing: 'upper' }) + faker.string.numeric(5),
+		allocationBand,
+		allocationLevel: randomAllocationLevel(allocationBand),
+		caseSpecialisms: arrayElement([
+			'Access',
+			'Listed building and enforcement',
+			'Roads and traffics',
+			'Natural heritage',
+			'Schedule 1'
+		]),
+		caseSubmittedDate: faker.date.past(),
+		caseValidDate: faker.date.past(),
+		siteAddressPostcode: await randomPostcode(),
+		caseLevel: arrayElement(['1', '2', '3']),
+		lpaRegion: arrayElement(['North', 'South', 'East', 'West']),
+		caseAge,
+		linkedCases: faker.string.numeric(7),
+		finalCommentsDate: faker.date.future(),
+		programmingStatus: arrayElement(['P', 'D', 'S']),
+		programmingNotes: faker.lorem.sentence()
+	};
 }
 
 function randomAllocationLevel(band) {
@@ -55,4 +60,20 @@ function randomAllocationLevel(band) {
 			return arrayElement(['A', 'B']);
 	}
 	return null;
+}
+
+function applyFilters(filters) {
+	return (appealCase) => {
+		return Object.entries(filters).every(([key, value]) => {
+			if (Array.isArray(value)) {
+				return value.includes(appealCase[key]);
+			} else {
+				return appealCase[key] === value;
+			}
+		});
+	};
+}
+
+function sortCasesByAge(a, b) {
+	return a.caseAge - b.caseAge;
 }

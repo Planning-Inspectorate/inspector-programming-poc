@@ -11,7 +11,23 @@ export function buildViewHome({ logger }) {
 	return async (req, res) => {
 		logger.info('view home');
 
-		const cases = await fetchCases(10);
+		const filters = {
+			caseType: req.query.caseType,
+			caseStatus: req.query.caseStatus,
+			caseProcedure: req.query.caseProcedure,
+			lpaCode: req.query.lpaCode,
+			allocationBand: req.query.allocationBand,
+			allocationLevel: req.query.allocationLevel,
+			caseSpecialisms: req.query.caseSpecialisms,
+			caseLevel: req.query.caseLevel,
+			lpaRegion: req.query.lpaRegion,
+			programmingStatus: req.query.programmingStatus,
+			linkedCases: req.query.linkedCases,
+			finalCommentsDate: req.query.finalCommentsDate,
+			caseAge: req.query.caseAge
+		};
+
+		const cases = await fetchCases(10, filters);
 
 		return res.render('views/home/view-tabs.njk', {
 			pageHeading: 'Inspector Programming PoC',
