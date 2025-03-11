@@ -13,7 +13,7 @@ export function buildViewHome({ logger }) {
 
 		const cases = await fetchCases(10);
 		const inspectors = await fetchInspectors(10);
-		return res.render('views/home/view-tabs.njk', {
+		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
 			cases,
