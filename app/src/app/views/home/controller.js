@@ -11,13 +11,30 @@ export function buildViewHome({ logger }) {
 	return async (req, res) => {
 		logger.info('view home');
 
+		const defaultFilters = {
+			caseProcedure: ['Written representations', 'Hearing', 'Inquiry'],
+			lpaRegion: ['North', 'South', 'East', 'West'],
+			caseType: ['W', 'D'],
+			caseSpecialisms: [
+				'Access',
+				'Listed building and enforcement',
+				'Roads and traffics',
+				'Natural heritage',
+				'Schedule 1'
+			],
+			allocationLevel: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+		};
+
 		const cases = await fetchCases(10);
 		const inspectors = await fetchInspectors(10);
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
-			cases,
-			inspectors
+			cases: cases.map(caseViewModel),
+			inspectors,
+			data: {
+				filters: defaultFilters
+			}
 		});
 	};
 }
@@ -101,4 +118,10 @@ function specialismsViewModel(specialisms) {
 			})
 			.join('\n') || 'None'
 	);
+}
+
+function caseViewModel(c) {
+	const copy = { ...c };
+	copy.finalCommentsDate = c.finalCommentsDate.toLocaleDateString();
+	return copy;
 }
