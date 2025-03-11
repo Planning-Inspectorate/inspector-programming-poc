@@ -1,5 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker';
-import { APPEAL_CASE_PROCEDURE, APPEAL_CASE_STATUS } from 'pins-data-model';
+import { APPEAL_CASE_STATUS } from 'pins-data-model';
 
 const arrayElement = faker.helpers.arrayElement;
 const fakerPostCode = async () => faker.location.zipCode();
@@ -26,7 +26,7 @@ async function createCase(randomPostcode) {
 		caseId: faker.string.numeric(7),
 		caseType: arrayElement(['W', 'D']),
 		caseStatus: arrayElement(Object.values(APPEAL_CASE_STATUS)),
-		caseProcedure: arrayElement(Object.values(APPEAL_CASE_PROCEDURE)),
+		caseProcedure: arrayElement(['Written representations', 'Hearing', 'Inquiry']),
 		lpaCode: faker.string.alpha({ length: 1, casing: 'upper' }) + faker.string.numeric(5),
 		allocationBand,
 		allocationLevel: randomAllocationLevel(allocationBand),
@@ -65,8 +65,14 @@ function randomAllocationLevel(band) {
 function applyFilters(filters) {
 	return (appealCase) => {
 		return Object.entries(filters).every(([key, value]) => {
-			if (Array.isArray(value)) {
-				return value.includes(appealCase[key]);
+			if (key === 'maxAge') {
+				return appealCase.caseAge >= value;
+			} else if (Array.isArray(value)) {
+				if (Array.isArray(appealCase[key])) {
+					return value.some((v) => appealCase[key].includes(v));
+				} else {
+					return value.includes(appealCase[key]);
+				}
 			} else if (typeof value === 'string' && value.length > 0) {
 				return appealCase[key] === value;
 			} else {

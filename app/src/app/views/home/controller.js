@@ -11,29 +11,33 @@ export function buildViewHome({ logger }) {
 	return async (req, res) => {
 		logger.info('view home');
 
-		const filters = {
-			caseType: req.query.caseType,
-			caseStatus: req.query.caseStatus,
-			caseProcedure: req.query.caseProcedure,
-			lpaCode: req.query.lpaCode,
-			allocationBand: req.query.allocationBand,
-			allocationLevel: req.query.allocationLevel,
-			caseSpecialisms: req.query.caseSpecialisms,
-			caseLevel: req.query.caseLevel,
-			lpaRegion: req.query.lpaRegion,
-			programmingStatus: req.query.programmingStatus,
-			linkedCases: req.query.linkedCases,
-			finalCommentsDate: req.query.finalCommentsDate,
-			caseAge: req.query.caseAge
+		const defaultFilters = {
+			caseProcedure: ['Written representations', 'Hearing', 'Inquiry'],
+			lpaRegion: ['North', 'South', 'East', 'West'],
+			caseType: ['W', 'D'],
+			caseSpecialisms: [
+				'Access',
+				'Listed building and enforcement',
+				'Roads and traffics',
+				'Natural heritage',
+				'Schedule 1'
+			],
+			allocationLevel: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 		};
+
+		const filters = req.query.filters || defaultFilters;
+		console.log(req.query.filters);
 
 		const cases = await fetchCases(10, filters);
 		const inspectors = await fetchInspectors(10);
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
-			cases,
-			inspectors
+			cases: cases.map(caseViewModel),
+			inspectors,
+			data: {
+				filters
+			}
 		});
 	};
 }
@@ -117,4 +121,10 @@ function specialismsViewModel(specialisms) {
 			})
 			.join('\n') || 'None'
 	);
+}
+
+function caseViewModel(c) {
+	const copy = { ...c };
+	copy.finalCommentsDate = c.finalCommentsDate.toLocaleDateString();
+	return copy;
 }
