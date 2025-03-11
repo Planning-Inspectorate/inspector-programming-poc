@@ -1,5 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker';
-import { APPEAL_CASE_PROCEDURE, APPEAL_CASE_STATUS } from 'pins-data-model';
+import { APPEAL_CASE_STATUS } from 'pins-data-model';
 
 const arrayElement = faker.helpers.arrayElement;
 const fakerPostCode = async () => faker.location.zipCode();
@@ -19,7 +19,7 @@ export async function fetchCases(count = 10, randomPostcode = fakerPostCode) {
 			caseId: faker.string.numeric(7),
 			caseType: arrayElement(['W', 'D']),
 			caseStatus: arrayElement(Object.values(APPEAL_CASE_STATUS)),
-			caseProcedure: arrayElement(Object.values(APPEAL_CASE_PROCEDURE)),
+			caseProcedure: arrayElement(['Written representations', 'Hearing', 'Inquiry']),
 			lpaCode: faker.string.alpha({ length: 1, casing: 'upper' }) + faker.string.numeric(5),
 			allocationBand,
 			allocationLevel: randomAllocationLevel(allocationBand),
