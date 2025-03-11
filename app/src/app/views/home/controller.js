@@ -26,10 +26,9 @@ export function buildViewHome({ logger }) {
 		};
 
 		const filters = req.query.filters || defaultFilters;
-		console.log(req.query.filters);
-
 		const cases = await fetchCases(10, filters);
 		const inspectors = await fetchInspectors(10);
+
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
