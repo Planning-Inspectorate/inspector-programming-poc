@@ -20,7 +20,25 @@ describe('fetchCases', () => {
 
 		const cases = await fetchCases(count, filters);
 
-		assert.strictEqual(cases[0].caseType, 'W');
+		for (const c of cases) {
+			assert.strictEqual(c.caseType, 'W');
+		}
+	});
+
+	it('should return cases with array filters', async () => {
+		const count = 10;
+		const filters = {
+			caseSpecialisms: ['Access', 'Listed building and enforcement']
+		};
+
+		const cases = await fetchCases(count, filters);
+
+		for (const c of cases) {
+			assert.strictEqual(
+				true,
+				c.caseSpecialisms === 'Access' || c.caseSpecialisms === 'Listed building and enforcement'
+			);
+		}
 	});
 
 	it('should sort cases by age', async () => {
