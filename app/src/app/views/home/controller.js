@@ -25,15 +25,17 @@ export function buildViewHome({ logger }) {
 			allocationLevel: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 		};
 
-		const cases = await fetchCases(10);
+		const filters = req.query.filters || defaultFilters;
+		const cases = await fetchCases(10, filters);
 		const inspectors = await fetchInspectors(10);
+
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
 			cases: cases.map(caseViewModel),
 			inspectors,
 			data: {
-				filters: defaultFilters
+				filters
 			}
 		});
 	};
