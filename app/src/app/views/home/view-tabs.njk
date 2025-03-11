@@ -2,6 +2,7 @@
 
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+{% from "govuk/components/select/macro.njk" import govukSelect %}
 
     {% if apiKey %}
         <style>
@@ -94,6 +95,12 @@
 
   <div class="app-filter">
 
+      <div class="app-filter__options">
+        <form method="get" novalidate>
+          <button class="govuk-button govuk-button--primary" data-module="govuk-button">
+            Apply filters
+          </button>
+
     <div class="app-filter__header">
     <div class="app-filter__header-title">
         <h2 class="govuk-heading-m bold-title">Select Inspector</h2>
@@ -133,28 +140,39 @@
         </div>
       {% endif %}
 
-      <div class="app-filter__options">
-        <form method="get" novalidate>
-          <button class="govuk-button govuk-button--primary" data-module="govuk-button">
-            Apply filters
-          </button>
+        <fieldset class="govuk-fieldset">
+        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
+            Case Age
+        </legend>
 
-          {{ govukCheckboxes({
-            idPrefix: "filters[types]",
-            name: "filters[types]",
-            classes: "govuk-checkboxes--small",
+          {{ govukSelect({
+            idPrefix: "filters[age]",
+            name: "filters[age]",
+            classes: "govuk-select--multiple",
+            multiple: true,
             fieldset: {
-              legend: {
+                legend: {
                 text: "Case Age",
                 classes: "govuk-fieldset__legend--s"
-              }
+                }
             },
             items: [
-              { value: 'Oldest to Newest', text: 'Oldest to Newest' },
-              { value: 'Newest to Oldest', text: 'Newest to Oldest' }
+                { value: '0-4', text: '≤ 4 weeks' },
+                { value: '5-8', text: '5–8 weeks' },
+                { value: '9-12', text: '9–12 weeks' },
+                { value: '13-16', text: '13–16 weeks' },
+                { value: '17-20', text: '17–20 weeks' },
+                { value: '21-24', text: '21–24 weeks' },
+                { value: '25-28', text: '25–28 weeks' },
+                { value: '29-32', text: '29–32 weeks' },
+                { value: '33-36', text: '33–36 weeks' },
+                { value: '37-40', text: '37–40 weeks' },
+                { value: '41-44', text: '41–44 weeks' },
+                { value: '45-48', text: '45–48 weeks' },
+                { value: '49-52', text: '49–52 weeks' }
             ],
-            values: data.filters.types
-          }) }}
+            values: data.filters.age
+            }) }}
 
         {{ govukCheckboxes({
             idPrefix: "filters[procedures]",
