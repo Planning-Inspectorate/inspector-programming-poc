@@ -37,15 +37,15 @@ $font-family: arial, helvetica, sans-serif;
 
 .app-filter {
 	flex: 1;
-	background-color: #f3f2f1; // GOV.UK light grey background
+	background-color: #f3f2f1;
 	padding: 16px;
-	border: 1px solid #b1b4b6; // GOV.UK grey border
+	border: none;
 	border-radius: 4px;
 	margin-bottom: 20px;
 }
 
 .cases-inspectors-container {
-	flex: 3; /* Adjust the width proportion as needed */
+	flex: 3;
 }
 
 .govuk-table {
@@ -56,7 +56,7 @@ $font-family: arial, helvetica, sans-serif;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	border-bottom: 1px solid #b1b4b6;
+	border-bottom: none;
 	padding-bottom: 8px;
 	margin-bottom: 16px;
 }
@@ -73,11 +73,15 @@ $font-family: arial, helvetica, sans-serif;
 }
 
 .govuk-button {
-	background-color: #00703c; // GOV.UK green button
+	background-color: #00703c;
 	border-color: #005a30;
 }
 
 .govuk-button:hover {
 	background-color: #005a30;
 	border-color: #003e20;
+}
+
+.bold-title {
+	font-weight: bold;
 }
