@@ -90,76 +90,89 @@
 
 
     {% block pageContent %}
-  <!-- Create a container that holds both filter and tables -->
-  <div class="filter-container">
-    
-    <!-- Filter Section -->
-<div class="app-filter">
-  <div class="app-filter__header">
+<div class="filter-container">
+
+  <div class="app-filter">
+
+    <div class="app-filter__header">
     <div class="app-filter__header-title">
-      <h2 class="govuk-heading-m">Filter</h2>
+        <h2 class="govuk-heading-m bold-title">Select Inspector</h2>
     </div>
-  </div>
-  <div class="app-filter__content">
-    {% if selectedFilters.categories.length %}
-      <div class="app-filter__selected">
-        <div class="app-filter__selected-heading">
-          <div class="app-filter__heading-title">
-            <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Selected filters</h2>
-            <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="/main/your-cases/clear-filters">Clear filters</a></p>
-          </div>
-        </div>
-        {% for category in selectedFilters.categories %}
-          <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{ category.heading.text }}</h3>
-          <ul class="app-filter-tags">
-            {% for item in category.items %}
-              <li><a class="app-filter__tag" href="{{item.href}}"><span class="govuk-visually-hidden">Remove this filter</span> {{item.text}}</a></li>
-            {% endfor %}
-          </ul>
+    </div>
+    <div class="govuk-form-group">
+    <select class="govuk-select" id="inspector-dropdown" name="inspector">
+        <option value="" selected disabled>Select an Inspector</option>
+        {% for inspector in inspectors %}
+        <option value="{{ inspector.id }}">{{ inspector.firstName }} {{ inspector.lastName }}</option>
         {% endfor %}
+    </select>
+    </div>
+
+    <div class="app-filter__header">
+      <div class="app-filter__header-title">
+        <h2 class="govuk-heading-m">Filter</h2>
       </div>
-    {% endif %}
-    
-    <div class="app-filter__options">
-      <form method="get" novalidate>
-        <button class="govuk-button" data-module="govuk-button">
-          Apply filters
-        </button>
+    </div>
+    <div class="app-filter__content">
+      {% if selectedFilters.categories.length %}
+        <div class="app-filter__selected">
+          <div class="app-filter__selected-heading">
+            <div class="app-filter__heading-title">
+              <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Selected filters</h2>
+              <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="/main/your-cases/clear-filters">Clear filters</a></p>
+            </div>
+          </div>
+          {% for category in selectedFilters.categories %}
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{ category.heading.text }}</h3>
+            <ul class="app-filter-tags">
+              {% for item in category.items %}
+                <li><a class="app-filter__tag" href="{{item.href}}"><span class="govuk-visually-hidden">Remove this filter</span> {{item.text}}</a></li>
+              {% endfor %}
+            </ul>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="app-filter__options">
+        <form method="get" novalidate>
+          <button class="govuk-button govuk-button--primary" data-module="govuk-button">
+            Apply filters
+          </button>
+
+          {{ govukCheckboxes({
+            idPrefix: "filters[types]",
+            name: "filters[types]",
+            classes: "govuk-checkboxes--small",
+            fieldset: {
+              legend: {
+                text: "Case Age",
+                classes: "govuk-fieldset__legend--s"
+              }
+            },
+            items: [
+              { value: 'Oldest to Newest', text: 'Oldest to Newest' },
+              { value: 'Newest to Oldest', text: 'Newest to Oldest' }
+            ],
+            values: data.filters.types
+          }) }}
 
         {{ govukCheckboxes({
-          idPrefix: "filters[types]",
-          name: "filters[types]",
-          classes: "govuk-checkboxes--small",
-          fieldset: {
-            legend: {
-              text: "Case Age",
-              classes: "govuk-fieldset__legend--s"
-            }
-          },
-          items: [
-            { value: 'Oldest to Newest', text: 'Oldest to Newest' },
-            { value: 'Newest to Oldest', text: 'Newest to Oldest' }
-          ],
-          values: data.filters.types
-        }) }}
-
-        {{ govukCheckboxes({
-          idPrefix: "filters[procedures]",
-          name: "filters[procedures]",
-          classes: "govuk-checkboxes--small",
-          fieldset: {
-            legend: {
-              text: "Procedure",
-              classes: "govuk-fieldset__legend--s"
-            }
-          },
-          items: [
-            { value: 'Written representations', text: 'Written representations' },
-            { value: 'Hearing', text: 'Hearing' },
-            { value: 'Inquiry', text: 'Inquiry' }
-          ],
-          values: data.filters.procedures
-        }) }}
+            idPrefix: "filters[procedures]",
+            name: "filters[procedures]",
+            classes: "govuk-checkboxes--small",
+            fieldset: {
+              legend: {
+                text: "Procedure",
+                classes: "govuk-fieldset__legend--s"
+              }
+            },
+            items: [
+              { value: 'Written representations', text: 'Written representations' },
+              { value: 'Hearing', text: 'Hearing' },
+              { value: 'Inquiry', text: 'Inquiry' }
+            ],
+            values: data.filters.procedures
+        }) }} 
 
         {{ govukCheckboxes({
           idPrefix: "filters[siteVisit]",
@@ -239,13 +252,11 @@
         ],
         values: data.filters.specialism
         }) }}
-
-      </form>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
-    <!-- Cases and Inspectors Section -->
     <div class="cases-inspectors-container">
       {{ govukTable({
         classes: "govuk-!-font-size-14",
