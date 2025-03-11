@@ -28,10 +28,7 @@ export function buildViewHome({ logger }) {
 		const filters = req.query.filters || defaultFilters;
 		const cases = await fetchCases(10, filters);
 		const inspectors = await fetchInspectors(10);
-<<<<<<< HEAD
 
-=======
->>>>>>> 339bf0c (chore: rename view)
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
