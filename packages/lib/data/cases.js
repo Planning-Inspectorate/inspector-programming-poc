@@ -67,8 +67,10 @@ function applyFilters(filters) {
 		return Object.entries(filters).every(([key, value]) => {
 			if (Array.isArray(value)) {
 				return value.includes(appealCase[key]);
-			} else {
+			} else if (typeof value === 'string' && value.length > 0) {
 				return appealCase[key] === value;
+			} else {
+				return true;
 			}
 		});
 	};
