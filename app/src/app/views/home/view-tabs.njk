@@ -1,6 +1,7 @@
 {% extends "views/layouts/main.njk" %}
 
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
     {% if apiKey %}
         <style>
@@ -89,45 +90,173 @@
 
 
     {% block pageContent %}
-  <!-- Create a container that holds both filter and tables -->
-  <div class="filter-container">
-    
-    <!-- Filter Section -->
-    <div class="app-filter">
-      <div class="app-filter__header">
-        <div class="app-filter__header-title">
-          <h2 class="govuk-heading-m">Filter</h2>
-        </div>
+<div class="filter-container">
+
+  <div class="app-filter">
+
+    <div class="app-filter__header">
+    <div class="app-filter__header-title">
+        <h2 class="govuk-heading-m bold-title">Select Inspector</h2>
+    </div>
+    </div>
+    <div class="govuk-form-group">
+    <select class="govuk-select" id="inspector-dropdown" name="inspector">
+        <option value="" selected disabled>Select an Inspector</option>
+        {% for inspector in inspectors %}
+        <option value="{{ inspector.id }}">{{ inspector.firstName }} {{ inspector.lastName }}</option>
+        {% endfor %}
+    </select>
+    </div>
+
+    <div class="app-filter__header">
+      <div class="app-filter__header-title">
+        <h2 class="govuk-heading-m">Filter</h2>
       </div>
-      <div class="app-filter__content">
+    </div>
+    <div class="app-filter__content">
+      {% if selectedFilters.categories.length %}
+        <div class="app-filter__selected">
+          <div class="app-filter__selected-heading">
+            <div class="app-filter__heading-title">
+              <h2 class="govuk-heading-m govuk-!-margin-bottom-1">Selected filters</h2>
+              <p class="govuk-body"><a class="govuk-link govuk-link--no-visited-state" href="/main/your-cases/clear-filters">Clear filters</a></p>
+            </div>
+          </div>
+          {% for category in selectedFilters.categories %}
+            <h3 class="govuk-heading-s govuk-!-margin-bottom-0">{{ category.heading.text }}</h3>
+            <ul class="app-filter-tags">
+              {% for item in category.items %}
+                <li><a class="app-filter__tag" href="{{item.href}}"><span class="govuk-visually-hidden">Remove this filter</span> {{item.text}}</a></li>
+              {% endfor %}
+            </ul>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <div class="app-filter__options">
         <form method="get" novalidate>
           <button class="govuk-button govuk-button--primary" data-module="govuk-button">
             Apply filters
           </button>
-          
-          {# Add filter checkboxes here as needed #}
-          <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset">
-              <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-                Age
-              </legend>
-              <div class="govuk-checkboxes govuk-checkboxes--small">
-                <div class="govuk-checkboxes__item">
-                  <input class="govuk-checkboxes__input" id="filter1" name="filter1" type="checkbox" value="option1">
-                  <label class="govuk-label govuk-checkboxes__label" for="filter1">Oldest to Newest</label>
-                </div>
-                <div class="govuk-checkboxes__item">
-                  <input class="govuk-checkboxes__input" id="filter2" name="filter2" type="checkbox" value="option2">
-                  <label class="govuk-label govuk-checkboxes__label" for="filter2">Newest to Oldest</label>
-                </div>
-              </div>
-            </fieldset>
-          </div>
+
+          {{ govukCheckboxes({
+            idPrefix: "filters[types]",
+            name: "filters[types]",
+            classes: "govuk-checkboxes--small",
+            fieldset: {
+              legend: {
+                text: "Case Age",
+                classes: "govuk-fieldset__legend--s"
+              }
+            },
+            items: [
+              { value: 'Oldest to Newest', text: 'Oldest to Newest' },
+              { value: 'Newest to Oldest', text: 'Newest to Oldest' }
+            ],
+            values: data.filters.types
+          }) }}
+
+        {{ govukCheckboxes({
+            idPrefix: "filters[procedures]",
+            name: "filters[procedures]",
+            classes: "govuk-checkboxes--small",
+            fieldset: {
+              legend: {
+                text: "Procedure",
+                classes: "govuk-fieldset__legend--s"
+              }
+            },
+            items: [
+              { value: 'Written representations', text: 'Written representations' },
+              { value: 'Hearing', text: 'Hearing' },
+              { value: 'Inquiry', text: 'Inquiry' }
+            ],
+            values: data.filters.procedures
+        }) }} 
+
+        {{ govukCheckboxes({
+          idPrefix: "filters[siteVisit]",
+          name: "filters[siteVisit]",
+          classes: "govuk-checkboxes--small",
+          fieldset: {
+            legend: {
+              text: "Case Region",
+              classes: "govuk-fieldset__legend--s"
+            }
+          },
+          items: [
+            { value: 'North', text: 'North' },
+            { value: 'South', text: 'South' },
+            { value: 'East', text: 'East' },
+            { value: 'West', text: 'West' }
+          ],
+          values: data.filters.siteVisit
+        }) }}
+
+        {{ govukCheckboxes({
+          idPrefix: "filters[planningObligation]",
+          name: "filters[planningObligation]",
+          classes: "govuk-checkboxes--small",
+          fieldset: {
+            legend: {
+              text: "Case Type",
+              classes: "govuk-fieldset__legend--s"
+            }
+          },
+          items: [
+            { value: 'W', text: 'W' },
+            { value: 'D', text: 'D' }
+          ],
+          values: data.filters.planningObligation
+        }) }}
+
+        {{ govukCheckboxes({
+          idPrefix: "filters[statuses]",
+          name: "filters[statuses]",
+          classes: "govuk-checkboxes--small",
+          fieldset: {
+            legend: {
+              text: "Specialism",
+              classes: "govuk-fieldset__legend--s"
+            }
+          },
+          items: [
+            { value: 'Access', text: 'Access' },
+            { value: 'Listed building and enforcement', text: 'Listed building and enforcement' },
+            { value: 'Roads and traffics', text: 'Roads and traffics' },
+            { value: 'Natural heritage', text: 'Natural heritage' },
+            { value: 'Schedule 1', text: 'Schedule 1' }
+          ],
+          values: data.filters.statuses
+        }) }}
+
+        {{ govukCheckboxes({
+        idPrefix: "filters[specialism]",
+        name: "filters[specialism]",
+        classes: "govuk-checkboxes--small",
+        fieldset: {
+            legend: {
+            text: "Specialism Code",
+            classes: "govuk-fieldset__legend--s"
+            }
+        },
+        items: [
+            { value: 'A', text: 'A' },
+            { value: 'B', text: 'B' },
+            { value: 'C', text: 'C' },
+            { value: 'D', text: 'D' },
+            { value: 'E', text: 'E' },
+            { value: 'F', text: 'F' },
+            { value: 'G', text: 'G' },
+            { value: 'H', text: 'H' }
+        ],
+        values: data.filters.specialism
+        }) }}
         </form>
       </div>
     </div>
+  </div>
 
-    <!-- Cases and Inspectors Section -->
     <div class="cases-inspectors-container">
       {{ govukTable({
         classes: "govuk-!-font-size-14",
