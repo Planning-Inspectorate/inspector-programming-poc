@@ -2,14 +2,8 @@
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
-<<<<<<< HEAD
-=======
 {% from "govuk/components/button/macro.njk" import govukButton %}
-<<<<<<< HEAD
->>>>>>> 496c519 (chore: tidy up view and add default state for filters)
-=======
 {% from "govuk/components/details/macro.njk" import govukDetails %}
->>>>>>> 49b60ad (fix(age filter): change value and make filter dropdown)
 
 {% if apiKey %}
 <style>
@@ -73,231 +67,6 @@
                 <h2 class="govuk-heading-m bold-title">Select Inspector</h2>
             </div>
         </div>
-<<<<<<< HEAD
-    {% endif %}
-
-    {% set caseRows = [] %}
-
-    {% for c in cases %}
-        {% set caseRows = (caseRows.push([
-            { text: c.caseId },
-            { text: c.caseType },
-            { text: c.caseProcedure },
-            { text: c.allocationBand },
-            { text: c.caseLevel },
-            { text: c.siteAddressPostcode },
-            { text: c.lpaCode },
-            { text: c.lpaRegion },
-            { text: c.caseStatus },
-            { text: c.caseAge },
-            { text: c.linkedCases },
-            { text: c.finalCommentsDate },
-            { text: c.programmingStatus },
-            { text: c.programmingNotes },
-            { html: '<a href="' + c.reference + '" class="govuk-link">Assign</a>' }
-        ]), caseRows) %}
-    {% endfor %}
-
-    {% block pageContent %}
-<div class="filter-container">
-
-  <div class="app-filter">
-
-      <div class="app-filter__options">
-        <form method="get" novalidate>
-          <button class="govuk-button govuk-button--primary" data-module="govuk-button">
-            Apply filters
-          </button>
-
-    <div class="app-filter__header">
-    <div class="app-filter__header-title">
-        <h2 class="govuk-heading-m bold-title">Select Inspector</h2>
-    </div>
-    </div>
-
-    <form method="get" novalidate>
-        <div class="govuk-form-group">
-            {% set inspectorList = [] %}
-            {% for i in inspectors %}
-                {% set inspectorList = (inspectorList.push(
-                    {
-                        text: i.firstName + ' ' + i.lastName,
-                        value: i.id
-                    }
-                ), inspectorList) %}
-            {% endfor %}
-
-            {{ govukSelect({
-              id: "inspectors",
-              name: "inspectors",
-              items: inspectorList
-            }) }}
-
-            {{ govukButton({
-                text: "Select",
-                classes: "govuk-button--primary",
-                type: "submit"
-            }) }}
-        </div>
-    </form>
-
-
-    <div class="app-filter__header">
-      <div class="app-filter__header-title">
-        <h2 class="govuk-heading-m">Filter</h2>
-      </div>
-    </div>
-    <div class="app-filter__content">
-
-        <fieldset class="govuk-fieldset">
-        <legend class="govuk-fieldset__legend govuk-fieldset__legend--s">
-            Case Age
-        </legend>
-
-          {{ govukSelect({
-<<<<<<< HEAD
-            idPrefix: "filters[age]",
-            name: "filters[age]",
-            classes: "govuk-select--multiple",
-            multiple: true,
-            fieldset: {
-                legend: {
-                text: "Case Age",
-                classes: "govuk-fieldset__legend--s"
-                }
-            },
-            items: [
-                { value: '0-4', text: '≤ 4 weeks' },
-                { value: '5-8', text: '5–8 weeks' },
-                { value: '9-12', text: '9–12 weeks' },
-                { value: '13-16', text: '13–16 weeks' },
-                { value: '17-20', text: '17–20 weeks' },
-                { value: '21-24', text: '21–24 weeks' },
-                { value: '25-28', text: '25–28 weeks' },
-                { value: '29-32', text: '29–32 weeks' },
-                { value: '33-36', text: '33–36 weeks' },
-                { value: '37-40', text: '37–40 weeks' },
-                { value: '41-44', text: '41–44 weeks' },
-                { value: '45-48', text: '45–48 weeks' },
-                { value: '49-52', text: '49–52 weeks' }
-            ],
-            values: data.filters.age
-            }) }}
-=======
-            id: "filters[maxAge]",
-            name: "filters[maxAge]",
-            classes: "govuk-select--width-10",
-            label: {
-              text: "Age",
-              classes: "govuk-label--s"
-            },
-            items: [
-              { text: "All", value: "1" },
-              { text: "> 7 days", value: "7" },
-              { text: "> 14 days", value: "14" },
-              { text: "> 21 days", value: "21" },
-              { text: "> 28 days", value: "28" }
-            ]
-          }) }}
->>>>>>> 496c519 (chore: tidy up view and add default state for filters)
-
-          {{ govukCheckboxes({
-            idPrefix: "filters[caseProcedure]",
-            name: "filters[caseProcedure]",
-            classes: "govuk-checkboxes--small",
-            fieldset: {
-              legend: {
-                text: "Procedure",
-                classes: "govuk-fieldset__legend--s"
-              }
-            },
-            items: [
-              { value: 'Written representations', text: 'Written representations' },
-              { value: 'Hearing', text: 'Hearing' },
-              { value: 'Inquiry', text: 'Inquiry' }
-            ],
-            values: data.filters.caseProcedure
-          }) }}
-
-        {{ govukCheckboxes({
-          idPrefix: "filters[lpaRegion]",
-          name: "filters[lpaRegion]",
-          classes: "govuk-checkboxes--small",
-          fieldset: {
-            legend: {
-              text: "Case Region",
-              classes: "govuk-fieldset__legend--s"
-            }
-          },
-          items: [
-            { value: 'North', text: 'North' },
-            { value: 'South', text: 'South' },
-            { value: 'East', text: 'East' },
-            { value: 'West', text: 'West' }
-          ],
-          values: data.filters.lpaRegion
-        }) }}
-
-        {{ govukCheckboxes({
-          idPrefix: "filters[caseType]",
-          name: "filters[caseType]",
-          classes: "govuk-checkboxes--small",
-          fieldset: {
-            legend: {
-              text: "Case Type",
-              classes: "govuk-fieldset__legend--s"
-            }
-          },
-          items: [
-            { value: 'W', text: 'W' },
-            { value: 'D', text: 'D' }
-          ],
-          values: data.filters.caseType
-        }) }}
-
-        {{ govukCheckboxes({
-          idPrefix: "filters[caseSpecialisms]",
-          name: "filters[caseSpecialisms]",
-          classes: "govuk-checkboxes--small",
-          fieldset: {
-            legend: {
-              text: "Specialism",
-              classes: "govuk-fieldset__legend--s"
-            }
-          },
-          items: [
-            { value: 'Access', text: 'Access' },
-            { value: 'Listed building and enforcement', text: 'Listed building and enforcement' },
-            { value: 'Roads and traffics', text: 'Roads and traffics' },
-            { value: 'Natural heritage', text: 'Natural heritage' },
-            { value: 'Schedule 1', text: 'Schedule 1' }
-          ],
-          values: data.filters.caseSpecialisms
-        }) }}
-
-        {{ govukCheckboxes({
-        idPrefix: "filters[allocationLevel]",
-        name: "filters[allocationLevel]",
-        classes: "govuk-checkboxes--small",
-        fieldset: {
-            legend: {
-            text: "Specialism Code",
-            classes: "govuk-fieldset__legend--s"
-            }
-        },
-        items: [
-            { value: 'A', text: 'A' },
-            { value: 'B', text: 'B' },
-            { value: 'C', text: 'C' },
-            { value: 'D', text: 'D' },
-            { value: 'E', text: 'E' },
-            { value: 'F', text: 'F' },
-            { value: 'G', text: 'G' },
-            { value: 'H', text: 'H' }
-        ],
-        values: data.filters.allocationLevel
-        }) }}
-=======
         <form method="get" novalidate>
             <div class="govuk-form-group">
                 {% set inspectorList = [] %}
@@ -318,7 +87,6 @@
                     type: "submit"
                 }) }}
             </div>
->>>>>>> 49b60ad (fix(age filter): change value and make filter dropdown)
         </form>
         <div class="app-filter__header">
             <div class="app-filter__header-title">
@@ -609,3 +377,6 @@
 </script>
 
 {% endblock %}
+
+
+
