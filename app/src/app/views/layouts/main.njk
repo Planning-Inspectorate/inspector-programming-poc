@@ -81,7 +81,6 @@
 	<script type="module" {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="/assets/js/govuk-frontend.min.js"></script>
 	<script type="module" {% if cspNonce %}nonce={{ cspNonce }}{% endif %}>
 		import { initAll } from '/assets/js/govuk-frontend.min.js'
-		initAll()
-		console.log('init');
+		initAll();
 	</script>
 {% endblock %}
