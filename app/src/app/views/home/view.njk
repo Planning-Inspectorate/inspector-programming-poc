@@ -97,30 +97,34 @@
                     <button class="govuk-button" data-module="govuk-button">
                         Apply filters
                     </button>
-                    {{ govukSelect({
-                        id: "filters[maxAge]",
-                        name: "filters[maxAge]",
-                        classes: "govuk-select--width-10",
-                        label: {
-                            text: "Case age (weeks)",
-                            classes: "govuk-label--s"
-                        },
-                        items: [
-                            { text: "All", value: "all" },
-                            { text: "> 24 weeks", value: ">24" },
-                            { text: "22 – 24 weeks", value: "22-24" },
-                            { text: "20 – 22 weeks", value: "20-22" },
-                            { text: "18 – 20 weeks", value: "18-20" },
-                            { text: "16 – 18 weeks", value: "16-18" },
-                            { text: "14 – 16 weeks", value: "14-16" },
-                            { text: "12 – 14 weeks", value: "12-14" },
-                            { text: "10 – 12 weeks", value: "10-12" },
-                            { text: "8 – 10 weeks", value: "8-10" },
-                            { text: "6 – 8 weeks", value: "6-8" },
-                            { text: "4 – 6 weeks", value: "4-6" },
-                            { text: "2 – 4 weeks", value: "2-4" },
-                            { text: "< 1 week", value: "<1" }
-                        ]
+                    {{ govukDetails({
+                        summaryText: "Case Age",
+                        html: govukSelect({
+                            id: "filters[maxAge]",
+                            name: "filters[maxAge]",
+                            classes: "govuk-select--width-10",
+                            label: {
+                                text: "Case age (weeks)",
+                                classes: "govuk-label--s"
+                            },
+                            items: [
+                                { text: "All", value: "all" },
+                                { text: "> 24 weeks", value: ">24" },
+                                { text: "22 – 24 weeks", value: "22-24" },
+                                { text: "20 – 22 weeks", value: "20-22" },
+                                { text: "18 – 20 weeks", value: "18-20" },
+                                { text: "16 – 18 weeks", value: "16-18" },
+                                { text: "14 – 16 weeks", value: "14-16" },
+                                { text: "12 – 14 weeks", value: "12-14" },
+                                { text: "10 – 12 weeks", value: "10-12" },
+                                { text: "8 – 10 weeks", value: "8-10" },
+                                { text: "6 – 8 weeks", value: "6-8" },
+                                { text: "4 – 6 weeks", value: "4-6" },
+                                { text: "2 – 4 weeks", value: "2-4" },
+                                { text: "< 1 week", value: "<1" }
+                            ]
+                        }),
+                        classes: "custom-filter-dropdown"
                     }) }}
                     {{ govukDetails({
                         summaryText: "Procedure",
