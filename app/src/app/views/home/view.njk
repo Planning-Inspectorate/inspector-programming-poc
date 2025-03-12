@@ -1,404 +1,382 @@
 {% extends "views/layouts/main.njk" %}
-
 {% from "govuk/components/table/macro.njk" import govukTable %}
 {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
+{% from "govuk/components/details/macro.njk" import govukDetails %}
 
-    {% if apiKey %}
-        <style>
-            #map {
-                position:absolute;
-                top:0;
-                bottom:0;
-                width:100%;
-            }
-            .pins-map {
-                position: relative;
-                width: 100%;
-                height: 0;
-                padding-top: calc(9 / 16 * 100%);
-            }
-            .pins-map__container {
-                position: absolute;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-            }
-            .pins-map__content {
-                width: 100%;
-                height: 100%;
-            }
-        </style>
-        <div class="pins-map">
-            <div class="pins-map__container">
-                <div id="map" class="pins-map__content"></div>
+{% if apiKey %}
+<style>
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+    }
+    .pins-map {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-top: calc(9 / 16 * 100%);
+    }
+    .pins-map__container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+    .pins-map__content {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<div class="pins-map">
+    <div class="pins-map__container">
+        <div id="map" class="pins-map__content"></div>
+    </div>
+</div>
+{% endif %}
+
+{% set caseRows = [] %}
+{% for c in cases %}
+    {% set caseRows = (caseRows.push([
+        { text: c.caseId },
+        { text: c.caseType },
+        { text: c.caseProcedure },
+        { text: c.allocationBand },
+        { text: c.caseLevel },
+        { text: c.siteAddressPostcode },
+        { text: c.lpaCode },
+        { text: c.lpaRegion },
+        { text: c.caseStatus },
+        { text: c.caseAge },
+        { text: c.linkedCases },
+        { text: c.finalCommentsDate },
+        { text: c.programmingStatus },
+        { text: c.programmingNotes },
+        { html: '<a href="' + c.reference + '" class="govuk-link">Assign</a>' }
+    ]), caseRows) %}
+{% endfor %}
+
+{% block pageContent %}
+<div class="filter-container">
+    <div class="app-filter">
+        <div class="app-filter__header">
+            <div class="app-filter__header-title">
+                <h2 class="govuk-heading-m bold-title">Select Inspector</h2>
             </div>
         </div>
-    {% endif %}
-
-    {% set caseRows = [] %}
-
-    {% for c in cases %}
-        {% set caseRows = (caseRows.push([
-            { text: c.caseId },
-            { text: c.caseType },
-            { text: c.caseProcedure },
-            { text: c.allocationBand },
-            { text: c.caseLevel },
-            { text: c.siteAddressPostcode },
-            { text: c.lpaCode },
-            { text: c.lpaRegion },
-            { text: c.caseStatus },
-            { text: c.caseAge },
-            { text: c.linkedCases },
-            { text: c.finalCommentsDate },
-            { text: c.programmingStatus },
-            { text: c.programmingNotes },
-            { html: '<a href="' + c.reference + '" class="govuk-link">Assign</a>' }
-        ]), caseRows) %}
-    {% endfor %}
-
-    {% block pageContent %}
-<div class="filter-container">
-
-  <div class="app-filter">
-
-    <div class="app-filter__header">
-    <div class="app-filter__header-title">
-        <h2 class="govuk-heading-m bold-title">Select Inspector</h2>
-    </div>
-    </div>
-
-    <form method="get" novalidate>
-        <div class="govuk-form-group">
-            {% set inspectorList = [] %}
-            {% for i in inspectors %}
-                {% set inspectorList = (inspectorList.push(
-                    {
-                        text: i.firstName + ' ' + i.lastName,
-                        value: i.id
-                    }
-                ), inspectorList) %}
-            {% endfor %}
-
-            {{ govukSelect({
-              id: "inspectors",
-              name: "inspectors",
-              items: inspectorList
-            }) }}
-
-            {{ govukButton({
-                text: "Select",
-                classes: "govuk-button--primary",
-                type: "submit"
-            }) }}
-        </div>
-    </form>
-
-
-    <div class="app-filter__header">
-      <div class="app-filter__header-title">
-        <h2 class="govuk-heading-m">Filter</h2>
-      </div>
-    </div>
-    <div class="app-filter__content">
-
-      <div class="app-filter__options">
         <form method="get" novalidate>
-          <button class="govuk-button govuk-button--primary" data-module="govuk-button">
-            Apply filters
-          </button>
-
-          {{ govukSelect({
-            id: "filters[maxAge]",
-            name: "filters[maxAge]",
-            classes: "govuk-select--width-10",
-            label: {
-              text: "Age",
-              classes: "govuk-label--s"
-            },
-            items: [
-              { text: "All", value: "1" },
-              { text: "> 7 days", value: "7" },
-              { text: "> 14 days", value: "14" },
-              { text: "> 21 days", value: "21" },
-              { text: "> 28 days", value: "28" }
-            ]
-          }) }}
-
-          {{ govukCheckboxes({
-            idPrefix: "filters[caseProcedure]",
-            name: "filters[caseProcedure]",
-            classes: "govuk-checkboxes--small",
-            fieldset: {
-              legend: {
-                text: "Procedure",
-                classes: "govuk-fieldset__legend--s"
-              }
-            },
-            items: [
-              { value: 'Written representations', text: 'Written representations' },
-              { value: 'Hearing', text: 'Hearing' },
-              { value: 'Inquiry', text: 'Inquiry' }
-            ],
-            values: data.filters.caseProcedure
-          }) }}
-
-        {{ govukCheckboxes({
-          idPrefix: "filters[lpaRegion]",
-          name: "filters[lpaRegion]",
-          classes: "govuk-checkboxes--small",
-          fieldset: {
-            legend: {
-              text: "Case Region",
-              classes: "govuk-fieldset__legend--s"
-            }
-          },
-          items: [
-            { value: 'North', text: 'North' },
-            { value: 'South', text: 'South' },
-            { value: 'East', text: 'East' },
-            { value: 'West', text: 'West' }
-          ],
-          values: data.filters.lpaRegion
-        }) }}
-
-        {{ govukCheckboxes({
-          idPrefix: "filters[caseType]",
-          name: "filters[caseType]",
-          classes: "govuk-checkboxes--small",
-          fieldset: {
-            legend: {
-              text: "Case Type",
-              classes: "govuk-fieldset__legend--s"
-            }
-          },
-          items: [
-            { value: 'W', text: 'W' },
-            { value: 'D', text: 'D' }
-          ],
-          values: data.filters.caseType
-        }) }}
-
-        {{ govukCheckboxes({
-          idPrefix: "filters[caseSpecialisms]",
-          name: "filters[caseSpecialisms]",
-          classes: "govuk-checkboxes--small",
-          fieldset: {
-            legend: {
-              text: "Specialism",
-              classes: "govuk-fieldset__legend--s"
-            }
-          },
-          items: [
-            { value: 'Access', text: 'Access' },
-            { value: 'Listed building and enforcement', text: 'Listed building and enforcement' },
-            { value: 'Roads and traffics', text: 'Roads and traffics' },
-            { value: 'Natural heritage', text: 'Natural heritage' },
-            { value: 'Schedule 1', text: 'Schedule 1' }
-          ],
-          values: data.filters.caseSpecialisms
-        }) }}
-
-        {{ govukCheckboxes({
-        idPrefix: "filters[allocationLevel]",
-        name: "filters[allocationLevel]",
-        classes: "govuk-checkboxes--small",
-        fieldset: {
-            legend: {
-            text: "Specialism Code",
-            classes: "govuk-fieldset__legend--s"
-            }
-        },
-        items: [
-            { value: 'A', text: 'A' },
-            { value: 'B', text: 'B' },
-            { value: 'C', text: 'C' },
-            { value: 'D', text: 'D' },
-            { value: 'E', text: 'E' },
-            { value: 'F', text: 'F' },
-            { value: 'G', text: 'G' },
-            { value: 'H', text: 'H' }
-        ],
-        values: data.filters.allocationLevel
-        }) }}
+            <div class="govuk-form-group">
+                {% set inspectorList = [] %}
+                {% for i in inspectors %}
+                    {% set inspectorList = (inspectorList.push({
+                        text: i.lastName + ', ' + i.firstName,
+                        value: i.id
+                    }), inspectorList) %}
+                {% endfor %}
+                {{ govukSelect({
+                    id: "inspectors",
+                    name: "inspectors",
+                    items: inspectorList
+                }) }}
+                {{ govukButton({
+                    text: "Select",
+                    classes: "govuk-button--primary",
+                    type: "submit"
+                }) }}
+            </div>
         </form>
-      </div>
-    </div>
-  </div>
+        <div class="app-filter__header">
+            <div class="app-filter__header-title">
+                <h2 class="govuk-heading-m">Filter</h2>
+            </div>
+        </div>
+        <div class="app-filter__content">
+            <div class="app-filter__options">
+                <form method="get" novalidate>
+                    <button class="govuk-button govuk-button--primary" data-module="govuk-button">
+                        Apply filters
+                    </button>
+                    {{ govukSelect({
+                        id: "filters[maxAge]",
+                        name: "filters[maxAge]",
+                        classes: "govuk-select--width-10",
+                        label: {
+                            text: "Case age (weeks)",
+                            classes: "govuk-label--s"
+                        },
+                        items: [
+                            { text: "All", value: "all" },
+                            { text: "> 24 weeks", value: ">24" },
+                            { text: "22 – 24 weeks", value: "22-24" },
+                            { text: "20 – 22 weeks", value: "20-22" },
+                            { text: "18 – 20 weeks", value: "18-20" },
+                            { text: "16 – 18 weeks", value: "16-18" },
+                            { text: "14 – 16 weeks", value: "14-16" },
+                            { text: "12 – 14 weeks", value: "12-14" },
+                            { text: "10 – 12 weeks", value: "10-12" },
+                            { text: "8 – 10 weeks", value: "8-10" },
+                            { text: "6 – 8 weeks", value: "6-8" },
+                            { text: "4 – 6 weeks", value: "4-6" },
+                            { text: "2 – 4 weeks", value: "2-4" },
+                            { text: "< 1 week", value: "<1" }
+                        ]
+                    }) }}
+                    {{ govukDetails({
+                        summaryText: "Procedure",
+                        html: govukCheckboxes({
+                            idPrefix: "filters[caseProcedure]",
+                            name: "filters[caseProcedure]",
+                            classes: "govuk-checkboxes--small",
+                            fieldset: {
+                                legend: {
+                                    text: "Select one or more procedures",
+                                    classes: "govuk-fieldset__legend--s"
+                                }
+                            },
+                            items: [
+                                { value: 'Written representations', text: 'Written representations' },
+                                { value: 'Hearing', text: 'Hearing' },
+                                { value: 'Inquiry', text: 'Inquiry' }
+                            ],
+                            values: data.filters.caseProcedure
+                        })
+                    }) }}
+                    {{ govukDetails({
+                        summaryText: "LPA Region",
+                        html: govukCheckboxes({
+                            idPrefix: "filters[lpaRegion]",
+                            name: "filters[lpaRegion]",
+                            classes: "govuk-checkboxes--small",
+                            fieldset: {
+                                legend: {
+                                    text: "Select one or more LPA regions",
+                                    classes: "govuk-fieldset__legend--s"
+                                }
+                            },
+                            items: [
+                                { value: 'North', text: 'North' },
+                                { value: 'South', text: 'South' },
+                                { value: 'East', text: 'East' },
+                                { value: 'West', text: 'West' }
+                            ],
+                            values: data.filters.lpaRegion
+                        })
+                    }) }}
+                    {{ govukDetails({
+                        summaryText: "Case Type",
+                        html: govukCheckboxes({
+                            idPrefix: "filters[caseType]",
+                            name: "filters[caseType]",
+                            classes: "govuk-checkboxes--small",
+                            fieldset: {
+                                legend: {
+                                    text: "Select one or more case types",
+                                    classes: "govuk-fieldset__legend--s"
+                                }
+                            },
+                            items: [
+                                { value: 'W', text: 'W' },
+                                { value: 'D', text: 'D' }
+                            ],
+                            values: data.filters.caseType
+                        })
+                    }) }}
+                    {{ govukDetails({
+                        summaryText: "Specialism",
+                        html: govukCheckboxes({
+                            idPrefix: "filters[caseSpecialisms]",
+                            name: "filters[caseSpecialisms]",
+                            classes: "govuk-checkboxes--small",
+                            fieldset: {
+                                legend: {
+                                    text: "Select one or more specialisms",
+                                    classes: "govuk-fieldset__legend--s"
+                                }
+                            },
+                            items: [
+                                { value: 'Access', text: 'Access' },
+                                { value: 'Listed building and enforcement', text: 'Listed building and enforcement' },
+                                { value: 'Roads and traffics', text: 'Roads and traffics' },
+                                { value: 'Natural heritage', text: 'Natural heritage' },
+                                { value: 'Schedule 1', text: 'Schedule 1' }
+                            ],
+                            values: data.filters.caseSpecialisms
+                        })
+                    }) }}
 
-    <div class="cases-inspectors-container">
-      {{ govukTable({
+                    {{ govukDetails({
+                        summaryText: "Specialism Code",
+                        html: govukCheckboxes({
+                            idPrefix: "filters[allocationLevel]",
+                            name: "filters[allocationLevel]",
+                            classes: "govuk-checkboxes--small",
+                            fieldset: {
+                                legend: {
+                                    text: "Select one or more specialism codes",
+                                    classes: "govuk-fieldset__legend--s"
+                                }
+                            },
+                            items: [
+                                { value: 'A', text: 'A' },
+                                { value: 'B', text: 'B' },
+                                { value: 'C', text: 'C' },
+                                { value: 'D', text: 'D' },
+                                { value: 'E', text: 'E' },
+                                { value: 'F', text: 'F' },
+                                { value: 'G', text: 'G' },
+                                { value: 'H', text: 'H' }
+                            ],
+                            values: data.filters.allocationLevel
+                        })
+                    }) }}
+                </form>
+            </div>
+        </div>
+    </div>
+
+<div class="cases-inspectors-container">
+    {{ govukTable({
         classes: "govuk-!-font-size-14",
         head: [
-            {
-                text: "Reference"
-            },
-            {
-                text: "Type"
-            },
-            {
-                text: "Procedure"
-            },
-            {
-                text: "Band"
-            },
-            {
-                text: "Level"
-            },
-            {
-                text: "Location"
-            },
-            {
-                text: "LPA"
-            },
-            {
-                text: "Region"
-            },
-            {
-                text: "Case Status"
-            },
-            {
-                text: "Age"
-            },
-            {
-                text: "Linked cases"
-            },
-            {
-                text: "Final comments date"
-            },
-            {
-                text: "Programming Status"
-            },
-            {
-                text: "Programming Notes"
-            },
-            {
-                text: "Assign"
-            }
+            { text: "Reference" },
+            { text: "Type" },
+            { text: "Procedure" },
+            { text: "Band" },
+            { text: "Level" },
+            { text: "Location" },
+            { text: "LPA" },
+            { text: "Region" },
+            { text: "Case Status" },
+            { text: "Age" },
+            { text: "Linked cases" },
+            { text: "Final comments date" },
+            { text: "Programming Status" },
+            { text: "Programming Notes" },
+            { text: "Assign" }
         ],
         rows: caseRows
     }) }}
-    </div>
-  </div>
+</div>
 
-    <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@0.3.1/os-api-branding.js"></script>
-    <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
-    <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.2/proj4leaflet.min.js"></script>
-    <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
-    <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %}>
+<script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@0.3.1/os-api-branding.js"></script>
+<script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
+<script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.2/proj4leaflet.min.js"></script>
+<script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+<script {% if cspNonce %}nonce={{ cspNonce }}{% endif %}>
+    const apiKey = '{{ apiKey }}';
 
-			const apiKey = '{{ apiKey }}';
-			function epsg27700map() {
-                // Setup the EPSG:27700 (British National Grid) projection.
-                const crs = new L.Proj.CRS('EPSG:27700', '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs', {
-                    resolutions: [ 896.0, 448.0, 224.0, 112.0, 56.0, 28.0, 14.0, 7.0, 3.5, 1.75 ],
-                    origin: [ -238375.0, 1376256.0 ]
-                });
-
-                // Transform coordinates.
-                const transformCoords = function(arr) {
-                    return proj4('EPSG:27700', 'EPSG:4326', arr).reverse();
-                };
-
-                // Define parameters object.
-                const params = {
-                    key: apiKey,
-                    service: 'WMTS',
-                    request: 'GetTile',
-                    version: '2.0.0',
-                    height: 256,
-                    width: 256,
-                    outputFormat: 'image/png',
-                    style: 'default',
-                    layer: 'Outdoor_27700',
-                    tileMatrixSet: 'EPSG:27700',
-                    tileMatrix: '{z}',
-                    tileRow: '{y}',
-                    tileCol: '{x}'
-                };
-
-                // Construct query string parameters from object.
-                const queryString = Object.keys(params).map(function(key) {
-                    return key + '=' + params[key];
-                }).join('&');
-
-                // Initialize the map.
-                const mapOptions = {
-                    crs: crs,
-                    minZoom: 0,
-                    maxZoom: 9,
-                    center: transformCoords([ 343767 , 147938]),
-                    zoom: 7,
-                    maxBounds: [
-                        transformCoords([ -238375.0, 0.0 ]),
-                        transformCoords([ 900000.0, 1376256.0 ])
-                    ],
-                    attributionControl: false
-                };
-
-                const map = L.map('map', mapOptions);
-
-                // Load and display WMTS tile layer on the map.
-                const basemap = L.tileLayer('https://api.os.uk/maps/raster/v1/wmts?' + queryString).addTo(map);
+    function epsg27700map() {
+        // Setup the EPSG:27700 (British National Grid) projection.
+        const crs = new L.Proj.CRS(
+            'EPSG:27700',
+            '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +towgs84=446.448,-125.157,542.06,0.15,0.247,0.842,-20.489 +units=m +no_defs',
+            {
+                resolutions: [896.0, 448.0, 224.0, 112.0, 56.0, 28.0, 14.0, 7.0, 3.5, 1.75],
+                origin: [-238375.0, 1376256.0]
             }
-			function epsg3857Map() {
-                const vectorStyle = 'https://api.os.uk/maps/vector/v1/vts/resources/styles?srs=3857&key=' + apiKey;
-                const zxyStyle = {
-                    "version": 8,
-                    "sources": {
-                        "raster-tiles": {
-                            "type": "raster",
-                            "tiles": [ "https://api.os.uk/maps/raster/v1/zxy/Outdoor_27700/{z}/{x}/{y}.png?key=" + apiKey ],
-                            "tileSize": 256
-                        }
-                    },
-                    "layers": [{
-                        "id": "os-maps-zxy",
-                        "type": "raster",
-                        "source": "raster-tiles"
-                    }]
-                };
+        );
 
-                // Initialize the map object.
-                const map = new maplibregl.Map({
-                    container: 'location-map',
-                    minZoom: 6,
-                    maxZoom: 19,
-                    style:zxyStyle,
-                    maxBounds: [
-                        [ -10.76418, 49.528423 ],
-                        [ 1.9134116, 61.331151 ]
-                    ],
-                    center: [ -2.8067021, 51.227847 ],
-                    zoom: 13,
-                    attributionControl: false
-                });
+        // Transform coordinates.
+        const transformCoords = function (arr) {
+            return proj4('EPSG:27700', 'EPSG:4326', arr).reverse();
+        };
 
-                map.dragRotate.disable(); // Disable map rotation using right click + drag.
-                map.touchZoomRotate.disableRotation(); // Disable map rotation using touch rotation gesture.
+        // Define parameters object.
+        const params = {
+            key: apiKey,
+            service: 'WMTS',
+            request: 'GetTile',
+            version: '2.0.0',
+            height: 256,
+            width: 256,
+            outputFormat: 'image/png',
+            style: 'default',
+            layer: 'Outdoor_27700',
+            tileMatrixSet: 'EPSG:27700',
+            tileMatrix: '{z}',
+            tileRow: '{y}',
+            tileCol: '{x}'
+        };
 
-                new maplibregl.Marker()
-                    .setLngLat([-2.8067021, 51.227847])
-                    .addTo(map);
+        // Construct query string parameters from object.
+        const queryString = Object.keys(params)
+            .map(function (key) {
+                return key + '=' + params[key];
+            })
+            .join('&');
 
-                const casesLatLong = {{ casesLatLong | dump | safe}};
-                const inspectorsLatLong = {{ inspectorsLatLong | dump | safe }};
+        // Initialize the map.
+        const mapOptions = {
+            crs: crs,
+            minZoom: 0,
+            maxZoom: 9,
+            center: transformCoords([343767, 147938]),
+            zoom: 7,
+            maxBounds: [
+                transformCoords([-238375.0, 0.0]),
+                transformCoords([900000.0, 1376256.0])
+            ],
+            attributionControl: false
+        };
 
-                // for (const {lat, long} of inspectorsLatLong) {
-                //     new maplibregl.Marker()
-                //         .setLngLat([long, lat])
-                //         .addTo(map);
-                // }
-                // for (const {lat, long} of casesLatLong) {
-                //     new maplibregl.Marker()
-                //         .setLngLat([long, lat])
-                //         .addTo(map);
-                // }
-            }
-            epsg27700map();
-    </script>
+        const map = L.map('map', mapOptions);
+
+        // Load and display WMTS tile layer on the map.
+        const basemap = L.tileLayer('https://api.os.uk/maps/raster/v1/wmts?' + queryString).addTo(map);
+    }
+
+    function epsg3857Map() {
+        const vectorStyle = 'https://api.os.uk/maps/vector/v1/vts/resources/styles?srs=3857&key=' + apiKey;
+        const zxyStyle = {
+            version: 8,
+            sources: {
+                'raster-tiles': {
+                    type: 'raster',
+                    tiles: ['https://api.os.uk/maps/raster/v1/zxy/Outdoor_27700/{z}/{x}/{y}.png?key=' + apiKey],
+                    tileSize: 256
+                }
+            },
+            layers: [
+                {
+                    id: 'os-maps-zxy',
+                    type: 'raster',
+                    source: 'raster-tiles'
+                }
+            ]
+        };
+
+        // Initialize the map object.
+        const map = new maplibregl.Map({
+            container: 'location-map',
+            minZoom: 6,
+            maxZoom: 19,
+            style: zxyStyle,
+            maxBounds: [
+                [-10.76418, 49.528423],
+                [1.9134116, 61.331151]
+            ],
+            center: [-2.8067021, 51.227847],
+            zoom: 13,
+            attributionControl: false
+        });
+
+        map.dragRotate.disable(); // Disable map rotation using right click + drag.
+        map.touchZoomRotate.disableRotation(); // Disable map rotation using touch rotation gesture.
+
+        new maplibregl.Marker().setLngLat([-2.8067021, 51.227847]).addTo(map);
+
+        const casesLatLong = {{ casesLatLong | dump | safe }};
+        const inspectorsLatLong = {{ inspectorsLatLong | dump | safe }};
+    }
+
+    epsg27700map();
+</script>
+
 {% endblock %}
+
+
+
