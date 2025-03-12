@@ -46,7 +46,7 @@ describe('fetchCases', () => {
 		const filters = {};
 
 		const cases = await fetchCases(count, filters);
-		const sortedCases = cases.toSorted((a, b) => a.caseAge - b.caseAge);
+		const sortedCases = cases.toSorted((a, b) => b.caseAge - a.caseAge);
 
 		assert.deepStrictEqual(cases, sortedCases);
 	});

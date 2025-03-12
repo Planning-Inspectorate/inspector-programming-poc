@@ -90,13 +90,13 @@
         </form>
         <div class="app-filter__header">
             <div class="app-filter__header-title">
-                <h2 class="govuk-heading-m">Filter</h2>
+                <h2 class="govuk-heading-m">Case Filters</h2>
             </div>
         </div>
         <div class="app-filter__content">
             <div class="app-filter__options">
                 <form method="get" novalidate>
-                    <button class="govuk-button govuk-button--primary" data-module="govuk-button">
+                    <button class="govuk-button" data-module="govuk-button">
                         Apply filters
                     </button>
                     {{ govukSelect({
@@ -142,7 +142,8 @@
                                 { value: 'Inquiry', text: 'Inquiry' }
                             ],
                             values: data.filters.caseProcedure
-                        })
+                        }),
+                        classes: "custom-filter-dropdown"
                     }) }}
                     {{ govukDetails({
                         summaryText: "LPA Region",
@@ -163,7 +164,8 @@
                                 { value: 'West', text: 'West' }
                             ],
                             values: data.filters.lpaRegion
-                        })
+                        }),
+                        classes: "custom-filter-dropdown"
                     }) }}
                     {{ govukDetails({
                         summaryText: "Case Type",
@@ -182,7 +184,8 @@
                                 { value: 'D', text: 'D' }
                             ],
                             values: data.filters.caseType
-                        })
+                        }),
+                        classes: "custom-filter-dropdown"
                     }) }}
                     {{ govukDetails({
                         summaryText: "Specialism",
@@ -204,7 +207,8 @@
                                 { value: 'Schedule 1', text: 'Schedule 1' }
                             ],
                             values: data.filters.caseSpecialisms
-                        })
+                        }),
+                        classes: "custom-filter-dropdown"
                     }) }}
 
                     {{ govukDetails({
@@ -230,7 +234,8 @@
                                 { value: 'H', text: 'H' }
                             ],
                             values: data.filters.allocationLevel
-                        })
+                        }),
+                        classes: "custom-filter-dropdown"
                     }) }}
                 </form>
             </div>

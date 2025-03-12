@@ -83,5 +83,5 @@ function applyFilters(filters) {
 }
 
 function sortCasesByAge(a, b) {
-	return a.caseAge - b.caseAge;
+	return b.caseAge - a.caseAge;
 }
