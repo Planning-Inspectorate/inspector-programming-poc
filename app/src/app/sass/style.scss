@@ -19,9 +19,21 @@ $font-family: arial, helvetica, sans-serif;
 	}
 }
 
-@media (min-width: 1800px) {
+@media (min-width: 1500px) {
+	.pins-container-wide {
+		max-width: 1450px;
+	}
+}
+
+@media (min-width: 1650px) {
 	.pins-container-wide {
 		max-width: 1600px;
+	}
+}
+
+@media (min-width: 1900px) {
+	.pins-container-wide {
+		max-width: 1850px;
 	}
 }
 
