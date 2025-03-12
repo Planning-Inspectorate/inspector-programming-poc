@@ -44,7 +44,7 @@ $font-family: arial, helvetica, sans-serif;
 .filter-container {
 	display: flex;
 	gap: 20px;
-	max-width: 100px; 
+	max-width: 100px;
 }
 
 .app-filter {
@@ -113,7 +113,8 @@ $font-family: arial, helvetica, sans-serif;
 }
 
 .govuk-table {
-	th, td {
+	th,
+	td {
 		vertical-align: middle;
 	}
 
@@ -121,4 +122,3 @@ $font-family: arial, helvetica, sans-serif;
 		margin-bottom: 0;
 	}
 }
-
