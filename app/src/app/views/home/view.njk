@@ -302,6 +302,18 @@
     </form>
 </div>
 
+<script {% if cspNonce %}nonce={{ cspNonce }}{% endif %}>
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectAllCheckbox = document.querySelector('#select-all');
+        const checkboxes = document.querySelectorAll('input[type="checkbox"][name="selectedCases"]');
+        selectAllCheckbox.addEventListener('change', function () {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        });
+    });
+</script>
 <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@0.3.1/os-api-branding.js"></script>
 <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.11.0/proj4.js"></script>
@@ -415,6 +427,7 @@
     }
 
     epsg27700map();
+
 </script>
 
 {% endblock %}
