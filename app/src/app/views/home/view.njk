@@ -38,25 +38,6 @@
 </div>
 {% endif %}
 
-{% set caseRows = [] %}
-{% for c in cases %}
-    {% set caseRows = (caseRows.push([
-        { html: '<a href="/view/' + c.caseId + '" class="govuk-link">' + c.caseId + '</a>' },
-        { text: c.caseType },
-        { text: c.caseProcedure },
-        { text: c.allocationBand },
-        { text: c.caseLevel },
-        { text: c.siteAddressPostcode },
-        { text: c.lpaName },
-        { text: c.lpaRegion },
-        { text: c.caseStatus },
-        { text: c.caseAge },
-        { html: '<a href="/view/' + c.linkedCases + '" class="govuk-link">' + c.linkedCases + '</a>' },
-        { text: c.finalCommentsDate },
-        { text: c.programmingStatus }
-    ]), caseRows) %}
-{% endfor %}
-
 {% block pageContent %}
 <div class="filter-container">
     <div class="app-filter">
@@ -241,25 +222,59 @@
     </div>
 
 <div class="cases-inspectors-container">
-    {{ govukTable({
-        classes: "govuk-!-font-size-14",
-        head: [
-            { text: "Reference" },
-            { text: "Type" },
-            { text: "Procedure" },
-            { text: "Band" },
-            { text: "Level" },
-            { text: "Location" },
-            { text: "LPA" },
-            { text: "Region" },
-            { text: "Case Status" },
-            { text: "Age" },
-            { text: "Linked cases" },
-            { text: "Final comments date" },
-            { text: "Prog Status" }
-        ],
-        rows: caseRows
-    }) }}
+    <form method="post" novalidate>
+        {% set caseRows = [] %}
+        {% for c in cases %}
+            {% set caseRows = (caseRows.push([
+                { html: govukCheckboxes({
+                    name: "selectedCases",
+                    classes: "govuk-checkboxes--small",
+                    items: [{ value: c.caseId, text: " ", checked: false }]
+                }) },
+                { html: '<a href="/view/' + c.caseId + '" class="govuk-link">' + c.caseId + '</a>' },
+                { text: c.caseType },
+                { text: c.caseProcedure },
+                { text: c.allocationBand },
+                { text: c.caseLevel },
+                { text: c.siteAddressPostcode },
+                { text: c.lpaName },
+                { text: c.lpaRegion },
+                { text: c.caseStatus },
+                { text: c.caseAge },
+                { html: '<a href="/view/' + c.linkedCases + '" class="govuk-link">' + c.linkedCases + '</a>' },
+                { text: c.finalCommentsDate },
+                { text: c.programmingStatus }
+            ]), caseRows) %}
+        {% endfor %}
+
+        {{ govukTable({
+            classes: "govuk-!-font-size-14",
+            head: [
+                { html: govukCheckboxes({
+                    idPrefix: "select-all",
+                    name: "select-all",
+                    classes: "govuk-checkboxes--small",
+                    items: [
+                        { value: "select-all", text: " ", checked: false }
+                    ]
+                }) },
+                { text: "Reference" },
+                { text: "Type" },
+                { text: "Procedure" },
+                { text: "Band" },
+                { text: "Level" },
+                { text: "Location" },
+                { text: "LPA" },
+                { text: "Region" },
+                { text: "Case Status" },
+                { text: "Age" },
+                { text: "Linked cases" },
+                { text: "Final comments date" },
+                { text: "Prog Status" }
+            ],
+            rows: caseRows
+        }) }}
+    </form>
 </div>
 
 <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@0.3.1/os-api-branding.js"></script>
