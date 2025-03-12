@@ -29,7 +29,6 @@ $font-family: arial, helvetica, sans-serif;
 	white-space: pre-wrap;
 }
 
-/* This will make the filter and tables display side by side */
 .filter-container {
 	display: flex;
 	gap: 20px;
@@ -86,12 +85,16 @@ $font-family: arial, helvetica, sans-serif;
 	font-weight: bold;
 }
 
-.govuk-details__summary {
-    color: black !important;
-    font-weight: bold;
-    text-decoration: none !important;
+.custom-filter-dropdown {
+	summary {
+		color: black;
+		font-weight: bold;
+	}
+	span {
+		text-decoration: none;
+	}
 }
 
 .govuk-button--primary {
-    margin-top: 30px;
+	margin-top: 30px;
 }
