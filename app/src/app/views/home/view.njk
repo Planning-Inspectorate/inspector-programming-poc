@@ -228,6 +228,25 @@
     </div>
 
 <div class="cases-inspectors-container">
+    {{ govukTable({
+        classes: "govuk-!-font-size-14",
+        head: [
+            { text: "Reference" },
+            { text: "Type" },
+            { text: "Procedure" },
+            { text: "Band" },
+            { text: "Level" },
+            { text: "Location" },
+            { text: "LPA" },
+            { text: "Region" },
+            { text: "Case Status" },
+            { text: "Age" },
+            { text: "Linked cases" },
+            { text: "Final comments date" },
+            { text: "Prog Status" }
+        ],
+        rows: caseRows
+    }) }}
     <form method="post" novalidate>
         {% set caseRows = [] %}
         {% for c in cases %}
