@@ -33,7 +33,7 @@ export function buildViewHome({ logger }) {
 			if (a.lastName !== b.lastName) {
 				return a.lastName < b.lastName ? -1 : 1;
 			}
-			return a.firstName < b.firstName ? -1 : a.firstName > b.firstName ? 1 : 0;
+			return a.firstName < b.firstName ? -1 : 1;
 		});
 
 		return res.render('views/home/view.njk', {
