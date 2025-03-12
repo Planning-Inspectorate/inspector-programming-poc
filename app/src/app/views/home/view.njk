@@ -41,21 +41,19 @@
 {% set caseRows = [] %}
 {% for c in cases %}
     {% set caseRows = (caseRows.push([
-        { text: c.caseId },
+        { html: '<a href="/view/' + c.caseId + '" class="govuk-link">' + c.caseId + '</a>' },
         { text: c.caseType },
         { text: c.caseProcedure },
         { text: c.allocationBand },
         { text: c.caseLevel },
         { text: c.siteAddressPostcode },
-        { text: c.lpaCode },
+        { text: c.lpaName },
         { text: c.lpaRegion },
         { text: c.caseStatus },
         { text: c.caseAge },
-        { text: c.linkedCases },
+        { html: '<a href="/view/' + c.linkedCases + '" class="govuk-link">' + c.linkedCases + '</a>' },
         { text: c.finalCommentsDate },
-        { text: c.programmingStatus },
-        { text: c.programmingNotes },
-        { html: '<a href="' + c.reference + '" class="govuk-link">Assign</a>' }
+        { text: c.programmingStatus }
     ]), caseRows) %}
 {% endfor %}
 
@@ -137,7 +135,7 @@
                                 }
                             },
                             items: [
-                                { value: 'Written representations', text: 'Written representations' },
+                                { value: 'Written reps', text: 'Written representations' },
                                 { value: 'Hearing', text: 'Hearing' },
                                 { value: 'Inquiry', text: 'Inquiry' }
                             ],
@@ -258,9 +256,7 @@
             { text: "Age" },
             { text: "Linked cases" },
             { text: "Final comments date" },
-            { text: "Programming Status" },
-            { text: "Programming Notes" },
-            { text: "Assign" }
+            { text: "Programming Status" }
         ],
         rows: caseRows
     }) }}

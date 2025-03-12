@@ -12,7 +12,7 @@ export function buildViewHome({ logger }) {
 		logger.info('view home');
 
 		const defaultFilters = {
-			caseProcedure: ['Written representations', 'Hearing', 'Inquiry'],
+			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
 			lpaRegion: ['North', 'South', 'East', 'West'],
 			caseType: ['W', 'D'],
 			caseSpecialisms: [
