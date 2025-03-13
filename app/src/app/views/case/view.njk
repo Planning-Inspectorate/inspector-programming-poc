@@ -67,10 +67,11 @@
                 { key: { text: "Venue" }, value: { text: "" } }
             ]
         }) }}
+        <div class="map-container">
+            {{ map(apiKey, casesLatLong, inspectorsLatLong) }}
+        </div>
     </div>
 </div>
-
-{{ map(apiKey, casesLatLong, inspectorsLatLong) }}
 
 {% endblock %}
 
