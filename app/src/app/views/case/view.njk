@@ -1,6 +1,19 @@
-{% extends "views/layouts/main.njk" %}
+{% extends "views/layouts/case-details.njk" %}
 
 {% block pageContent %}
-Hello, world!
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+
+{{ govukSummaryList({
+  rows: [
+    {
+      key: {
+        text: "Case Number"
+      },
+      value: {
+        text: caseData.caseId
+      }
+    }
+  ]
+}) }}
 {% endblock %}
 
