@@ -79,6 +79,7 @@
                     <button class="govuk-button" data-module="govuk-button">
                         Apply filters
                     </button>
+
                     <form method="get" novalidate>
                     {{ govukDetails({
                         summaryText: "Case Age",
@@ -109,7 +110,7 @@
                         }),
                         classes: "custom-filter-dropdown"
                     }) }}
-                    </form>
+
                     {{ govukDetails({
                         summaryText: "Procedure",
                         html: govukCheckboxes({
@@ -256,7 +257,7 @@
                     classes: "govuk-checkboxes--small",
                     items: [{ value: c.caseId, text: " ", checked: false }]
                 }) },
-                { html: '<a href="/view/' + c.caseId + '" class="govuk-link">' + c.caseId + '</a>' },
+                { html: '<a href="/case/' + c.caseId + '" class="govuk-link">' + c.caseId + '</a>' },
                 { text: c.caseType },
                 { text: c.caseProcedure },
                 { text: c.allocationBand },
@@ -266,7 +267,7 @@
                 { text: c.lpaRegion },
                 { text: c.caseStatus },
                 { text: c.caseAge },
-                { html: '<a href="/view/' + c.linkedCases + '" class="govuk-link">' + c.linkedCases + '</a>' },
+                { html: '<a href="/case/' + c.linkedCases + '" class="govuk-link">' + c.linkedCases + '</a>' },
                 { text: c.finalCommentsDate },
                 { text: c.programmingStatus }
             ]), caseRows) %}
