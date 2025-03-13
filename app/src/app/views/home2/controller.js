@@ -37,7 +37,7 @@ export function buildViewMap({ logger, config }) {
 
 		const cases = await fetchCases(10, () => randomPostcode({ key: mapsKey }));
 		logger.info('fetchInspectors');
-		const inspectors = await fetchInspectors(10, () => randomPostcode({ key: mapsKey }));
+		const inspectors = await fetchInspectors(10);
 
 		logger.info('getLatLongForPostcode');
 		const casesLatLong = await Promise.all(
