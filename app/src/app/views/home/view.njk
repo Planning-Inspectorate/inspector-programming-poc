@@ -58,7 +58,7 @@
                 {% endfor %}
                 {{ govukSelect({
                     id: "inspectors",
-                    name: "inspectors",
+                    name: "inspector",
                     items: inspectorList
                 }) }}
                 {{ govukButton({
@@ -80,7 +80,6 @@
                         Apply filters
                     </button>
 
-                    <form method="get" novalidate>
                     {{ govukDetails({
                         summaryText: "Case Age",
                         html: govukSelect({

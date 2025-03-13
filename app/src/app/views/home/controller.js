@@ -11,29 +11,17 @@ export function buildViewHome({ logger }) {
 	return async (req, res) => {
 		logger.info('view home');
 
-		const defaultFilters = {
-			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
-			lpaRegion: ['North', 'South', 'East', 'West'],
-			caseType: ['W', 'D'],
-			caseSpecialisms: [
-				'Access',
-				'Listed building and enforcement',
-				'Roads and traffics',
-				'Natural heritage',
-				'Schedule 1'
-			],
-			allocationLevel: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
-		};
-
-		const filters = req.query.filters || defaultFilters;
-		const cases = await fetchCases(10, filters);
 		const inspectors = await fetchInspectors(10);
+		const selectedInspector = inspectors.find((i) => req.query.inspector === i.id) || inspectors[0];
+		const filters = req.query.filters || selectedInspector.filters;
+		const cases = await fetchCases(10, filters);
 
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
 			cases: cases.map(caseViewModel),
 			inspectors,
+			inspectorId: selectedInspector.id,
 			data: {
 				filters
 			}
@@ -54,7 +42,7 @@ export function buildViewMap({ logger, config }) {
 
 		const cases = await fetchCases(10, () => randomPostcode({ key: mapsKey }));
 		logger.info('fetchInspectors');
-		const inspectors = await fetchInspectors(10, () => randomPostcode({ key: mapsKey }));
+		const inspectors = await fetchInspectors(10);
 
 		logger.info('getLatLongForPostcode');
 		const casesLatLong = await Promise.all(
