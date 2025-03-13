@@ -48,3 +48,23 @@ export interface LocationPreclusion {
 export interface OrganisationPreclusion {
 	organisation: string;
 }
+
+export interface PowerBiConnectorResponse {
+	users: PowerBiConnectorUser[];
+	events: PowerBiConnectorEvent[];
+}
+
+export interface PowerBiConnectorUser {
+	id: string;
+	email: string;
+	displayName: string;
+	groupId: string;
+}
+
+export interface PowerBiConnectorEvent {
+	id: string;
+	userEmail: string;
+	title: string;
+	startDate: string;
+	endDate: string;
+}
