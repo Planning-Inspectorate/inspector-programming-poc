@@ -80,28 +80,28 @@
                         Apply filters
                     </button>
                     {{ govukSelect({
-                        id: "filters[maxAge]",
-                        name: "filters[maxAge]",
+                        id: "filters[ageRange]",
+                        name: "filters[ageRange]",
                         classes: "govuk-select--width-10",
                         label: {
                             text: "Case age (weeks)",
                             classes: "govuk-label--s"
                         },
                         items: [
-                            { text: "All", value: "all" },
-                            { text: "> 24 weeks", value: ">24" },
-                            { text: "22 – 24 weeks", value: "22-24" },
-                            { text: "20 – 22 weeks", value: "20-22" },
-                            { text: "18 – 20 weeks", value: "18-20" },
-                            { text: "16 – 18 weeks", value: "16-18" },
-                            { text: "14 – 16 weeks", value: "14-16" },
-                            { text: "12 – 14 weeks", value: "12-14" },
-                            { text: "10 – 12 weeks", value: "10-12" },
-                            { text: "8 – 10 weeks", value: "8-10" },
-                            { text: "6 – 8 weeks", value: "6-8" },
-                            { text: "4 – 6 weeks", value: "4-6" },
-                            { text: "2 – 4 weeks", value: "2-4" },
-                            { text: "< 1 week", value: "<1" }
+                            { text: "All", value: "all", selected: data.filters.ageRange == 'all' },
+                            { text: "> 24 weeks", value: "24-99999", selected: data.filters.ageRange == '24-99999' },
+                            { text: "22 – 24 weeks", value: "22-24", selected: data.filters.ageRange == '22-24' },
+                            { text: "20 – 22 weeks", value: "20-22", selected: data.filters.ageRange == '20-22' },
+                            { text: "18 – 20 weeks", value: "18-20", selected: data.filters.ageRange == '18-20' },
+                            { text: "16 – 18 weeks", value: "16-18", selected: data.filters.ageRange == '16-18' },
+                            { text: "14 – 16 weeks", value: "14-16", selected: data.filters.ageRange == '14-16' },
+                            { text: "12 – 14 weeks", value: "12-14", selected: data.filters.ageRange == '12-14' },
+                            { text: "10 – 12 weeks", value: "10-12", selected: data.filters.ageRange == '10-12' },
+                            { text: "8 – 10 weeks", value: "8-10", selected: data.filters.ageRange == '8-10' },
+                            { text: "6 – 8 weeks", value: "6-8", selected: data.filters.ageRange == '6-8' },
+                            { text: "4 – 6 weeks", value: "4-6", selected: data.filters.ageRange == '4-6' },
+                            { text: "2 – 4 weeks", value: "2-4", selected: data.filters.ageRange == '2-4' },
+                            { text: "< 1 week", value: "0-1", selected: data.filters.ageRange == '0-1' }
                         ]
                     }) }}
                     {{ govukDetails({
