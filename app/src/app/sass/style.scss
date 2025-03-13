@@ -59,10 +59,6 @@ $font-family: arial, helvetica, sans-serif;
 	flex: 3;
 }
 
-.govuk-table {
-	margin-top: 20px;
-}
-
 .app-filter__header {
 	display: flex;
 	justify-content: space-between;
@@ -107,17 +103,29 @@ $font-family: arial, helvetica, sans-serif;
 	}
 }
 
-.govuk-button--primary {
-	margin-top: 30px;
-}
-
 .govuk-table {
-	th, td {
+	th,
+	td {
 		vertical-align: middle;
 	}
+}
 
+.cases-inspectors-container {
 	.govuk-form-group {
 		margin-bottom: 0;
+		margin-left: 10px;
+
+		label {
+			margin-top: 8px;
+		}
 	}
 }
 
+.cases-inspectors-container .govuk-button {
+	margin-bottom: 10px;
+}
+
+.align-right {
+	display: flex;
+	justify-content: flex-end;
+}
