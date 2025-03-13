@@ -99,23 +99,9 @@ function randomAllocationLevel(band) {
 function applyFilters(filters) {
 	return (appealCase) => {
 		return Object.entries(filters).every(([key, value]) => {
-			if (key === 'maxAge') {
-				if (value === 'all') {
-					return true;
-				}
-				if (value.includes('-')) {
-					const [min, max] = value.split('-').map(Number);
-					return appealCase.caseAge >= min && appealCase.caseAge <= max;
-				}
-				if (value.startsWith('>')) {
-					const min = parseInt(value.slice(1), 10);
-					return appealCase.caseAge > min;
-				}
-				if (value.startsWith('<')) {
-					const max = parseInt(value.slice(1), 10);
-					return appealCase.caseAge < max;
-				}
-				return appealCase.caseAge >= parseInt(value, 10);
+			if (key === 'ageRange') {
+				const [min, max] = value.split('-');
+				return value === 'all' ? true : appealCase.caseAge >= min && appealCase.caseAge <= max;
 			} else if (Array.isArray(value)) {
 				if (Array.isArray(appealCase[key])) {
 					return value.some((v) => appealCase[key].includes(v));
