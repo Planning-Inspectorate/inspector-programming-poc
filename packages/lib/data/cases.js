@@ -12,11 +12,16 @@ const fakerPostCode = async () => faker.location.zipCode();
  */
 export async function fetchCases(count = 10, filters = {}, randomPostcode = fakerPostCode) {
 	const cases = [];
-	for (let i = 0; i < count; i++) {
-		cases.push(await createCase(randomPostcode));
+	const filter = applyFilters(filters);
+
+	while (cases.length < count) {
+		const caseData = await createCase(randomPostcode);
+		if (filter(caseData)) {
+			cases.push(caseData);
+		}
 	}
 
-	return cases.filter(applyFilters(filters)).toSorted(sortCasesByAge);
+	return cases.toSorted(sortCasesByAge);
 }
 
 async function createCase(randomPostcode) {
