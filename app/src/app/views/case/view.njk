@@ -5,15 +5,24 @@
 
 {{ govukSummaryList({
   rows: [
-    {
-      key: {
-        text: "Case Number"
-      },
-      value: {
-        text: caseData.caseId
-      }
-    }
+    { key: { text: "Case Number" }, value: { text: caseData.caseId } },
+    { key: { text: "Site Address" }, value: { text: caseData.siteAddressPostcode } },
+    { key: { text: "Job Details" }, value: { text: '' } },
+    { key: { text: "Procedure" }, value: { text: caseData.caseProcedure } },
+    { key: { text: "Jurisdiction" }, value: { text: '' } },
+    { key: { text: "Case Status" }, value: { text: caseData.caseStatus } }
+  ]
+}) }}
+
+{{ govukSummaryList({
+  rows: [
+    { key: { text: "Inspector" }, value: { text: inspectors[0].firstName + ' ' + inspectors[0].lastName } },
+    { key: { text: "Band" }, value: { text: inspectors[0].grade } },
+    { key: { text: "Case Level" }, value: { text: caseData.caseLevel } },
+    { key: { text: "Special Circumstances" }, value: { text: '' } },
+    { key: { text: "Costs Applied For" }, value: { text: '' } }
   ]
 }) }}
 {% endblock %}
+
 
