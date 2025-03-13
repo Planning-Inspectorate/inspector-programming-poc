@@ -2,6 +2,7 @@
 
 {% block pageContent %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
+{% from "views/layouts/components/map.njk" import map %}
 
 <div class="pins-container-wide govuk-grid-row">
     <div class="govuk-grid-column-one-half">
@@ -69,11 +70,7 @@
     </div>
 </div>
 
-<div class="pins-map">
-    <div class="pins-map__container">
-        <div id="map" class="pins-map__content"></div>
-    </div>
-</div>
+{{ map(apiKey, casesLatLong, inspectorsLatLong) }}
 
 {% endblock %}
 
