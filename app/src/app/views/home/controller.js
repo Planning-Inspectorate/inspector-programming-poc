@@ -19,6 +19,7 @@ export function buildViewHome({ logger }) {
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
+			title: 'Unassigned Case List',
 			cases: cases.map(caseViewModel),
 			inspectors,
 			inspectorId: selectedInspector.id,

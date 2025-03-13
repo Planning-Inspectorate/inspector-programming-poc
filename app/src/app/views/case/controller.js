@@ -6,13 +6,15 @@ export function buildViewCase({ logger }) {
 		logger.info(`view case for ID: ${req.params.caseId}`);
 
 		const [caseData] = await fetchCases(1);
-		caseData.id = req.params.caseId;
+		caseData.caseId = req.params.caseId;
 
 		const inspectors = await fetchInspectors(10);
 
 		return res.render('views/case/view.njk', {
 			caseData,
-			inspectors
+			inspectors,
+			containerClasses: 'pins-container-wide',
+			title: 'Case Details'
 		});
 	};
 }

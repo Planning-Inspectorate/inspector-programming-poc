@@ -1,10 +1,11 @@
-{% extends "views/layouts/case-details.njk" %}
+{% extends "views/layouts/main.njk" %}
 
 {% block pageContent %}
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 <div class="pins-container-wide govuk-grid-row">
     <div class="govuk-grid-column-one-half">
+    <h2 class="govuk-heading-m">Case</h2>
         {{ govukSummaryList({
             rows: [
                 { key: { text: "Case Number" }, value: { text: caseData.caseId } },
@@ -33,7 +34,12 @@
                 { key: { "text": "Agent" }, "value": { "text": "" } },
                 { key: { "text": "Appellant" }, "value": { "text": "" } },
                 { key: { "text": "Case Officer" }, "value": { "text": "" } },
-                { key: { "text": "EO Responsible" }, "value": { "text": "" } }
+                { key: { "text": "EO Responsible" }, "value": { "text": "" } },
+                { key: { text: "LPA Phone" }, value: { text: "" } },
+                { key: { text: "Agent Phone" }, value: { text: "" } },
+                { key: { text: "Appellant Phone" }, value: { text: "" } },
+                { key: { text: "Case Officer Phone" }, value: { text: "" } },
+                { key: { text: "EO Phone" }, value: { text: "" } }
             ]
         }) }}
     </div>
@@ -58,16 +64,6 @@
                 { key: { text: "Event Status" }, value: { text: "" } },
                 { key: { text: "Duration" }, value: { text: "" } },
                 { key: { text: "Venue" }, value: { text: "" } }
-            ]
-        }) }}
-
-        {{ govukSummaryList({
-            rows: [
-                { key: { text: "LPA Phone" }, value: { text: "" } },
-                { key: { text: "Agent Phone" }, value: { text: "" } },
-                { key: { text: "Appellant Phone" }, value: { text: "" } },
-                { key: { text: "Case Officer Phone" }, value: { text: "" } },
-                { key: { text: "EO Phone" }, value: { text: "" } }
             ]
         }) }}
     </div>
