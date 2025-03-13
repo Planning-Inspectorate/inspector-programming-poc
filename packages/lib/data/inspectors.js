@@ -40,6 +40,13 @@ export async function fetchInspectors(count = 10, randomPostcode = fakerPostCode
 		});
 	}
 
+	inspectors.sort((a, b) => {
+		if (a.lastName !== b.lastName) {
+			return a.lastName < b.lastName ? -1 : 1;
+		}
+		return a.firstName < b.firstName ? -1 : 1;
+	});
+
 	inspectorCache = inspectors;
 
 	return inspectors;
