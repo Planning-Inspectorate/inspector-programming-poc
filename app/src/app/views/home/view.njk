@@ -4,6 +4,7 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
+{% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 
 {% if apiKey %}
 <style>
@@ -248,6 +249,24 @@
         rows: caseRows
     }) }}
     <form method="post" novalidate>
+        <input type="hidden" name="inspectorId" value="{{ inspectorId }}">
+
+        <div class="align-right">
+            <div class="govuk-form-group">
+                <label class="govuk-label" for="assignment-date">Event date: </label>
+            </div>
+            <div class="govuk-form-group">
+                <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
+            </div>
+            <div class="govuk-form-group">
+                {{ govukButton({
+                    text: "Assign selected cases",
+                    type: "submit"
+                }) }}
+            </div>
+        </div>
+
+
         {% set caseRows = [] %}
         {% for c in cases %}
             {% set caseRows = (caseRows.push([
@@ -303,7 +322,6 @@
 </div>
 
 <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %}>
-
     document.addEventListener('DOMContentLoaded', function () {
         const selectAllCheckbox = document.querySelector('#select-all');
         const checkboxes = document.querySelectorAll('input[type="checkbox"][name="selectedCases"]');
