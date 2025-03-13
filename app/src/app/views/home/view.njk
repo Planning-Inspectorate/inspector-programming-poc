@@ -53,7 +53,8 @@
                 {% for i in inspectors %}
                     {% set inspectorList = (inspectorList.push({
                         text: i.lastName + ', ' + i.firstName,
-                        value: i.id
+                        value: i.id,
+                        selected: i.id == inspectorId
                     }), inspectorList) %}
                 {% endfor %}
                 {{ govukSelect({
@@ -223,6 +224,7 @@
                         }),
                         classes: "custom-filter-dropdown"
                     }) }}
+                    <input type="hidden" name="inspector" value="{{ inspectorId }}">
                 </form>
             </div>
         </div>
@@ -230,7 +232,7 @@
 
 <div class="cases-inspectors-container">
     <form method="post" novalidate>
-        <input type="hidden" name="inspectorId" value="{{ inspectorId }}">
+        <input type="hidden" name="inspector" value="{{ inspectorId }}">
 
         <div class="align-right">
             <div class="govuk-form-group">
