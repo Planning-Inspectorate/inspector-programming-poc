@@ -3,12 +3,18 @@ import { fakerEN_GB as faker } from '@faker-js/faker';
 const arrayElement = faker.helpers.arrayElement;
 const fakerPostCode = async () => faker.location.zipCode();
 
+let inspectorCache = null;
+
 /**
  * @param {number} count
  * @param {() => Promise<string>} randomPostcode
  * @returns {Promise<import('./types.js').Inspector[]>}
  */
 export async function fetchInspectors(count = 10, randomPostcode = fakerPostCode) {
+	if (inspectorCache) {
+		return inspectorCache;
+	}
+
 	/** @type {import('./types.js').Inspector[]} */
 	const inspectors = [];
 	for (let i = 0; i < count; i++) {
@@ -33,6 +39,16 @@ export async function fetchInspectors(count = 10, randomPostcode = fakerPostCode
 				: []
 		});
 	}
+
+	inspectors.sort((a, b) => {
+		if (a.lastName !== b.lastName) {
+			return a.lastName < b.lastName ? -1 : 1;
+		}
+		return a.firstName < b.firstName ? -1 : 1;
+	});
+
+	inspectorCache = inspectors;
+
 	return inspectors;
 }
 

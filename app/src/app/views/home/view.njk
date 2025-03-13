@@ -48,7 +48,7 @@
             </div>
         </div>
         <form method="get" novalidate>
-            <div class="govuk-form-group">
+            <div class="govuk-form-group" style="display: flex; gap: 10px; margin-bottom 0">
                 {% set inspectorList = [] %}
                 {% for i in inspectors %}
                     {% set inspectorList = (inspectorList.push({
@@ -79,7 +79,11 @@
                     <button class="govuk-button" data-module="govuk-button">
                         Apply filters
                     </button>
-                    {{ govukSelect({
+
+                    <form method="get" novalidate>
+                    {{ govukDetails({
+                        summaryText: "Case Age",
+                        html: govukSelect({
                         id: "filters[ageRange]",
                         name: "filters[ageRange]",
                         classes: "govuk-select--width-10",
@@ -103,7 +107,10 @@
                             { text: "2 – 4 weeks", value: "2-4", selected: data.filters.ageRange == '2-4' },
                             { text: "< 1 week", value: "0-1", selected: data.filters.ageRange == '0-1' }
                         ]
+                        }),
+                        classes: "custom-filter-dropdown"
                     }) }}
+
                     {{ govukDetails({
                         summaryText: "Procedure",
                         html: govukCheckboxes({

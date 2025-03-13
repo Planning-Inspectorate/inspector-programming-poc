@@ -29,13 +29,6 @@ export function buildViewHome({ logger }) {
 		const cases = await fetchCases(10, filters);
 		const inspectors = await fetchInspectors(10);
 
-		inspectors.sort((a, b) => {
-			if (a.lastName !== b.lastName) {
-				return a.lastName < b.lastName ? -1 : 1;
-			}
-			return a.firstName < b.firstName ? -1 : 1;
-		});
-
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',

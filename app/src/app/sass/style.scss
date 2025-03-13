@@ -44,6 +44,7 @@ $font-family: arial, helvetica, sans-serif;
 .filter-container {
 	display: flex;
 	gap: 20px;
+	max-width: 100px;
 }
 
 .app-filter {
@@ -128,4 +129,8 @@ $font-family: arial, helvetica, sans-serif;
 .align-right {
 	display: flex;
 	justify-content: flex-end;
+}
+
+.app-filter .govuk-form-group {
+	margin-bottom: 0;
 }
