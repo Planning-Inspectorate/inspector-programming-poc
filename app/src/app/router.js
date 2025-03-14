@@ -4,6 +4,7 @@ import { createMonitoringRoutes } from '@pins/inspector-programming-poc-lib/cont
 import { buildViewHome } from './views/home/controller.js';
 import { asyncHandler } from '@pins/inspector-programming-poc-lib/util/async-handler.js';
 import { buildViewCase } from './views/case/controller.js';
+import { buildViewInspector } from './views/inspector/controller.js';
 
 /**
  * @param {Object} params
@@ -41,9 +42,11 @@ export function buildRouter({ logger, config }) {
 
 	const viewHome = buildViewHome({ logger });
 	const viewCase = buildViewCase({ logger, config });
+	const viewInspector = buildViewInspector({ logger, config });
 
 	router.get('/', asyncHandler(viewHome));
 	router.get('/case/:caseId', asyncHandler(viewCase));
+	router.get('/inspector', asyncHandler(viewInspector));
 
 	return router;
 }
