@@ -10,6 +10,8 @@ export function buildViewHome({ logger }) {
 	return async (req, res) => {
 		logger.info('view home');
 
+		await req.entraClient.createEvent('8c70bc62-e16b-450e-84dc-4edff2adf733', 'test event', new Date(), 30);
+
 		const inspectors = await fetchInspectors(10);
 		const selectedInspector = inspectors.find((i) => req.query.inspector === i.id) || inspectors[0];
 		const filters = req.query.filters || selectedInspector.filters;

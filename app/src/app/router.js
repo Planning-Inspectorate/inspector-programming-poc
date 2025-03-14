@@ -4,6 +4,7 @@ import { createMonitoringRoutes } from '@pins/inspector-programming-poc-lib/cont
 import { buildViewHome } from './views/home/controller.js';
 import { asyncHandler } from '@pins/inspector-programming-poc-lib/util/async-handler.js';
 import { buildViewCase } from './views/case/controller.js';
+import { buildEntraClientMiddleware } from '@pins/inspector-programming-poc-lib/middleware/entra-client.js';
 
 /**
  * @param {Object} params
@@ -39,10 +40,11 @@ export function buildRouter({ logger, config }) {
 		logger.warn('auth disabled; auth routes and guards skipped');
 	}
 
+	const entraClientMiddleware = buildEntraClientMiddleware({ logger });
 	const viewHome = buildViewHome({ logger });
 	const viewCase = buildViewCase({ logger, config });
 
-	router.get('/', asyncHandler(viewHome));
+	router.get('/', entraClientMiddleware, asyncHandler(viewHome));
 	router.get('/case/:caseId', asyncHandler(viewCase));
 
 	return router;

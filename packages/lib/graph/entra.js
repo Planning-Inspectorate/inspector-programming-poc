@@ -51,6 +51,30 @@ export class EntraClient {
 	}
 
 	/**
+	 * Create an event in a users calendar
+	 *
+	 * @param {string} userId
+	 * @param {string} subject
+	 * @param {Date} start
+	 * @param {number} lengthMins
+	 * @returns {Promise<import('@microsoft/microsoft-graph-client').ClientResponse>}
+	 */
+	async createEvent(userId, subject, start, lengthMins) {
+		const event = {
+			subject,
+			start: {
+				dateTime: start,
+				timeZone: 'UTC'
+			},
+			end: {
+				dateTime: new Date(start.getTime() + lengthMins * 60000),
+				timeZone: 'UTC'
+			}
+		};
+		return this.#client.api(`/users/${userId}/events`).post(event);
+	}
+
+	/**
 	 * Get a skip token out of an '@odata.nextLink' value
 	 *
 	 * @param {string} link

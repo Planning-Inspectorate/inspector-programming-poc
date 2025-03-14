@@ -66,4 +66,17 @@ export class CachedEntraClient {
 		this.#cache.set(key, members);
 		return members;
 	}
+
+	/**
+	 * Create an event in a users calendar
+	 *
+	 * @param {string} userId
+	 * @param {string} subject
+	 * @param {Date} start
+	 * @param {number} lengthMins
+	 * @returns {Promise<import('@microsoft/microsoft-graph-client').ClientResponse>}
+	 */
+	async createEvent(userId, subject, start, lengthMins) {
+		return this.#client.createEvent(userId, subject, start, lengthMins);
+	}
 }
