@@ -17,25 +17,7 @@ const groups = [
 	{ id: 5, name: 'Group E', targetUtilisation: 0.9 }
 ];
 
-const workingHours = [
-	'09:00',
-	'09:30',
-	'10:00',
-	'10:30',
-	'11:00',
-	'11:30',
-	'12:00',
-	'12:30',
-	'13:00',
-	'13:30',
-	'14:00',
-	'14:30',
-	'15:00',
-	'15:30',
-	'16:00',
-	'16:30',
-	'17:00'
-];
+const workingHours = timesBetween('07:00', '19:00');
 
 // meeting lengths in 30 mins units
 const weightedMeetingLengths = [
@@ -56,7 +38,8 @@ async function generateMockPowerBiResponse() {
 	endDate.setDate(endDate.getDate() + config.weeksFromToday * 7);
 
 	const weekdays = weekdayDates(startDate, endDate);
-	console.log('Dates', weekdays[0], weekdays[weekdays.length - 1]);
+	console.log('working hours, between:', workingHours[0], workingHours[workingHours.length - 1]);
+	console.log('Dates, between:', weekdays[0], weekdays[weekdays.length - 1]);
 
 	let users;
 	if (config.readUsers) {
@@ -165,6 +148,24 @@ function weekdayDates(startDate, endDate) {
 	}
 
 	return weekdayDates;
+}
+
+/**
+ * @param {string} start
+ * @param {string} end
+ * @returns {Date[]}
+ */
+function timesBetween(start, end) {
+	const times = [];
+	let currentDate = new Date(`2021-01-01T${start}:00Z`);
+	const endDate = new Date(`2021-01-01T${end}:00Z`);
+
+	while (currentDate <= endDate) {
+		times.push(currentDate.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' }));
+		currentDate.setMinutes(currentDate.getMinutes() + 30);
+	}
+
+	return times;
 }
 
 async function readUsers() {
