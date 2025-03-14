@@ -6,8 +6,10 @@ export async function getLatLongForPostcode({ key }, postcode) {
 		key
 	});
 	const res = await fetch(`https://api.os.uk/search/places/v1/postcode?${params.toString()}`);
-	const places = await res.json();
+	console.log(res);
 
+	const places = await res.json();
+	console.log(places, key, postcode);
 	if (!places.results) {
 		return null;
 	}
@@ -29,17 +31,19 @@ function xYToLatLong(x, y) {
 
 let places;
 
-export async function randomPostcode({ key }) {
-	if (!places) {
-		const res = await fetch(`https://api.os.uk/search/places/v1/find?query=england&key=${key}&maxresults=100`);
-		places = await res.json();
-	}
+export function randomPostcode({ key }) {
+	return async () => {
+		if (!places) {
+			const res = await fetch(`https://api.os.uk/search/places/v1/find?query=england&key=${key}&maxresults=100`);
+			places = await res.json();
+		}
 
-	if (!places.results) {
-		return {};
-	}
+		if (!places.results) {
+			return {};
+		}
 
-	const count = places.results.length;
-	const randomIndex = Math.floor(Math.random() * count);
-	return places.results[randomIndex].DPA?.POSTCODE;
+		const count = places.results.length;
+		const randomIndex = Math.floor(Math.random() * count);
+		return places.results[randomIndex].DPA?.POSTCODE;
+	};
 }
