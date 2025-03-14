@@ -1,11 +1,12 @@
 import { fakerEN_GB as faker } from '@faker-js/faker';
 import { fetchInspectors } from './inspectors.js';
-import { writeFile, mkdir, access } from 'fs/promises';
+import { writeFile, mkdir, access, readFile } from 'fs/promises';
 import * as constants from 'node:constants';
 
 const config = {
 	inspectorCount: 200,
-	weeksFromToday: 4
+	weeksFromToday: 4,
+	readUsers: false
 };
 
 const groups = [
@@ -57,8 +58,13 @@ async function generateMockPowerBiResponse() {
 	const weekdays = weekdayDates(startDate, endDate);
 	console.log('Dates', weekdays[0], weekdays[weekdays.length - 1]);
 
-	const inspectors = await fetchInspectors(config.inspectorCount);
-	const users = inspectors.map(mapInspectorToUser);
+	let users;
+	if (config.readUsers) {
+		users = await readUsers();
+	} else {
+		const inspectors = await fetchInspectors(config.inspectorCount);
+		users = inspectors.map(mapInspectorToUser);
+	}
 	const events = [];
 	for (const user of users) {
 		const group = groups.find((g) => g.name === user.groupId);
@@ -159,6 +165,11 @@ function weekdayDates(startDate, endDate) {
 	}
 
 	return weekdayDates;
+}
+
+async function readUsers() {
+	const data = await readFile('./tmp/users.json');
+	return JSON.parse(data.toString());
 }
 
 async function writeJsonFile(filename, data) {
