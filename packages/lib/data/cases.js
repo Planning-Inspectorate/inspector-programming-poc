@@ -1,5 +1,5 @@
 import { fakerEN_GB as faker } from '@faker-js/faker';
-import { APPEAL_CASE_STATUS } from 'pins-data-model';
+import { APPEAL_CASE_STATUS, APPEAL_EVENT_TYPE } from 'pins-data-model';
 
 const arrayElement = faker.helpers.arrayElement;
 const fakerPostCode = async () => faker.location.zipCode();
@@ -85,7 +85,37 @@ async function createCase(randomPostcode) {
 		caseAge,
 		linkedCases: faker.string.numeric(7),
 		finalCommentsDate: faker.date.future(),
-		programmingStatus: arrayElement(['P', 'D', 'S'])
+		programmingStatus: arrayElement(['P', 'D', 'S']),
+		jurisdiction: arrayElement([
+			'Transferred',
+			'Transferred Excpeted',
+			'Transferred Recovered',
+			'Transferred Discretionary',
+			'Transfer Requested by Decision Branch',
+			'Transferred Rejected',
+			'Transferred Reconsidered'
+		]),
+		appellantCostsAppliedFor: arrayElement(['Yes', 'No']),
+		agentId: faker.string.numeric(7),
+		appellantId: faker.string.numeric(7),
+		caseOfficerId: faker.string.numeric(7),
+		eoResponsible: faker.string.numeric(7),
+		lpaPhone: faker.phone.number(),
+		agentPhone: faker.phone.number(),
+		appellantPhone: faker.phone.number(),
+		caseOfficerPhone: faker.phone.number(),
+		eoPhone: faker.phone.number(),
+		caseStartedDate: faker.date.past(),
+		targetDate: faker.date.future(),
+		rosewellTarget: faker.date.future(),
+		personalTargetDate: faker.date.future(),
+		appellantProcedurePreferenceDuration: faker.string.numeric(1),
+		appealEventType: arrayElement(Object.values(APPEAL_EVENT_TYPE)),
+		appealEventDate: faker.date.future(),
+		chartingNotes: faker.lorem.sentence(),
+		venue: faker.address.streetAddress(),
+		jobDetails: faker.lorem.sentence(),
+		specialCircumstances: faker.lorem.sentence()
 	};
 }
 

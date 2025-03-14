@@ -1,0 +1,1048 @@
+{
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$id": "appeal-s78.schema.json",
+	"title": "Appeal S78 Case",
+	"description": "Schema defining the metadata for an appeal (S78)",
+	"type": "object",
+	"additionalProperties": true,
+	"required": [
+		"caseId",
+		"caseReference",
+		"caseStatus",
+		"caseType",
+		"caseProcedure",
+		"lpaCode",
+		"caseOfficerId",
+		"inspectorId",
+		"allocationLevel",
+		"allocationBand",
+		"caseSpecialisms",
+		"caseSubmittedDate",
+		"caseCreatedDate",
+		"caseUpdatedDate",
+		"caseValidDate",
+		"caseValidationDate",
+		"caseValidationOutcome",
+		"caseValidationInvalidDetails",
+		"caseValidationIncompleteDetails",
+		"caseExtensionDate",
+		"caseStartedDate",
+		"casePublishedDate",
+		"linkedCaseStatus",
+		"leadCaseReference",
+		"lpaQuestionnaireDueDate",
+		"lpaQuestionnaireSubmittedDate",
+		"lpaQuestionnaireCreatedDate",
+		"lpaQuestionnairePublishedDate",
+		"lpaQuestionnaireValidationOutcome",
+		"lpaQuestionnaireValidationOutcomeDate",
+		"lpaQuestionnaireValidationDetails",
+		"lpaStatement",
+		"caseWithdrawnDate",
+		"caseTransferredDate",
+		"transferredCaseClosedDate",
+		"caseDecisionOutcomeDate",
+		"caseDecisionPublishedDate",
+		"caseDecisionOutcome",
+		"caseCompletedDate",
+		"enforcementNotice",
+		"applicationReference",
+		"applicationDate",
+		"applicationDecision",
+		"applicationDecisionDate",
+		"caseSubmissionDueDate",
+		"siteAddressLine1",
+		"siteAddressLine2",
+		"siteAddressTown",
+		"siteAddressCounty",
+		"siteAddressPostcode",
+		"siteAccessDetails",
+		"siteSafetyDetails",
+		"siteAreaSquareMetres",
+		"floorSpaceSquareMetres",
+		"isCorrectAppealType",
+		"isGreenBelt",
+		"inConservationArea",
+		"ownsAllLand",
+		"ownsSomeLand",
+		"knowsOtherOwners",
+		"knowsAllOwners",
+		"advertisedAppeal",
+		"notificationMethod",
+		"ownersInformed",
+		"originalDevelopmentDescription",
+		"changedDevelopmentDescription",
+		"newConditionDetails",
+		"nearbyCaseReferences",
+		"neighbouringSiteAddresses",
+		"affectedListedBuildingNumbers",
+		"changedListedBuildingNumbers",
+		"appellantCostsAppliedFor",
+		"lpaCostsAppliedFor",
+		"agriculturalHolding",
+		"tenantAgriculturalHolding",
+		"otherTenantsAgriculturalHolding",
+		"informedTenantsAgriculturalHolding",
+		"appellantProcedurePreference",
+		"appellantProcedurePreferenceDetails",
+		"appellantProcedurePreferenceDuration",
+		"appellantProcedurePreferenceWitnessCount",
+		"statusPlanningObligation",
+		"affectsScheduledMonument",
+		"hasProtectedSpecies",
+		"isAonbNationalLandscape",
+		"designatedSitesNames",
+		"isGypsyOrTravellerSite",
+		"isPublicRightOfWay",
+		"eiaEnvironmentalImpactSchedule",
+		"eiaDevelopmentDescription",
+		"eiaSensitiveAreaDetails",
+		"eiaColumnTwoThreshold",
+		"eiaScreeningOpinion",
+		"eiaRequiresEnvironmentalStatement",
+		"eiaCompletedEnvironmentalStatement",
+		"hasStatutoryConsultees",
+		"consultedBodiesDetails",
+		"hasInfrastructureLevy",
+		"isInfrastructureLevyFormallyAdopted",
+		"infrastructureLevyAdoptedDate",
+		"infrastructureLevyExpectedDate",
+		"lpaProcedurePreference",
+		"lpaProcedurePreferenceDetails",
+		"lpaProcedurePreferenceDuration",
+		"caseworkReason",
+		"developmentType",
+		"importantInformation",
+		"jurisdiction",
+		"redeterminedIndicator",
+		"dateCostsReportDespatched",
+		"dateNotRecoveredOrDerecovered",
+		"dateRecovered",
+		"originalCaseDecisionDate",
+		"targetDate",
+		"appellantCommentsSubmittedDate",
+		"appellantStatementSubmittedDate",
+		"appellantProofsSubmittedDate",
+		"finalCommentsDueDate",
+		"interestedPartyRepsDueDate",
+		"lpaCommentsSubmittedDate",
+		"lpaProofsSubmittedDate",
+		"lpaStatementSubmittedDate",
+		"proofsOfEvidenceDueDate",
+		"siteNoticesSentDate",
+		"statementDueDate",
+		"reasonForNeighbourVisits",
+		"numberOfResidencesNetChange",
+		"siteGridReferenceEasting",
+		"siteGridReferenceNorthing",
+		"siteViewableFromRoad",
+		"siteWithinSSSI",
+		"typeOfPlanningApplication"
+	],
+	"properties": {
+		"caseId": {
+			"type": ["integer", "null"],
+			"examples": [1200],
+			"description": "Internal case identifier",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseReference": {
+			"type": "string",
+			"examples": ["7002471"],
+			"description": "External case identifier",
+			"$comment": "Also available on HAS cases"
+		},
+		"submissionId": {
+			"type": ["string", "null"],
+			"format": "uuid",
+			"examples": ["7f45748c-2342-4b59-b934-ad6183e8d834"],
+			"description": "Case submission id - link to draft submission created by appellant",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseStatus": {
+			"type": "string",
+			"enum": [
+				"assign_case_officer",
+				"validation",
+				"ready_to_start",
+				"lpa_questionnaire",
+				"issue_determination",
+				"statements",
+				"evidence",
+				"witnesses",
+				"final_comments",
+				"complete",
+				"invalid",
+				"closed",
+				"withdrawn",
+				"awaiting_transfer",
+				"transferred",
+				"event",
+				"awaiting_event"
+			],
+			"description": "The processing status for the appeal",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseType": {
+			"type": "string",
+			"enum": ["C", "D", "F", "G", "H", "L", "Q", "S", "V", "W", "X", "Y", "Z"],
+			"description": "The internal code for an appeal type, e.g. D (Householder)",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseProcedure": {
+			"type": ["string", "null"],
+			"enum": ["written", "hearing", "inquiry", null],
+			"description": "The type of procedure for the appeal",
+			"$comment": "Also available on HAS cases"
+		},
+		"lpaCode": {
+			"type": "string",
+			"examples": ["Q9999"],
+			"description": "A unique identifier for the Local Planning Authority",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseOfficerId": {
+			"type": ["string", "null"],
+			"description": "Unique identifier for the case officer assigned to the case",
+			"$comment": "Also available on HAS cases"
+		},
+		"inspectorId": {
+			"type": ["string", "null"],
+			"description": "Unique identifier for the inspector assigned to the case",
+			"$comment": "Also available on HAS cases"
+		},
+		"allocationLevel": {
+			"type": ["string", "null"],
+			"enum": ["A", "B", "C", "D", "E", "F", "G", "H", null],
+			"description": "A level used for allocation purposes",
+			"$comment": "Also available on HAS cases"
+		},
+		"allocationBand": {
+			"type": ["number", "null"],
+			"enum": [1, 2, 3, null],
+			"description": "A band used for allocation purposes",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseSpecialisms": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "string"
+			},
+			"examples": ["Access", "Listed building and enforcement", "Roads and traffics", "Natural heritage", "Schedule 1"],
+			"description": "A list of specialisms for allocation purposes",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseSubmittedDate": {
+			"type": "string",
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date the appeal was submitted by the appellant",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseCreatedDate": {
+			"type": "string",
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date the appeal was received",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseUpdatedDate": {
+			"type": "string",
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date the appeal was last updated in the back-office",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseValidDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date since when the appeal was considered valid",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseValidationDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date the appeal was validated in the back-office",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseValidationOutcome": {
+			"type": ["string", "null"],
+			"enum": ["valid", "invalid", "incomplete", null],
+			"description": "The outcome of the validation action",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseValidationInvalidDetails": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "string",
+				"examples": ["Appeal has not been submitted on time", "The appellant doesn't have the right to appeal"]
+			},
+			"description": "A list of reasons why the appeal is invalid",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseValidationIncompleteDetails": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "string",
+				"examples": [
+					"Appellant name is not the same on the application form and appeal form",
+					"LPA's decision notice is missing"
+				]
+			},
+			"description": "A list of reasons why the appeal is incomplete",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseExtensionDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "When the validation outcome is incomplete, an extension may be granted to provide missing information",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseStartedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "A date indicating when the case was started, resulting in the creation of a timetable",
+			"$comment": "Also available on HAS cases"
+		},
+		"casePublishedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "A date indicating when the case was published",
+			"$comment": "Also available on HAS cases"
+		},
+		"linkedCaseStatus": {
+			"type": ["string", "null"],
+			"enum": ["lead", "child", null],
+			"description": "Indicates if the case is linked, and the type of relationship",
+			"$comment": "Also available on HAS cases"
+		},
+		"leadCaseReference": {
+			"type": ["string", "null"],
+			"examples": ["7002471"],
+			"description": "The reference of the lead case, if the case is a child case",
+			"$comment": "Also available on HAS cases"
+		},
+		"lpaQuestionnaireDueDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "If the case is started and has a timetable, a deadline for the LPA to provide a response",
+			"$comment": "Also available on HAS cases"
+		},
+		"lpaQuestionnaireSubmittedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date the LPA provided a response to the case",
+			"$comment": "Also available on HAS cases"
+		},
+		"lpaQuestionnaireCreatedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date the LPA response was receeived",
+			"$comment": "Also available on HAS cases"
+		},
+		"lpaQuestionnairePublishedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date indicating when the questionnaire review was completed and the questionnaire published",
+			"$comment": "Also available on HAS cases"
+		},
+		"lpaQuestionnaireValidationOutcome": {
+			"type": ["string", "null"],
+			"enum": ["complete", "incomplete", null],
+			"description": "The outcome of the validation action",
+			"$comment": "Also available on HAS cases"
+		},
+		"lpaQuestionnaireValidationOutcomeDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date the LPA response was validated",
+			"$comment": "Also available on HAS cases"
+		},
+		"lpaQuestionnaireValidationDetails": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "string",
+				"examples": ["Policies are missing", "Other documents or information are missing"]
+			},
+			"description": "A list of reasons why the questionnaire is incomplete",
+			"$comment": "Also available on HAS cases"
+		},
+		"lpaStatement": {
+			"type": ["string", "null"],
+			"examples": ["We refused the application because of ..."],
+			"description": "A statement provided by the LPA",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseWithdrawnDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date the appeal was withdrawn by the appellant",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseTransferredDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date the appeal was transferred to a new case of a different type",
+			"$comment": "Also available on HAS cases"
+		},
+		"transferredCaseClosedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date the appeal was closed and the appellant requested to resubmit",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseDecisionOutcomeDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date of the appeal decision",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseDecisionPublishedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date the appeal decision was published",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseDecisionOutcome": {
+			"type": ["string", "null"],
+			"enum": ["allowed", "split_decision", "dismissed", "invalid", null],
+			"description": "The final outcome for the decision",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseCompletedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date the appeal decision letter",
+			"$comment": "Also available on HAS cases"
+		},
+		"enforcementNotice": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if an enforcement notice is the reason for the appeal",
+			"$comment": "Also available on HAS cases"
+		},
+		"applicationReference": {
+			"type": "string",
+			"examples": ["43010/APP/1/290572"],
+			"description": "The unique identifier of the LPA application",
+			"$comment": "Also available on HAS cases"
+		},
+		"applicationDate": {
+			"type": "string",
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date of the original LPA application",
+			"$comment": "Also available on HAS cases"
+		},
+		"applicationDecision": {
+			"type": "string",
+			"enum": ["granted", "refused", "not_received"],
+			"description": "The outcome of the original LPA decision",
+			"$comment": "Also available on HAS cases"
+		},
+		"applicationDecisionDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date of the original LPA decision",
+			"$comment": "Also available on HAS cases"
+		},
+		"caseSubmissionDueDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The statutory deadline for submitting an appeal from the original LPA decision date",
+			"$comment": "Also available on HAS cases"
+		},
+		"siteAddressLine1": {
+			"type": "string",
+			"examples": ["96 The Avenue"],
+			"description": "First line of address for the appeal site",
+			"$comment": "Also available on HAS cases"
+		},
+		"siteAddressLine2": {
+			"type": ["string", "null"],
+			"description": "Second line of address for the appeal site",
+			"$comment": "Also available on HAS cases"
+		},
+		"siteAddressTown": {
+			"type": "string",
+			"examples": ["Maidstone"],
+			"description": "Town / City of the site address",
+			"$comment": "Also available on HAS cases"
+		},
+		"siteAddressCounty": {
+			"type": ["string", "null"],
+			"examples": ["Kent"],
+			"description": "County of the site address",
+			"$comment": "Also available on HAS cases"
+		},
+		"siteAddressPostcode": {
+			"type": "string",
+			"examples": ["MD21 5XY"],
+			"description": "Postal code of the site address",
+			"$comment": "Also available on HAS cases"
+		},
+		"siteAccessDetails": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "string",
+				"examples": ["The site is accessible through the small gate on the left of the property"]
+			},
+			"description": "Provided information on site accessibility",
+			"$comment": "Also available on HAS cases"
+		},
+		"siteSafetyDetails": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "string",
+				"examples": ["There is an aggressive dog in the property"]
+			},
+			"description": "Provided information on site health and safety",
+			"$comment": "Also available on HAS cases"
+		},
+		"siteAreaSquareMetres": {
+			"type": ["number", "null"],
+			"examples": [45.7],
+			"description": "The site area, in square meters",
+			"$comment": "Also available on HAS cases"
+		},
+		"floorSpaceSquareMetres": {
+			"type": ["number", "null"],
+			"examples": [3.5],
+			"description": "The floor space, in square meters",
+			"$comment": "Also available on HAS cases"
+		},
+		"isCorrectAppealType": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the LPA considers the appeal type appropriate",
+			"$comment": "Also available on HAS cases"
+		},
+		"isGreenBelt": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the site is in a green belt",
+			"$comment": "Also available on HAS cases"
+		},
+		"inConservationArea": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the site is in a conservation area",
+			"$comment": "Also available on HAS cases"
+		},
+		"ownsAllLand": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the appellant has complete ownership of the site",
+			"$comment": "Also available on HAS cases"
+		},
+		"ownsSomeLand": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the appellant has partial ownership of the site",
+			"$comment": "Also available on HAS cases"
+		},
+		"knowsOtherOwners": {
+			"type": ["string", "null"],
+			"enum": ["Yes", "No", "Some", null],
+			"description": "Indicates if the appellant knows other owners of the site",
+			"$comment": "Also available on HAS cases"
+		},
+		"knowsAllOwners": {
+			"type": ["string", "null"],
+			"enum": ["Yes", "No", "Some", null],
+			"description": "Indicates if the appellant knows all owners of the site",
+			"$comment": "Also available on HAS cases"
+		},
+		"advertisedAppeal": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the appellant has advertised the appeal to the LPA decision",
+			"$comment": "Also available on HAS cases"
+		},
+		"notificationMethod": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "string",
+				"enum": ["notice", "letter", "advert", null]
+			},
+			"description": "The methods used to notify relevant parties",
+			"$comment": "Also available on HAS cases"
+		},
+		"ownersInformed": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the appellant has informed other owners of the site",
+			"$comment": "Also available on HAS cases"
+		},
+		"originalDevelopmentDescription": {
+			"type": ["string", "null"],
+			"examples": ["Replacement of an existing gate to access the property"],
+			"description": "The original description of the development, as provided by the appellant",
+			"$comment": "Also available on HAS cases"
+		},
+		"changedDevelopmentDescription": {
+			"type": ["boolean", "null"],
+			"description": "Indicates that the LPA has changed the development description",
+			"$comment": "Also available on HAS cases"
+		},
+		"newConditionDetails": {
+			"type": ["string", "null"],
+			"examples": ["Since the original application, a number of things have changed..."],
+			"description": "New conditions details provided by the LPA",
+			"$comment": "Also available on HAS cases"
+		},
+		"nearbyCaseReferences": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "string",
+				"examples": ["6000456", "8004567"]
+			},
+			"description": "A list of related case references known to the appellant and the LPA",
+			"$comment": "Also available on HAS cases"
+		},
+		"neighbouringSiteAddresses": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "object",
+				"additionalProperties": true,
+				"properties": {
+					"neighbouringSiteAddressLine1": {
+						"type": "string",
+						"examples": ["96 The Avenue"],
+						"description": "First line of address of the site"
+					},
+					"neighbouringSiteAddressLine2": {
+						"type": ["string", "null"],
+						"description": "Second line of address of the site"
+					},
+					"neighbouringSiteAddressTown": {
+						"type": "string",
+						"examples": ["Maidstone"],
+						"description": "Town / City of the site address"
+					},
+					"neighbouringSiteAddressCounty": {
+						"type": ["string", "null"],
+						"examples": ["Kent"],
+						"description": "County of the site address"
+					},
+					"neighbouringSiteAddressPostcode": {
+						"type": "string",
+						"examples": ["MD21 5XY"],
+						"description": "Postal code of the site address"
+					},
+					"neighbouringSiteAccessDetails": {
+						"type": ["string", "null"],
+						"examples": ["Ongoing road works at this address"],
+						"description": "Provided information on site accessibility on this address"
+					},
+					"neighbouringSiteSafetyDetails": {
+						"type": ["string", "null"],
+						"examples": ["Ongoing road works at this address"],
+						"description": "Provided information on site health and safety on this address"
+					}
+				},
+				"required": [
+					"neighbouringSiteAddressLine1",
+					"neighbouringSiteAddressLine2",
+					"neighbouringSiteAddressTown",
+					"neighbouringSiteAddressCounty",
+					"neighbouringSiteAddressPostcode",
+					"neighbouringSiteAccessDetails",
+					"neighbouringSiteSafetyDetails"
+				]
+			},
+			"description": "A list of neighbouring site addresses",
+			"$comment": "Also available on HAS cases"
+		},
+		"reasonForNeighbourVisits": {
+			"type": ["string", "null"],
+			"description": "A general reason given for the need to visit any neighbours"
+		},
+		"affectedListedBuildingNumbers": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "string",
+				"examples": ["10023", "17824"]
+			},
+			"description": "A list of affected listed building IDs from Historic England",
+			"$comment": "Also available on HAS cases"
+		},
+		"changedListedBuildingNumbers": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "string",
+				"examples": ["10023", "17824"]
+			},
+			"description": "A list of changed listed building IDs from Historic England",
+			"$comment": "Only available in S78 cases"
+		},
+		"appellantCostsAppliedFor": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the appellant has applied for costs",
+			"$comment": "Also available on HAS cases"
+		},
+		"lpaCostsAppliedFor": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the appellant has applied for costs",
+			"$comment": "Also available on HAS cases"
+		},
+		"agriculturalHolding": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the site is an agricultural holding",
+			"$comment": "Only available in S78 cases"
+		},
+		"tenantAgriculturalHolding": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the site is a tenant agricultural holding",
+			"$comment": "Only available in S78 cases"
+		},
+		"otherTenantsAgriculturalHolding": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the site is an agricultural holding with other tenants",
+			"$comment": "Only available in S78 cases"
+		},
+		"informedTenantsAgriculturalHolding": {
+			"type": ["boolean", "null"],
+			"description": "If the site is an agricultural holding, indicates tenants are informed",
+			"$comment": "Only available in S78 cases"
+		},
+		"appellantProcedurePreference": {
+			"type": ["string", "null"],
+			"enum": ["written", "hearing", "inquiry", null],
+			"description": "The procedure preference indicated by the appellant",
+			"$comment": "Only available in S78 cases"
+		},
+		"appellantProcedurePreferenceDetails": {
+			"type": ["string", "null"],
+			"description": "The procedure details preference indicated by the appellant",
+			"$comment": "Only available in S78 cases"
+		},
+		"appellantProcedurePreferenceDuration": {
+			"type": ["number", "null"],
+			"description": "The duration of the procedure indicated by the appellant",
+			"$comment": "Only available in S78 cases"
+		},
+		"appellantProcedurePreferenceWitnessCount": {
+			"type": ["number", "null"],
+			"description": "The number of witnesses appellant has suggested for inquiries preference",
+			"$comment": "Only available in S78 cases"
+		},
+		"statusPlanningObligation": {
+			"type": ["string", "null"],
+			"description": "The planning obligation information, if available",
+			"$comment": "Only available in S78 cases"
+		},
+		"affectsScheduledMonument": {
+			"type": ["boolean", "null"],
+			"description": "Indicates that a scheduled monument is affected",
+			"$comment": "Only available in S78 cases"
+		},
+		"hasProtectedSpecies": {
+			"type": ["boolean", "null"],
+			"description": "Indicates the existence of protected species",
+			"$comment": "Only available in S78 cases"
+		},
+		"isAonbNationalLandscape": {
+			"type": ["boolean", "null"],
+			"description": "Indicates an area of outstanding beauty (National Landscape)",
+			"$comment": "Only available in S78 cases"
+		},
+		"designatedSitesNames": {
+			"type": ["array", "null"],
+			"items": {
+				"type": "string",
+				"examples": ["SSSI", "cSAC", "SAC", "pSPA", "SPA", "user entered value"]
+			},
+			"description": "The designated site names",
+			"$comment": "Only available in S78 cases"
+		},
+		"isGypsyOrTravellerSite": {
+			"type": ["boolean", "null"],
+			"description": "Indicates a traveller site",
+			"$comment": "Only available in S78 cases"
+		},
+		"isPublicRightOfWay": {
+			"type": ["boolean", "null"],
+			"description": "Indicates a PROW (public right of way)",
+			"$comment": "Only available in S78 cases"
+		},
+		"eiaEnvironmentalImpactSchedule": {
+			"type": ["string", "null"],
+			"enum": ["schedule-1", "schedule-2", null],
+			"description": "The impact schedule from EIA",
+			"$comment": "Only available in S78 cases"
+		},
+		"eiaDevelopmentDescription": {
+			"type": ["string", "null"],
+			"enum": [
+				"agriculture-aquaculture",
+				"change-extensions",
+				"chemical-industry",
+				"energy-industry",
+				"extractive-industry",
+				"food-industry",
+				"infrastructure-projects",
+				"mineral-industry",
+				"other-projects",
+				"production-processing-of-metals",
+				"rubber-industry",
+				"textile-industries",
+				"tourism-leisure",
+				null
+			],
+			"description": "The development description from EIA",
+			"$comment": "Only available in S78 cases"
+		},
+		"eiaSensitiveAreaDetails": {
+			"type": ["string", "null"],
+			"description": "The sensitive area details from EIA",
+			"$comment": "Only available in S78 cases"
+		},
+		"eiaColumnTwoThreshold": {
+			"type": ["boolean", "null"],
+			"description": "EIA specific threshold",
+			"$comment": "Only available in S78 cases"
+		},
+		"eiaScreeningOpinion": {
+			"type": ["boolean", "null"],
+			"description": "EIA screening opinion",
+			"$comment": "Only available in S78 cases"
+		},
+		"eiaRequiresEnvironmentalStatement": {
+			"type": ["boolean", "null"],
+			"description": "EIA environmental statement required",
+			"$comment": "Only available in S78 cases"
+		},
+		"eiaCompletedEnvironmentalStatement": {
+			"type": ["boolean", "null"],
+			"description": "EIA completed environmental statement required",
+			"$comment": "Only available in S78 cases"
+		},
+		"hasStatutoryConsultees": {
+			"type": ["boolean", "null"],
+			"description": "Indicates statutory consultees",
+			"$comment": "Only available in S78 cases"
+		},
+		"consultedBodiesDetails": {
+			"type": ["string", "null"],
+			"description": "The details of the bodies consulted"
+		},
+		"hasInfrastructureLevy": {
+			"type": ["boolean", "null"],
+			"description": "Indicates the existence of an infrastructure levy",
+			"$comment": "Only available in S78 cases"
+		},
+		"isInfrastructureLevyFormallyAdopted": {
+			"type": ["boolean", "null"],
+			"description": "Indicates if the infrastructure levy is formally adopted",
+			"$comment": "Only available in S78 cases"
+		},
+		"infrastructureLevyAdoptedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date of the infrastructure levy adoption",
+			"$comment": "Only available in S78 cases"
+		},
+		"infrastructureLevyExpectedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The expected date of the infrastructure levy",
+			"$comment": "Only available in S78 cases"
+		},
+		"lpaProcedurePreference": {
+			"type": ["string", "null"],
+			"enum": ["written", "hearing", "inquiry", null],
+			"description": "The procedure preference indicated by the LPA",
+			"$comment": "Only available in S78 cases"
+		},
+		"lpaProcedurePreferenceDetails": {
+			"type": ["string", "null"],
+			"description": "The procedure details preference indicated by the LPA",
+			"$comment": "Only available in S78 cases"
+		},
+		"lpaProcedurePreferenceDuration": {
+			"type": ["number", "null"],
+			"description": "The duration of enquiry indicated by the LPA",
+			"$comment": "Only available in S78 cases"
+		},
+		"caseworkReason": {
+			"type": ["string", "null"],
+			"$comment": "Only available in S78 cases"
+		},
+		"importantInformation": {
+			"type": ["string", "null"],
+			"$comment": "Only available in S78 cases"
+		},
+		"jurisdiction": {
+			"type": ["string", "null"],
+			"$comment": "Only available in S78 cases"
+		},
+		"redeterminedIndicator": {
+			"type": ["string", "null"],
+			"$comment": "Only available in S78 cases"
+		},
+		"dateCostsReportDespatched": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"description": "The date of the cost report",
+			"$comment": "Only available in S78 cases"
+		},
+		"dateNotRecoveredOrDerecovered": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"dateRecovered": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"originalCaseDecisionDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"targetDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"appellantCommentsSubmittedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"appellantStatementSubmittedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"appellantProofsSubmittedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"finalCommentsDueDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"interestedPartyRepsDueDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"lpaCommentsSubmittedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"lpaProofsSubmittedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"lpaStatementSubmittedDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"proofsOfEvidenceDueDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"siteNoticesSentDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"statementDueDate": {
+			"type": ["string", "null"],
+			"format": "date-time",
+			"examples": ["2023-07-27T20:30:00.000Z"],
+			"$comment": "Only available in S78 cases"
+		},
+		"numberOfResidencesNetChange": {
+			"type": ["number", "null"],
+			"description": "The net gain in residences of the proposed development",
+			"$comment": "Only available in S78 cases"
+		},
+		"siteGridReferenceEasting": {
+			"type": ["string", "null"],
+			"$comment": "Only available in S78 cases"
+		},
+		"siteGridReferenceNorthing": {
+			"type": ["string", "null"],
+			"$comment": "Only available in S78 cases"
+		},
+		"siteViewableFromRoad": {
+			"type": ["boolean", "null"],
+			"$comment": "Only available in S78 cases"
+		},
+		"siteWithinSSSI": {
+			"type": ["boolean", "null"],
+			"$comment": "Only available in S78 cases"
+		},
+		"typeOfPlanningApplication": {
+			"type": ["string", "null"],
+			"enum": [
+				"full-appeal",
+				"householder-planning",
+				"outline-planning",
+				"prior-approval",
+				"reserved-matters",
+				"removal-or-variation-of-conditions",
+				null
+			]
+		},
+		"developmentType": {
+			"type": ["string", "null"],
+			"enum": [
+				"householder",
+				"change-of-use",
+				"major-dwellings",
+				"major-industry-storage",
+				"major-offices",
+				"major-retail-services",
+				"major-traveller-caravan",
+				"mineral-workings",
+				"minor-dwellings",
+				"minor-industry-storage",
+				"minor-offices",
+				"minor-retail-services",
+				"minor-traveller-caravan",
+				"other-major",
+				"other-minor",
+				null
+			]
+		}
+	}
+}
