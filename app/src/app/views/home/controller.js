@@ -34,3 +34,14 @@ function caseViewModel(c) {
 	copy.finalCommentsDate = c.finalCommentsDate.toLocaleDateString();
 	return copy;
 }
+
+export function buildPostHome({ logger }) {
+	return async (req, res) => {
+		logger.info('post home');
+
+		const redirectUrl =
+			req.body.action === 'view' ? `/inspector/${req.body.inspector}` : `/?inspector=${req.body.inspector}`;
+
+		return res.redirect(redirectUrl);
+	};
+}

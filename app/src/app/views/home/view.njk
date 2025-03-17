@@ -47,7 +47,7 @@
                 <h2 class="govuk-heading-m bold-title">Select Inspector</h2>
             </div>
         </div>
-        <form method="get" novalidate>
+        <form method="post" novalidate>
             <div class="govuk-form-group" style="display: flex; gap: 10px; margin-bottom 0">
                 {% set inspectorList = [] %}
                 {% for i in inspectors %}
@@ -65,6 +65,15 @@
                 {{ govukButton({
                     text: "Select",
                     classes: "govuk-button--primary",
+                    value: "select",
+                    name: "action",
+                    type: "submit"
+                }) }}
+                {{ govukButton({
+                    text: "View",
+                    classes: "govuk-button--primary",
+                    value: "view",
+                    name: "action",
                     type: "submit"
                 }) }}
             </div>
