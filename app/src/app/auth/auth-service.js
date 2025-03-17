@@ -7,8 +7,7 @@ import { buildMsalConfig } from '#util/auth.js';
 const scopes = [
 	'user.read',
 	'User.ReadBasic.All', // for group membership displayName
-	'GroupMember.Read.All', // for group memberships
-	'Sites.ReadWrite.All' // for sharepoint sites
+	'GroupMember.Read.All' // for group memberships
 ];
 
 export class AuthService {
