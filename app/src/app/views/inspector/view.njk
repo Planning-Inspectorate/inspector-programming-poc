@@ -11,9 +11,9 @@
         <h2 class="govuk-heading-m">Contact Details</h2>
             {{ govukSummaryList({
                 rows: [
-                    { key: { text: "Address" }, value: { text: inspector.firstName  } },
-                    { key: { text: "Work Phone" }, value: { text: "" } },
-                    { key: { text: "Mobile Phone" }, value: { text: "" } }
+                    { key: { text: "Address" }, value: { text: inspector.address.addressLine1 + ", " + inspector.address.postcode } },
+                    { key: { text: "Work Phone" }, value: { text: inspector.inspectorPhone } },
+                    { key: { text: "Mobile Phone" }, value: { text: inspector.inspectorPhone  } }
                 ]
             }) }}
 
@@ -21,11 +21,11 @@
             {{ govukSummaryList({
                 rows: [
                     { key: { text: "Resource Group" }, value: { text: "" } },
-                    { key: { text: "Grade" }, value: { text: "" } },
-                    { key: { text: "FTE" }, value: { text: "" } },
-                    { key: { text: "Charting Officer" }, value: { text: "" } },
-                    { key: { text: "Charting Officer Phone" }, value: { text: "" } },
-                    { key: { text: "Inspector Manager" }, value: { text: "" } }
+                    { key: { text: "Grade" }, value: { text: inspector.grade } },
+                    { key: { text: "FTE" }, value: { text: inspector.fte } },
+                    { key: { text: "Charting Officer" }, value: { text: inspector.chartingOfficerId } },
+                    { key: { text: "Charting Officer Phone" }, value: { text: inspector.chartingOfficerPhone } },
+                    { key: { text: "Inspector Manager" }, value: { text: inspector.inspectorManager } }
                 ]
             }) }}    
     </div>
@@ -41,7 +41,13 @@
                 { text: "Valid From", classes: "govuk-!-width-one-quarter" }
             ],
             rows: [
-                [ { text: "" }, { text: "" }, { text: "" } ]
+                [ { text: "Advertisements" }, { text: "" }, { text: "" } ],
+                [ { text: "Appeal Against Conditions" }, { text: "" }, { text: "" } ],
+                [ { text: "General Allocation" }, { text: "" }, { text: "" } ],
+                [ { text: "Appearance Design" }, { text: "" }, { text: "" } ],
+                [ { text: "Green Belt" }, { text: "" }, { text: "" } ],
+                [ { text: "Hearings Trained" }, { text: "" }, { text: "" } ],
+                [ { text: "Special Protection Area" }, { text: "" }, { text: "" } ]
                 ]
             }) }}
     </div>

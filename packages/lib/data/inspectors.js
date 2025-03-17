@@ -14,6 +14,8 @@ const inspectors = [
 		fte: 0.6,
 		inspectorManager: true,
 		chartingOfficerId: '6932ca67-a962-4ac8-b9e5-ef749ae976c0',
+		inspectorPhone: faker.phone.number(),
+		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
 			lpaRegion: ['North'],
@@ -38,6 +40,8 @@ const inspectors = [
 		fte: 0.7,
 		inspectorManager: true,
 		chartingOfficerId: '75eaf918-d447-4bcc-a458-0e2d96d41a1d',
+		inspectorPhone: faker.phone.number(),
+		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
 			lpaRegion: ['West'],
@@ -58,6 +62,8 @@ const inspectors = [
 		fte: 0.5,
 		inspectorManager: false,
 		chartingOfficerId: '9e45698a-f445-44d0-b490-21f4b1c20211',
+		inspectorPhone: faker.phone.number(),
+		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
 			lpaRegion: ['East'],
@@ -84,6 +90,8 @@ const inspectors = [
 		fte: 0.7,
 		inspectorManager: false,
 		chartingOfficerId: '78510652-469b-48aa-a297-b1b3652c0d6f',
+		inspectorPhone: faker.phone.number(),
+		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
 			lpaRegion: ['South', 'East'],
@@ -104,6 +112,8 @@ const inspectors = [
 		fte: 0.6,
 		inspectorManager: true,
 		chartingOfficerId: 'ef14cf1b-2253-4fce-94f4-faec4e7e65e8',
+		inspectorPhone: faker.phone.number(),
+		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
 			lpaRegion: ['North', 'West'],
@@ -124,6 +134,8 @@ const inspectors = [
 		fte: 0.4,
 		inspectorManager: false,
 		chartingOfficerId: '2c0f0181-3020-46c1-bca1-6163e7085a12',
+		inspectorPhone: faker.phone.number(),
+		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
 			lpaRegion: ['North', 'South', 'East', 'West'],
@@ -156,6 +168,8 @@ const inspectors = [
 		fte: 0.9,
 		inspectorManager: false,
 		chartingOfficerId: 'b63cb773-6a78-436f-b557-39d685607e53',
+		inspectorPhone: faker.phone.number(),
+		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
 			lpaRegion: ['North', 'South', 'East', 'West'],
@@ -182,6 +196,8 @@ const inspectors = [
 		fte: 1,
 		inspectorManager: false,
 		chartingOfficerId: '71f86026-f8ef-40ac-8e1b-b46e45788140',
+		inspectorPhone: faker.phone.number(),
+		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
 			lpaRegion: ['North', 'South', 'East', 'West'],
@@ -208,6 +224,8 @@ const inspectors = [
 		fte: 0.4,
 		inspectorManager: true,
 		chartingOfficerId: 'fd567f81-5383-48c7-976a-7138f7356167',
+		inspectorPhone: faker.phone.number(),
+		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
 			lpaRegion: ['North', 'South', 'East', 'West'],
@@ -234,6 +252,8 @@ const inspectors = [
 		fte: 0.5,
 		inspectorManager: false,
 		chartingOfficerId: '77f41223-a3c6-4ba0-bfd8-7163a98bd326',
+		inspectorPhone: faker.phone.number(),
+		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
 			lpaRegion: ['North', 'South', 'East', 'West'],
