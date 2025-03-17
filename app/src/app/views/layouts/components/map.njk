@@ -1,0 +1,123 @@
+{% macro map(apiKey, pins) %}
+
+<style>
+    #map {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        width: 100%;
+    }
+
+    .pins-map {
+        position: relative;
+        width: 100%;
+        height: 0;
+        padding-top: calc(2.5 / 4 * 100%);
+    }
+
+    .pins-map__container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    .pins-map__content {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<div class="pins-map">
+    <div class="pins-map__container">
+        <div id="map" class="pins-map__content"></div>
+    </div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@0.3.1/os-api-branding.css" />
+<link rel="stylesheet" href="https://js.arcgis.com/4.30/esri/themes/light/main.css">
+<script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://cdn.jsdelivr.net/gh/OrdnanceSurvey/os-api-branding@0.3.1/os-api-branding.js"></script>
+<script {% if cspNonce %}nonce={{ cspNonce }}{% endif %} src="https://js.arcgis.com/4.30/"></script>
+<script {% if cspNonce %}nonce={{ cspNonce }}{% endif %}>
+
+    const apiKey = '{{ apiKey }}';
+    const serviceUrl = 'https://api.os.uk/maps/vector/v1/vts';
+
+    require([
+        'esri/Map',
+        'esri/views/MapView',
+        'esri/Graphic',
+        'esri/layers/VectorTileLayer',
+        'esri/geometry/Point',
+        'esri/config'
+    ], function(Map, MapView, Graphic, VectorTileLayer, Point, esriConfig) {
+        // Add the 'key' and 'srs' options to the request URL before it is sent.
+        esriConfig.request.interceptors.push({
+            urls: serviceUrl,
+            before: function(params) {
+                if (!params.requestOptions.query) {
+                    params.requestOptions.query = {};
+                }
+                params.requestOptions.query.key = apiKey;
+            }
+        });
+
+        const tileLayer = new VectorTileLayer({
+            url: serviceUrl
+        });
+
+        const map = new Map({
+            layers: [tileLayer]
+        });
+
+        const pins = {{ pins | dump | safe}};
+
+        const center = pins.reduce((acc, {lat, long}) => {
+            acc.longitude += long;
+            acc.latitude += lat;
+            return acc;
+        }, {longitude: 0, latitude: 0});
+
+        center.longitude /= pins.length;
+        center.latitude /= pins.length;
+
+        const view = new MapView({
+            container: 'map',
+            map: map,
+            zoom: 3,
+            center: new Point(center),
+            constraints: {
+                minZoom: 2,
+                maxZoom: 15,
+                rotationEnabled: false
+            }
+        });
+
+        function addMarker({lat, long}, color = [226, 119, 40]) {
+            const point = {
+                type: 'point',
+                longitude: long,
+                latitude: lat
+            };
+            const simpleMarkerSymbol = {
+                type: 'simple-marker',
+                color,
+                outline: {
+                    color: [255, 255, 255], // White
+                    width: 1
+                }
+            };
+
+            const pointGraphic = new Graphic({
+                geometry: point,
+                symbol: simpleMarkerSymbol
+            });
+            view.graphics.add(pointGraphic);
+        }
+
+        for (const coords of pins) {
+            addMarker(coords, [255, 0, 0]);
+        }
+    });
+</script>
+{% endmacro %}

@@ -19,6 +19,122 @@ $font-family: arial, helvetica, sans-serif;
 	}
 }
 
+@media (min-width: 1500px) {
+	.pins-container-wide {
+		max-width: 1450px;
+	}
+}
+
+@media (min-width: 1650px) {
+	.pins-container-wide {
+		max-width: 1600px;
+	}
+}
+
+@media (min-width: 1900px) {
+	.pins-container-wide {
+		max-width: 1850px;
+	}
+}
+
 .pins-white-space-pre-wrap {
 	white-space: pre-wrap;
+}
+
+.filter-container {
+	display: flex;
+	gap: 20px;
+}
+
+.app-filter {
+	flex: 0.6;
+	background-color: #f3f2f1;
+	padding: 16px;
+	border: none;
+	border-radius: 4px;
+	margin-bottom: 20px;
+}
+
+.cases-inspectors-container {
+	flex: 3;
+}
+
+.app-filter__header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: none;
+	padding-bottom: 8px;
+	margin-bottom: 16px;
+}
+
+.app-filter__header-title h2 {
+	margin: 0;
+	font-size: 1.25rem;
+}
+
+.app-filter__content {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.govuk-button {
+	background-color: #00703c;
+	border-color: #005a30;
+}
+
+.govuk-button:hover {
+	background-color: #005a30;
+	border-color: #003e20;
+}
+
+.bold-title {
+	font-weight: bold;
+}
+
+.custom-filter-dropdown {
+	summary {
+		color: black;
+		font-weight: bold;
+	}
+	span {
+		text-decoration: none;
+	}
+}
+
+.govuk-table {
+	th,
+	td {
+		vertical-align: middle;
+	}
+}
+
+.cases-inspectors-container {
+	.govuk-form-group {
+		margin-bottom: 0;
+		margin-left: 10px;
+
+		label {
+			margin-top: 8px;
+		}
+	}
+}
+
+.cases-inspectors-container .govuk-button {
+	margin-bottom: 10px;
+}
+
+.align-right {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.app-filter .govuk-form-group {
+	margin-bottom: 0;
+}
+
+.custom-table-header .govuk-table__head {
+    background-color: #6383a9;
+    color: white;
 }
