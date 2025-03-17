@@ -11,20 +11,19 @@
             rows: [
                 { key: { text: "Case Number" }, value: { text: caseData.caseId } },
                 { key: { text: "Site Address" }, value: { text: caseData.siteAddressPostcode } },
-                { key: { text: "Job Details" }, value: { text: "" } },
+                { key: { text: "Job Details" }, value: { text: caseData.jobDetails } },
                 { key: { text: "Procedure" }, value: { text: caseData.caseProcedure } },
-                { key: { text: "Jurisdiction" }, value: { text: "" } },
+                { key: { text: "Jurisdiction" }, value: { text: caseData.jurisdiction } },
                 { key: { text: "Case Status" }, value: { text: caseData.caseStatus } }
             ]
         }) }}
 
         {{ govukSummaryList({
             rows: [
-                { key: { text: "Inspector" }, value: { text: inspectors[0].firstName + ' ' + inspectors[0].lastName } },
                 { key: { text: "Band" }, value: { text: inspectors[0].grade } },
                 { key: { text: "Case Level" }, value: { text: caseData.caseLevel } },
-                { key: { text: "Special Circumstances" }, value: { text: "" } },
-                { key: { text: "Costs Applied For" }, value: { text: "" } }
+                { key: { text: "Special Circumstances" }, value: { text:caseData.specialCircumstances } },
+                { key: { text: "Costs Applied For" }, value: { text: caseData.appellantCostsAppliedFor } }
             ]
         }) }}
 
@@ -32,15 +31,15 @@
         {{ govukSummaryList({
             rows: [
                 { key: { "text": "Local Planning Authority (LPA)" }, "value": { "text": caseData.lpaName } },
-                { key: { "text": "Agent" }, "value": { "text": "" } },
-                { key: { "text": "Appellant" }, "value": { "text": "" } },
-                { key: { "text": "Case Officer" }, "value": { "text": "" } },
-                { key: { "text": "EO Responsible" }, "value": { "text": "" } },
-                { key: { text: "LPA Phone" }, value: { text: "" } },
-                { key: { text: "Agent Phone" }, value: { text: "" } },
-                { key: { text: "Appellant Phone" }, value: { text: "" } },
-                { key: { text: "Case Officer Phone" }, value: { text: "" } },
-                { key: { text: "EO Phone" }, value: { text: "" } }
+                { key: { "text": "Agent" }, "value": { "text": caseData.agentId } },
+                { key: { "text": "Appellant" }, "value": { "text":caseData.appellantId } },
+                { key: { "text": "Case Officer" }, "value": { "text": caseData.caseOfficerId } },
+                { key: { "text": "EO Responsible" }, "value": { "text": caseData.eoResponsible } },
+                { key: { text: "LPA Phone" }, value: { text: caseData.lpaPhone } },
+                { key: { text: "Agent Phone" }, value: { text:caseData.agentPhone } },
+                { key: { text: "Appellant Phone" }, value: { text: caseData.appellantPhone } },
+                { key: { text: "Case Officer Phone" }, value: { text: caseData.caseOfficerPhone } },
+                { key: { text: "EO Phone" }, value: { text: caseData.eoPhone } }
             ]
         }) }}
     </div>
@@ -49,22 +48,22 @@
         <h2 class="govuk-heading-m">Key Dates</h2>
         {{ govukSummaryList({
             rows: [
-                { key: { text: "Appeal Start Date" }, value: { text: "" } },
-                { key: { text: "Target Date" }, value: { text: "" } },
-                { key: { text: "Rosewell Target" }, value: { text: "" } },
-                { key: { text: "Personal Target Date" }, value: { text: "" } }
+                { key: { text: "Appeal Start Date" }, value: { text: caseData.caseStartedDate } },
+                { key: { text: "Target Date" }, value: { text: caseData.targetDate } },
+                { key: { text: "Rosewell Target" }, value: { text: caseData.rosewellTarget } },
+                { key: { text: "Personal Target Date" }, value: { text: caseData.personalTargetDate } }
             ]
         }) }}
 
         <h2 class="govuk-heading-m">Event Arrangements</h2>
         {{ govukSummaryList({
             rows: [
-                { key: { text: "Event Type" }, value: { text: "" } },
-                { key: { text: "Event Date" }, value: { text: "" } },
-                { key: { text: "Charting Notes" }, value: { text: "" } },
-                { key: { text: "Event Status" }, value: { text: "" } },
-                { key: { text: "Duration" }, value: { text: "" } },
-                { key: { text: "Venue" }, value: { text: "" } }
+                { key: { text: "Event Type" }, value: { text: caseData.appealEventType } },
+                { key: { text: "Event Date" }, value: { text: caseData.appealEventDate } },
+                { key: { text: "Charting Notes" }, value: { text: caseData.chartingNotes } },
+                { key: { text: "Event Status" }, value: { text: caseData.caseStatus } },
+                { key: { text: "Duration" }, value: { text: caseData.appellantProcedurePreferenceDuration } },
+                { key: { text: "Venue" }, value: { text: caseData.venue } }
             ]
         }) }}
         <div class="map-container">

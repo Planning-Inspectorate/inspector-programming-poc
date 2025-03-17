@@ -5,6 +5,7 @@ import { buildViewHome } from './views/home/controller.js';
 import { asyncHandler } from '@pins/inspector-programming-poc-lib/util/async-handler.js';
 import { buildViewCase } from './views/case/controller.js';
 import { buildEntraClientMiddleware } from '@pins/inspector-programming-poc-lib/middleware/entra-client.js';
+import { buildViewInspector } from './views/inspector/controller.js';
 
 /**
  * @param {Object} params
@@ -43,9 +44,11 @@ export function buildRouter({ logger, config }) {
 	const entraClientMiddleware = buildEntraClientMiddleware({ logger });
 	const viewHome = buildViewHome({ logger });
 	const viewCase = buildViewCase({ logger, config });
+	const viewInspector = buildViewInspector({ logger, config });
 
 	router.get('/', entraClientMiddleware, asyncHandler(viewHome));
 	router.get('/case/:caseId', asyncHandler(viewCase));
+	router.get('/inspector', asyncHandler(viewInspector));
 
 	return router;
 }
