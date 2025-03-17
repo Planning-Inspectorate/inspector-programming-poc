@@ -8,9 +8,10 @@ const fakerPostCode = async () => faker.location.zipCode();
  * @param {number} count
  * @param {() => Promise<string>} randomPostcode
  * @param {Record<string, string | string[]>} filters
+ * @param {(a: import('./types.js').AppealCase, b: import('./types.js').AppealCase) => number} sort
  * @returns {Promise<import('./types.js').AppealCase[]>}
  */
-export async function fetchCases(count = 10, filters = {}, randomPostcode = fakerPostCode) {
+export async function fetchCases(count = 10, filters = {}, sort = sortCasesByAge, randomPostcode = fakerPostCode) {
 	const cases = [];
 	const filter = applyFilters(filters);
 
@@ -21,7 +22,7 @@ export async function fetchCases(count = 10, filters = {}, randomPostcode = fake
 		}
 	}
 
-	return cases.toSorted(sortCasesByAge);
+	return cases.toSorted(sort);
 }
 
 async function createCase(randomPostcode) {
@@ -80,6 +81,10 @@ async function createCase(randomPostcode) {
 		caseSubmittedDate: faker.date.past(),
 		caseValidDate: faker.date.past(),
 		siteAddressPostcode: await randomPostcode(),
+		siteAddressLatLong: {
+			latitude: faker.location.latitude({ min: 51.5, max: 55.05 }),
+			longitude: faker.location.longitude({ min: -0.5, max: 0.5 })
+		},
 		caseLevel: arrayElement(['1', '2', '3']),
 		lpaRegion: arrayElement(['North', 'South', 'East', 'West']),
 		caseAge,
@@ -113,7 +118,7 @@ async function createCase(randomPostcode) {
 		appealEventType: arrayElement(Object.values(APPEAL_EVENT_TYPE)),
 		appealEventDate: faker.date.future(),
 		chartingNotes: faker.lorem.sentence(),
-		venue: faker.address.streetAddress(),
+		venue: faker.location.streetAddress(),
 		jobDetails: faker.lorem.sentence(),
 		specialCircumstances: faker.lorem.sentence()
 	};
@@ -152,6 +157,35 @@ function applyFilters(filters) {
 	};
 }
 
-function sortCasesByAge(a, b) {
+export function sortCasesByAge(a, b) {
 	return b.caseAge - a.caseAge;
+}
+
+export async function createSortByDistance(inspectorLatLong) {
+	return (a, b) => {
+		const distanceA = distanceBetween(a.siteAddressLatLong, inspectorLatLong);
+		const distanceB = distanceBetween(b.siteAddressLatLong, inspectorLatLong);
+		return distanceA - distanceB;
+	};
+}
+
+/**
+ * Fairly accurate distance calculation using the Haversine formula
+ *
+ * @param {import('./types.js').LatLong} latLongA
+ * @param {import('./types.js').LatLong} latLongB
+ * @returns {number}
+ */
+function distanceBetween(latLongA, latLongB) {
+	const earthRadius = 6371;
+	const latDiff = ((latLongB.latitude - latLongA.latitude) * Math.PI) / 180;
+	const longDiff = ((latLongB.longitude - latLongA.longitude) * Math.PI) / 180;
+	const a =
+		Math.sin(latDiff / 2) * Math.sin(latDiff / 2) +
+		Math.cos((latLongA.latitude * Math.PI) / 180) *
+			Math.cos((latLongB.latitude * Math.PI) / 180) *
+			Math.sin(longDiff / 2) *
+			Math.sin(longDiff / 2);
+	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+	return earthRadius * c;
 }

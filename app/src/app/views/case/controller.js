@@ -7,7 +7,7 @@ export function buildViewCase({ logger, config }) {
 		logger.info(`view case for ID: ${req.params.caseId}`);
 
 		const mapsKey = config.maps.key;
-		const [caseData] = await fetchCases(1, undefined, await randomPostcode({ key: mapsKey }));
+		const [caseData] = await fetchCases(1, undefined, undefined, await randomPostcode({ key: mapsKey }));
 		caseData.caseId = req.params.caseId;
 
 		const inspectors = await fetchInspectors(10);
