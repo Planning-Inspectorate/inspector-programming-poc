@@ -48,7 +48,7 @@
             </div>
         </div>
         <form method="post" novalidate>
-            <div class="govuk-form-group" style="display: flex; gap: 10px; margin-bottom 0">
+            <div class="govuk-form-group" style="display: flex; gap: 5px; margin-bottom 0">
                 {% set inspectorList = [] %}
                 {% for i in inspectors %}
                     {% set inspectorList = (inspectorList.push({
@@ -63,16 +63,18 @@
                     items: inspectorList
                 }) }}
                 {{ govukButton({
-                    text: "Select",
-                    classes: "govuk-button--primary",
-                    value: "select",
-                    name: "action",
-                    type: "submit"
-                }) }}
-                {{ govukButton({
                     text: "View",
                     classes: "govuk-button--primary",
                     value: "view",
+                    name: "action",
+                    type: "submit"
+                }) }}
+            </div>
+            <div class="govuk-form-group" style="margin-top: 5px;">
+                {{ govukButton({
+                    text: "Select",
+                    classes: "govuk-button--primary",
+                    value: "select",
                     name: "action",
                     type: "submit"
                 }) }}
