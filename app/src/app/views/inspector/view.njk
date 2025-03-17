@@ -7,7 +7,7 @@
 
 <div class="pins-container-wide govuk-grid-row">
     <div class="govuk-grid-column-one-half">
-        <h2 class="govuk-heading-m">{{ inspectorName }}</h2>
+        <h2 class="govuk-heading-m">{{ inspector.firstName + " " + inspector.lastName }}</h2>
         <h2 class="govuk-heading-m">Contact Details</h2>
             {{ govukSummaryList({
                 rows: [
@@ -30,7 +30,7 @@
             }) }}    
     </div>
 
-    <div class="govuk-grid-column-one-half govuk-!-margin-top-5">
+    <div class="govuk-grid-column-one-half govuk-!-margin-top-8">
         {{ govukTable({
             caption: "Specialisms",
             captionClasses: "govuk-table__caption--m",
