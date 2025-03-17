@@ -1,7 +1,7 @@
 import { Router as createRouter } from 'express';
 import { createRoutesAndGuards as createAuthRoutesAndGuards } from './auth/router.js';
 import { createMonitoringRoutes } from '@pins/inspector-programming-poc-lib/controllers/monitoring.js';
-import { buildViewHome } from './views/home/controller.js';
+import { buildPostHome, buildViewHome } from './views/home/controller.js';
 import { asyncHandler } from '@pins/inspector-programming-poc-lib/util/async-handler.js';
 import { buildViewCase } from './views/case/controller.js';
 import { buildViewInspector } from './views/inspector/controller.js';
@@ -41,12 +41,14 @@ export function buildRouter({ logger, config }) {
 	}
 
 	const viewHome = buildViewHome({ logger });
+	const postHome = buildPostHome({ logger });
 	const viewCase = buildViewCase({ logger, config });
 	const viewInspector = buildViewInspector({ logger, config });
 
 	router.get('/', asyncHandler(viewHome));
+	router.post('/', asyncHandler(postHome));
 	router.get('/case/:caseId', asyncHandler(viewCase));
-	router.get('/inspector', asyncHandler(viewInspector));
+	router.get('/inspector/:inspectorId', asyncHandler(viewInspector));
 
 	return router;
 }
