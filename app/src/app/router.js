@@ -46,7 +46,7 @@ export function buildRouter({ logger, config }) {
 
 	router.get('/', asyncHandler(viewHome));
 	router.get('/case/:caseId', asyncHandler(viewCase));
-	router.get('/inspector', asyncHandler(viewInspector));
+	router.get('/inspector/:inspectorName', asyncHandler(viewInspector));
 
 	return router;
 }
