@@ -7,7 +7,7 @@ describe('fetchCases', () => {
 		const count = 10;
 		const filters = {};
 
-		const cases = await fetchCases(count, filters);
+		const cases = fetchCases(count, filters);
 
 		assert.strictEqual(cases.length, 10);
 	});
@@ -18,7 +18,7 @@ describe('fetchCases', () => {
 			caseType: 'W'
 		};
 
-		const cases = await fetchCases(count, filters);
+		const cases = fetchCases(count, filters);
 
 		for (const c of cases) {
 			assert.strictEqual(c.caseType, 'W');
@@ -31,7 +31,7 @@ describe('fetchCases', () => {
 			caseSpecialisms: ['Access', 'Listed building and enforcement']
 		};
 
-		const cases = await fetchCases(count, filters);
+		const cases = fetchCases(count, filters);
 
 		for (const c of cases) {
 			assert.strictEqual(
@@ -45,7 +45,7 @@ describe('fetchCases', () => {
 		const count = 10;
 		const filters = {};
 
-		const cases = await fetchCases(count, filters);
+		const cases = fetchCases(count, filters);
 		const sortedCases = cases.toSorted((a, b) => b.caseAge - a.caseAge);
 
 		assert.deepStrictEqual(cases, sortedCases);

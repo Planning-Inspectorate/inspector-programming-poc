@@ -1,8 +1,21 @@
 import { fakerEN_GB as faker } from '@faker-js/faker';
 import { APPEAL_CASE_STATUS, APPEAL_EVENT_TYPE } from 'pins-data-model';
-import cases from './cases.json';
+import fs from 'node:fs';
 
 const arrayElement = faker.helpers.arrayElement;
+const casesString = fs.readFileSync(import.meta.dirname + '/cases.json', 'utf-8');
+const cases = JSON.parse(casesString);
+
+for (const c of cases) {
+	c.finalCommentsDate = new Date(c.finalCommentsDate);
+	c.caseSubmittedDate = new Date(c.caseSubmittedDate);
+	c.caseValidDate = new Date(c.caseValidDate);
+	c.caseStartedDate = new Date(c.caseStartedDate);
+	c.targetDate = new Date(c.targetDate);
+	c.rosewellTarget = new Date(c.rosewellTarget);
+	c.personalTargetDate = new Date(c.personalTargetDate);
+	c.appealEventDate = new Date(c.appealEventDate);
+}
 
 /**
  * @param {number} count
@@ -14,9 +27,9 @@ export function fetchCases(count = 10, filters = {}, sort = sortCasesByAge) {
 	const filter = applyFilters(filters);
 	const filteredCases = [];
 
-	for (let i = 0; i < count && i < cases.length; ) {
+	for (let i = 0; filteredCases.length < count && i < cases.length; i++) {
 		if (filter(cases[i])) {
-			filteredCases.push(cases[i++]);
+			filteredCases.push(cases[i]);
 		}
 	}
 

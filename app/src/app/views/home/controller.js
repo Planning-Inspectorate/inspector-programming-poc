@@ -17,7 +17,7 @@ export function buildViewHome({ logger, config }) {
 		const sort = req.query.sort || 'age';
 		const inspectorLatLong = { latitude: 53.4808, longitude: 0.0927 };
 		const sortFunc = sort === 'age' ? sortCasesByAge : await createSortByDistance(inspectorLatLong);
-		const cases = await fetchCases(10, filters, sortFunc);
+		const cases = fetchCases(10, filters, sortFunc);
 
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
