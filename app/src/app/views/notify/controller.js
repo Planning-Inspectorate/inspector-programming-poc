@@ -1,30 +1,35 @@
 import { TEMPLATE_IDS } from '#util/notify.js';
 import { NotifyClient } from 'notifications-node-client';
+import { fetchInspectors } from '@pins/inspector-programming-poc-lib/data/inspectors.js';
 
 const { TestTemplate } = TEMPLATE_IDS;
 
 /**
  * @param {Object} opts
  * @param {import('../config-types.js').Config} opts.config
- * @param {import('pino').BaseLogger} opts.logger
  * @returns {import('express').Handler}
  */
-export function buildNotify({ config, logger }) {
+export function buildNotify({ config }) {
 	const client = new NotifyClient(config.notify.key);
-	const emailAddress = 'email-address-here';
 
 	return async (req, res) => {
-		logger.info('sending email');
+		const { inspector, assignmentDate, selectedCases } = req.body;
+		const inspectors = await fetchInspectors(10);
+		const inspectorX = inspectors.find((i) => i.id === inspector);
+		const selectedCasesFormatted = Array.isArray(selectedCases)
+			? selectedCases.join(', ')
+			: selectedCases || 'No cases assigned';
 
-		const response = await client.sendEmail(TestTemplate, emailAddress, {
-			personalisation: {
-				first_name: 'John',
-				reference: '123456'
-			}
-		});
-
-		logger.info('email sent', response);
-
-		return res.render('Hello');
+		try {
+			await client.sendEmail(TestTemplate, inspectorX.emailAddress, {
+				personalisation: {
+					inspectorName: inspectorX.firstName || 'Inspector',
+					assignmentDate: assignmentDate || 'No date provided',
+					selectedCases: selectedCasesFormatted
+				}
+			});
+		} catch {
+			res.status(500).send('Error sending email');
+		}
 	};
 }

@@ -34,7 +34,7 @@ const inspectors = [
 		id: '06a1f49a-32d6-42e0-9e7e-48f8dfc51fc0',
 		firstName: 'Fredrick',
 		lastName: 'Beier-Heidenreich',
-		emailAddress: 'Fredrick.Beier-Heidenreich@fake.pins.gov.uk',
+		emailAddress: 'joshua.wilson.at@planninginspectorate.gov.uk',
 		address: { addressLine1: '6 Daphnee Brow', postcode: 'UY3 7WS' },
 		grade: 'B1',
 		fte: 0.7,

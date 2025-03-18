@@ -48,7 +48,7 @@ export function buildRouter({ logger, config }) {
 	const viewInspector = buildViewInspector({ logger, config });
 
 	router.get('/', asyncHandler(viewHome));
-	router.get('/notify', asyncHandler(viewNotify));
+	router.post('/notify', asyncHandler(viewNotify));
 	router.post('/', asyncHandler(postHome));
 	router.get('/case/:caseId', asyncHandler(viewCase));
 	router.get('/inspector/:inspectorId', asyncHandler(viewInspector));
