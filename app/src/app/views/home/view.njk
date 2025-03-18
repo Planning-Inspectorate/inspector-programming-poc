@@ -264,9 +264,6 @@
                     <div class="govuk-form-group">
                         <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
                     </div>
-                    <div class="map-container">
-                        {{ map(apiKey, pins) }}
-                    </div>
                     <div class="govuk-form-group">
                         {{ govukButton({
                             text: "Assign selected cases",
@@ -330,20 +327,19 @@
         </div>
     </div>
 
-    <div id="map-view" class="view" style="display: none;">
+    <div id="map-view" class="view">
         <div class="pins-map">
             <div class="pins-map__container">
                 <div id="map" class="pins-map__content"></div>
-                    <div class="map-container">
-                        {{ map(apiKey, pins) }}
-                    </div>
+                <div class="map-container">
+                    {{ map(apiKey, pins) }}
+                </div>
             </div>
         </div>
     </div>
 </div>
+<script>
 
-
-<script {% if cspNonce %}nonce={{ cspNonce }}{% endif %}>
     document.addEventListener('DOMContentLoaded', function () {
         const selectAllCheckbox = document.querySelector('#select-all');
         const checkboxes = document.querySelectorAll('input[type="checkbox"][name="selectedCases"]');
@@ -352,37 +348,34 @@
                 checkbox.checked = selectAllCheckbox.checked;
             });
         });
-    });
-</script>
+/*
+        const tableTab = document.getElementById('tab-table');
+        const mapTab = document.getElementById('tab-map');
+        const tableView = document.getElementById('table-view');
+        const mapView = document.getElementById('map-view');
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const tableTab = document.getElementById('tab-table');
-    const mapTab = document.getElementById('tab-map');
-    const tableView = document.getElementById('table-view');
-    const mapView = document.getElementById('map-view');
-
-    mapTab.classList.add('active');
-    tableTab.classList.remove('active');
-    tableView.style.display = 'none';
-    mapView.style.display = 'block';
-    
-    tableTab.addEventListener('click', function (e) {
-        e.preventDefault();
-        tableTab.classList.add('active');
-        mapTab.classList.remove('active');
-        tableView.style.display = 'block';
-        mapView.style.display = 'none';
-    });
-
-    mapTab.addEventListener('click', function (e) {
-        e.preventDefault();
         mapTab.classList.add('active');
         tableTab.classList.remove('active');
         tableView.style.display = 'none';
         mapView.style.display = 'block';
+
+        tableTab.addEventListener('click', function (e) {
+            e.preventDefault();
+            tableTab.classList.add('active');
+            mapTab.classList.remove('active');
+            tableView.style.display = 'block';
+            mapView.style.display = 'none';
+        });
+
+        mapTab.addEventListener('click', function (e) {
+            e.preventDefault();
+            mapTab.classList.add('active');
+            tableTab.classList.remove('active');
+            tableView.style.display = 'none';
+            mapView.style.display = 'block';
+        });
     });
-});
+*/
 </script>
 
 {% endblock %}
