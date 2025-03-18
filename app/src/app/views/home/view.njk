@@ -5,39 +5,7 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
-
-{% if apiKey %}
-<style>
-    #map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-    }
-    .pins-map {
-        position: relative;
-        width: 100%;
-        height: 0;
-        padding-top: calc(9 / 16 * 100%);
-    }
-    .pins-map__container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-    .pins-map__content {
-        width: 100%;
-        height: 100%;
-    }
-</style>
-<div class="pins-map">
-    <div class="pins-map__container">
-        <div id="map" class="pins-map__content"></div>
-    </div>
-</div>
-{% endif %}
+{% from "views/layouts/components/map.njk" import map %}
 
 {% block pageContent %}
 <div class="filter-container">
@@ -270,78 +238,110 @@
         </div>
     </div>
 
-<div class="cases-inspectors-container">
-    <form method="post" action="/notify" novalidate>
-        <input type="hidden" name="inspector" value="{{ inspectorId }}">
-        <div class="align-right">
-            <div class="govuk-form-group">
-                <label class="govuk-label" for="assignment-date">Event date: </label>
-            </div>
-            <div class="govuk-form-group">
-                <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
-            </div>
-            <div class="govuk-form-group">
-                {{ govukButton({
-                    text: "Assign selected cases",
-                    type: "submit"
+<div class="filter-container">
+</div>
+
+<div class="tabs">
+    <ul class="govuk-tabs">
+        <li class="govuk-tabs__list-item">
+            <a href="#table-view" class="govuk-tabs__tab active" id="tab-table">Table</a>
+        </li>
+        <li class="govuk-tabs__list-item">
+            <a href="#map-view" class="govuk-tabs__tab" id="tab-map">Map</a>
+        </li>
+    </ul>
+</div>
+
+<div class="views-container">
+    <div id="table-view" class="view">
+        <div class="cases-inspectors-container">
+            <form method="post" action="/notify" novalidate>
+                <input type="hidden" name="inspector" value="{{ inspectorId }}">
+                <div class="align-right">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="assignment-date">Event date: </label>
+                    </div>
+                    <div class="govuk-form-group">
+                        <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
+                    </div>
+                    <div class="map-container">
+                        {{ map(apiKey, pins) }}
+                    </div>
+                    <div class="govuk-form-group">
+                        {{ govukButton({
+                            text: "Assign selected cases",
+                            type: "submit"
+                        }) }}
+                    </div>
+                </div>
+
+                {% set caseRows = [] %}
+                {% for c in cases %}
+                    {% set caseRows = (caseRows.push([
+                        { html: govukCheckboxes({
+                            name: "selectedCases",
+                            classes: "govuk-checkboxes--small",
+                            items: [{ value: c.caseId, text: " ", checked: false }]
+                        }) },
+                        { html: '<a href="/case/' + c.caseId + '" class="govuk-link">' + c.caseId + '</a>' },
+                        { text: c.caseType },
+                        { text: c.caseProcedure },
+                        { text: c.allocationBand },
+                        { text: c.caseLevel },
+                        { text: c.siteAddressPostcode },
+                        { text: c.lpaName },
+                        { text: c.lpaRegion },
+                        { text: c.caseStatus },
+                        { text: c.caseAge },
+                        { html: '<a href="/case/' + c.linkedCases + '" class="govuk-link">' + c.linkedCases + '</a>' },
+                        { text: c.finalCommentsDate },
+                        { text: c.programmingStatus }
+                    ]), caseRows) %}
+                {% endfor %}
+
+                {{ govukTable({
+                    classes: "govuk-!-font-size-14",
+                    head: [
+                        { html: govukCheckboxes({
+                            idPrefix: "select-all",
+                            name: "select-all",
+                            classes: "govuk-checkboxes--small",
+                            items: [
+                                { value: "select-all", text: " ", checked: false }
+                            ]
+                        }) },
+                        { text: "Reference" },
+                        { text: "Type" },
+                        { text: "Procedure" },
+                        { text: "Band" },
+                        { text: "Level" },
+                        { text: "Location" },
+                        { text: "LPA" },
+                        { text: "Region" },
+                        { text: "Case Status" },
+                        { text: "Age" },
+                        { text: "Linked cases" },
+                        { text: "Final comments date" },
+                        { text: "Prog Status" }
+                    ],
+                    rows: caseRows
                 }) }}
+            </form>
+        </div>
+    </div>
+
+    <div id="map-view" class="view" style="display: none;">
+        <div class="pins-map">
+            <div class="pins-map__container">
+                <div id="map" class="pins-map__content"></div>
+                    <div class="map-container">
+                        {{ map(apiKey, pins) }}
+                    </div>
             </div>
         </div>
-
-
-        {% set caseRows = [] %}
-        {% for c in cases %}
-            {% set caseRows = (caseRows.push([
-                { html: govukCheckboxes({
-                    name: "selectedCases",
-                    classes: "govuk-checkboxes--small",
-                    items: [{ value: c.caseId, text: " ", checked: false }]
-                }) },
-                { html: '<a href="/case/' + c.caseId + '" class="govuk-link">' + c.caseId + '</a>' },
-                { text: c.caseType },
-                { text: c.caseProcedure },
-                { text: c.allocationBand },
-                { text: c.caseLevel },
-                { text: c.siteAddressPostcode },
-                { text: c.lpaName },
-                { text: c.lpaRegion },
-                { text: c.caseStatus },
-                { text: c.caseAge },
-                { html: '<a href="/case/' + c.linkedCases + '" class="govuk-link">' + c.linkedCases + '</a>' },
-                { text: c.finalCommentsDate },
-                { text: c.programmingStatus }
-            ]), caseRows) %}
-        {% endfor %}
-
-        {{ govukTable({
-            classes: "govuk-!-font-size-14",
-            head: [
-                { html: govukCheckboxes({
-                    idPrefix: "select-all",
-                    name: "select-all",
-                    classes: "govuk-checkboxes--small",
-                    items: [
-                        { value: "select-all", text: " ", checked: false }
-                    ]
-                }) },
-                { text: "Reference" },
-                { text: "Type" },
-                { text: "Procedure" },
-                { text: "Band" },
-                { text: "Level" },
-                { text: "Location" },
-                { text: "LPA" },
-                { text: "Region" },
-                { text: "Case Status" },
-                { text: "Age" },
-                { text: "Linked cases" },
-                { text: "Final comments date" },
-                { text: "Prog Status" }
-            ],
-            rows: caseRows
-        }) }}
-    </form>
+    </div>
 </div>
+
 
 <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %}>
     document.addEventListener('DOMContentLoaded', function () {
@@ -354,6 +354,37 @@
         });
     });
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const tableTab = document.getElementById('tab-table');
+    const mapTab = document.getElementById('tab-map');
+    const tableView = document.getElementById('table-view');
+    const mapView = document.getElementById('map-view');
+
+    mapTab.classList.add('active');
+    tableTab.classList.remove('active');
+    tableView.style.display = 'none';
+    mapView.style.display = 'block';
+    
+    tableTab.addEventListener('click', function (e) {
+        e.preventDefault();
+        tableTab.classList.add('active');
+        mapTab.classList.remove('active');
+        tableView.style.display = 'block';
+        mapView.style.display = 'none';
+    });
+
+    mapTab.addEventListener('click', function (e) {
+        e.preventDefault();
+        mapTab.classList.add('active');
+        tableTab.classList.remove('active');
+        tableView.style.display = 'none';
+        mapView.style.display = 'block';
+    });
+});
+</script>
+
 {% endblock %}
 
 
