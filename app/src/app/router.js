@@ -43,14 +43,14 @@ export function buildRouter({ logger, config }) {
 	}
 
 	const entraClientMiddleware = buildEntraClientMiddleware({ logger });
-	const viewHome = buildViewHome({ logger });
-	const viewNotify = buildNotify({ config, logger });
+	const viewHome = buildViewHome({ logger, config });
+	const viewNotify = buildNotify({ logger, config });
 	const postHome = buildPostHome({ logger });
 	const viewCase = buildViewCase({ logger, config });
 	const viewInspector = buildViewInspector({ logger, config });
 
-	router.get('/', entraClientMiddleware, asyncHandler(viewHome));
-	router.post('/notify', asyncHandler(viewNotify));
+	router.get('/', asyncHandler(viewHome));
+	router.post('/notify', entraClientMiddleware, asyncHandler(viewNotify));
 	router.post('/', asyncHandler(postHome));
 	router.get('/case/:caseId', asyncHandler(viewCase));
 	router.get('/inspector/:inspectorId', asyncHandler(viewInspector));

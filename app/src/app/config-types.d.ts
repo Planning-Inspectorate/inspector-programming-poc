@@ -36,4 +36,5 @@ interface Config {
 	};
 	srcDir: string;
 	staticDir: string;
+	inspectors: [{ emailAddress: string; id: string }];
 }
