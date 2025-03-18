@@ -6,6 +6,7 @@ import { buildMsalConfig } from '#util/auth.js';
 
 const scopes = [
 	'user.read',
+	'Calendars.ReadWrite.Shared',
 	'User.ReadBasic.All', // for group membership displayName
 	'GroupMember.Read.All' // for group memberships
 ];

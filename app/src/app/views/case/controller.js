@@ -10,9 +10,8 @@ export function buildViewCase({ logger, config }) {
 		const [caseData] = await fetchCases(1, undefined, undefined, await randomPostcode({ key: mapsKey }));
 		caseData.caseId = req.params.caseId;
 
-		const inspectors = await fetchInspectors(10);
+		const inspectors = await fetchInspectors(config);
 		const caseLatLong = await getLatLongForPostcode({ key: mapsKey }, caseData.siteAddressPostcode);
-		console.log(caseLatLong);
 
 		return res.render('views/case/view.njk', {
 			caseData,

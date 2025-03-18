@@ -5,6 +5,7 @@ import { buildPostHome, buildViewHome } from './views/home/controller.js';
 import { asyncHandler } from '@pins/inspector-programming-poc-lib/util/async-handler.js';
 import { buildNotify } from './views/notify/controller.js';
 import { buildViewCase } from './views/case/controller.js';
+import { buildEntraClientMiddleware } from '@pins/inspector-programming-poc-lib/middleware/entra-client.js';
 import { buildViewInspector } from './views/inspector/controller.js';
 
 /**
@@ -41,14 +42,15 @@ export function buildRouter({ logger, config }) {
 		logger.warn('auth disabled; auth routes and guards skipped');
 	}
 
-	const viewHome = buildViewHome({ logger });
-	const viewNotify = buildNotify({ config, logger });
+	const entraClientMiddleware = buildEntraClientMiddleware({ logger });
+	const viewHome = buildViewHome({ logger, config });
+	const viewNotify = buildNotify({ logger, config });
 	const postHome = buildPostHome({ logger });
 	const viewCase = buildViewCase({ logger, config });
 	const viewInspector = buildViewInspector({ logger, config });
 
 	router.get('/', asyncHandler(viewHome));
-	router.post('/notify', asyncHandler(viewNotify));
+	router.post('/notify', entraClientMiddleware, asyncHandler(viewNotify));
 	router.post('/', asyncHandler(postHome));
 	router.get('/case/:caseId', asyncHandler(viewCase));
 	router.get('/inspector/:inspectorId', asyncHandler(viewInspector));

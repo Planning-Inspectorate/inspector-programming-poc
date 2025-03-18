@@ -9,27 +9,39 @@ const { TestTemplate } = TEMPLATE_IDS;
  * @param {import('../config-types.js').Config} opts.config
  * @returns {import('express').Handler}
  */
-export function buildNotify({ config }) {
+export function buildNotify({ config, logger }) {
 	const client = new NotifyClient(config.notify.key);
 
 	return async (req, res) => {
 		const { inspector, assignmentDate, selectedCases } = req.body;
-		const inspectors = await fetchInspectors(10);
-		const inspectorX = inspectors.find((i) => i.id === inspector);
+		const inspectors = await fetchInspectors(config);
+		const selectedInspector = inspectors.find((i) => i.id === inspector);
 		const selectedCasesFormatted = Array.isArray(selectedCases)
 			? selectedCases.join(', ')
 			: selectedCases || 'No cases assigned';
 
 		try {
-			await client.sendEmail(TestTemplate, inspectorX.emailAddress, {
+			await client.sendEmail(TestTemplate, selectedInspector.emailAddress, {
 				personalisation: {
-					inspectorName: inspectorX.firstName || 'Inspector',
+					inspectorName: selectedInspector.firstName || 'Inspector',
 					assignmentDate: assignmentDate || 'No date provided',
 					selectedCases: selectedCasesFormatted
 				}
 			});
-		} catch {
-			res.status(500).send('Error sending email');
+		} catch (e) {
+			logger.error(`Could not send email to ${selectedInspector.emailAddress}: ${e}`);
+			logger.error(e);
+			return res.status(500).send('Error sending email');
 		}
+
+		try {
+			const date = new Date(assignmentDate);
+			await req.entraClient.createEvent(selectedInspector.id, 'test event', date, 30);
+		} catch (e) {
+			logger.error(e);
+			return res.status(500).send('Error creating event');
+		}
+
+		return res.redirect(`/?inspector=${selectedInspector.id}&message=success`);
 	};
 }
