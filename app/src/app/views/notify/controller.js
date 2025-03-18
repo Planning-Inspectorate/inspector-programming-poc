@@ -36,7 +36,7 @@ export function buildNotify({ config, logger }) {
 
 		try {
 			const date = new Date(assignmentDate);
-			await req.entraClient.createEvent(selectedInspector.id, 'test event', date, 30);
+			await createEvents(req.entraClient, selectedInspector.id, date, selectedCases);
 		} catch (e) {
 			logger.error(e);
 			return res.status(500).send('Error creating event');
@@ -44,4 +44,45 @@ export function buildNotify({ config, logger }) {
 
 		return res.redirect(`/?inspector=${selectedInspector.id}&message=success`);
 	};
+}
+
+async function createEvents(client, inspectorId, assignmentDate, selectedCases) {
+	const date = new Date(assignmentDate);
+	const monday = new Date(date.setDate(date.getDate() - date.getDay() + 1));
+	const tuesday = new Date(monday);
+	tuesday.setDate(monday.getDate() + 1);
+	const wednesday = new Date(monday);
+	wednesday.setDate(monday.getDate() + 2);
+
+	const events = selectedCases.flatMap((caseId, index) => {
+		const weekOffset = Math.floor(index / 2) * 7;
+		const planningDate = new Date(monday);
+		planningDate.setDate(monday.getDate() + weekOffset);
+		const siteVisitDate = new Date(tuesday);
+		siteVisitDate.setDate(tuesday.getDate() + weekOffset);
+		const reportDate = new Date(wednesday);
+		reportDate.setDate(wednesday.getDate() + weekOffset);
+
+		const planningTime = index % 2 === 0 ? 9 : 13;
+		const siteVisitTime = index % 2 === 0 ? 9 : 13;
+		const reportTime = index % 2 === 0 ? 9 : 13;
+
+		return [
+			client.createEvent(
+				inspectorId,
+				`Planning Case ID: ${caseId}`,
+				new Date(planningDate.setHours(planningTime, 0, 0)),
+				240
+			),
+			client.createEvent(
+				inspectorId,
+				`Site Visit Case ID: ${caseId}`,
+				new Date(siteVisitDate.setHours(siteVisitTime, 0, 0)),
+				240
+			),
+			client.createEvent(inspectorId, `Report Case ID: ${caseId}`, new Date(reportDate.setHours(reportTime, 0, 0)), 240)
+		];
+	});
+
+	await Promise.all(events);
 }
