@@ -24,6 +24,7 @@
     "express-validator": "*",
     "govuk-frontend": "*",
     "helmet": "*",
+    "notifications-node-client": "^8.2.1",
     "nunjucks": "*",
     "ospoint": "*",
     "pino": "*",
