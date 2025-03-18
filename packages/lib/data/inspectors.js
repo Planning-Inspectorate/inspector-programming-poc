@@ -2,13 +2,16 @@ import { fakerEN_GB as faker } from '@faker-js/faker';
 
 const arrayElement = faker.helpers.arrayElement;
 const fakerPostCode = async () => faker.location.zipCode();
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const inspectors = [
 	{
 		id: 'a46af091-8445-4094-b7db-6ba7aae00f49',
 		firstName: 'Ferne',
 		lastName: 'Fisher',
-		emailAddress: 'linus.norton.dt@planninginspectorate.gov.uk',
+		emailAddress: process.env.EMAIL_ADDRESS_2,
 		address: { addressLine1: '946 Rippin Yard', postcode: 'NM46 3FR' },
 		grade: 'B3',
 		fte: 0.6,
@@ -34,7 +37,7 @@ const inspectors = [
 		id: '06a1f49a-32d6-42e0-9e7e-48f8dfc51fc0',
 		firstName: 'Fredrick',
 		lastName: 'Beier-Heidenreich',
-		emailAddress: 'joshua.wilson.at@planninginspectorate.gov.uk',
+		emailAddress: process.env.EMAIL_ADDRESS_1,
 		address: { addressLine1: '6 Daphnee Brow', postcode: 'UY3 7WS' },
 		grade: 'B1',
 		fte: 0.7,
@@ -56,7 +59,7 @@ const inspectors = [
 		id: 'eb9f79ea-1edd-4b72-b0fc-c36f7b3f1188',
 		firstName: 'Rodrick',
 		lastName: 'Hilpert',
-		emailAddress: 'Mathew.Willie@planninginspectorate.gov.uk',
+		emailAddress: process.env.EMAIL_ADDRESS_3,
 		address: { addressLine1: '33 Jamison Drive', postcode: 'GM86 7QY' },
 		grade: 'B3',
 		fte: 0.5,
