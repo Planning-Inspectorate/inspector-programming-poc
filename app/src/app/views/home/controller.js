@@ -4,13 +4,14 @@ import { fetchInspectors } from '@pins/inspector-programming-poc-lib/data/inspec
 /**
  * @param {Object} opts
  * @param {import('pino').BaseLogger} opts.logger
+ * @param {import('../config-types.js').Config} opts.config
  * @returns {import('express').Handler}
  */
-export function buildViewHome({ logger }) {
+export function buildViewHome({ logger, config }) {
 	return async (req, res) => {
 		logger.info('view home');
 
-		const inspectors = await fetchInspectors(10);
+		const inspectors = await fetchInspectors(config);
 		const selectedInspector = inspectors.find((i) => req.query.inspector === i.id) || inspectors[0];
 		const filters = req.query.filters || selectedInspector.filters;
 		const sort = req.query.sort || 'age';

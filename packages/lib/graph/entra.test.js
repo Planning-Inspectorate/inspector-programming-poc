@@ -119,4 +119,42 @@ describe('EntraClient', () => {
 			});
 		}
 	});
+
+	describe('createEvent', () => {
+		it('should create an event for the given user', async () => {
+			const calls = [];
+			const callData = [];
+			const client = {};
+			client.api = mock.fn((args) => {
+				calls.push(args);
+				return client;
+			});
+			client.post = mock.fn((args) => {
+				callData.push(args);
+				return Promise.resolve();
+			});
+
+			const entra = new EntraClient(client);
+			const userId = 'user-1';
+			const subject = 'Subject';
+			const start = new Date();
+			const lengthMins = 60;
+			await entra.createEvent(userId, subject, start, lengthMins);
+			assert.strictEqual(client.post.mock.callCount(), 1);
+			assert.strictEqual(calls.length, 1);
+			assert.strictEqual(calls[0], `/users/${userId}/events`);
+			assert.strictEqual(callData.length, 1);
+			assert.deepStrictEqual(callData[0], {
+				subject,
+				start: {
+					dateTime: start,
+					timeZone: 'UTC'
+				},
+				end: {
+					dateTime: new Date(start.getTime() + lengthMins * 60000),
+					timeZone: 'UTC'
+				}
+			});
+		});
+	});
 });

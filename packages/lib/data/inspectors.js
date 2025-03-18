@@ -5,10 +5,10 @@ const fakerPostCode = async () => faker.location.zipCode();
 
 const inspectors = [
 	{
-		id: 'a46af091-8445-4094-b7db-6ba7aae00f49',
-		firstName: 'Ferne',
-		lastName: 'Fisher',
-		emailAddress: 'linus.norton.dt@planninginspectorate.gov.uk',
+		id: process.env.USER_ID_0,
+		firstName: 'Linus',
+		lastName: 'Norton',
+		emailAddress: process.env.USER_EMAIL_0,
 		address: { addressLine1: '946 Rippin Yard', postcode: 'NM46 3FR' },
 		grade: 'B3',
 		fte: 0.6,
@@ -31,10 +31,10 @@ const inspectors = [
 		]
 	},
 	{
-		id: '06a1f49a-32d6-42e0-9e7e-48f8dfc51fc0',
-		firstName: 'Fredrick',
-		lastName: 'Beier-Heidenreich',
-		emailAddress: 'joshua.wilson.at@planninginspectorate.gov.uk',
+		id: process.env.USER_ID_1,
+		firstName: 'Joshua',
+		lastName: 'Wilson',
+		emailAddress: process.env.USER_EMAIL_1,
 		address: { addressLine1: '6 Daphnee Brow', postcode: 'UY3 7WS' },
 		grade: 'B1',
 		fte: 0.7,
@@ -53,10 +53,10 @@ const inspectors = [
 		preclusions: [{ organisation: 'Ryan, Cassin and McDermott' }, { lpaId: '3JKfh1' }, { postcode: 'TH8 6XW' }]
 	},
 	{
-		id: 'eb9f79ea-1edd-4b72-b0fc-c36f7b3f1188',
-		firstName: 'Rodrick',
-		lastName: 'Hilpert',
-		emailAddress: 'Mathew.Willie@planninginspectorate.gov.uk',
+		id: process.env.USER_ID_2,
+		firstName: 'Mathew',
+		lastName: 'Willie',
+		emailAddress: process.env.USER_EMAIL_2,
 		address: { addressLine1: '33 Jamison Drive', postcode: 'GM86 7QY' },
 		grade: 'B3',
 		fte: 0.5,
@@ -81,10 +81,10 @@ const inspectors = [
 		preclusions: []
 	},
 	{
-		id: 'f99a83c2-c7c6-4578-8f0b-a9d0195196d2',
-		firstName: 'Brycen',
-		lastName: 'Rolfson',
-		emailAddress: 'Brycen.Rolfson68@fake.pins.gov.uk',
+		id: process.env.USER_ID_3,
+		firstName: 'Benjamin',
+		lastName: 'Jacobs',
+		emailAddress: process.env.USER_EMAIL_3,
 		address: { addressLine1: '83 Samir Brae', postcode: 'WW88 8XQ' },
 		grade: 'B1',
 		fte: 0.7,
@@ -273,18 +273,21 @@ const inspectors = [
 ];
 
 /**
- * @param {number} count
+ * @param {Object} config
  * @returns {Promise<import('./types.js').Inspector[]>}
  */
-export async function fetchInspectors(count = 10) {
-	return inspectors
-		.toSorted((a, b) => {
-			if (a.lastName !== b.lastName) {
-				return a.lastName < b.lastName ? -1 : 1;
-			}
-			return a.firstName < b.firstName ? -1 : 1;
-		})
-		.slice(0, count);
+export async function fetchInspectors(config) {
+	for (let i = 0; i < config.inspectors.length; i++) {
+		inspectors[i].id = config.inspectors[i].id;
+		inspectors[i].emailAddress = config.inspectors[i].emailAddress;
+	}
+
+	return inspectors.toSorted((a, b) => {
+		if (a.lastName !== b.lastName) {
+			return a.lastName < b.lastName ? -1 : 1;
+		}
+		return a.firstName < b.firstName ? -1 : 1;
+	});
 }
 
 // eslint-disable-next-line no-unused-vars

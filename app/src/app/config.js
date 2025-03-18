@@ -45,7 +45,15 @@ export function loadConfig() {
 		MAPS_API_SECRET,
 		NODE_ENV,
 		REDIS_CONNECTION_STRING,
-		SESSION_SECRET
+		SESSION_SECRET,
+		USER_EMAIL_0,
+		USER_EMAIL_1,
+		USER_EMAIL_2,
+		USER_EMAIL_3,
+		USER_ID_0,
+		USER_ID_1,
+		USER_ID_2,
+		USER_ID_3
 	} = process.env;
 
 	const buildConfig = loadBuildConfig();
@@ -98,6 +106,12 @@ export function loadConfig() {
 			groupIds: {}
 		},
 		gitSha: GIT_SHA,
+		inspectors: [
+			{ id: USER_ID_0, emailAddress: USER_EMAIL_0 },
+			{ id: USER_ID_1, emailAddress: USER_EMAIL_1 },
+			{ id: USER_ID_2, emailAddress: USER_EMAIL_2 },
+			{ id: USER_ID_3, emailAddress: USER_EMAIL_3 }
+		],
 		// the log level to use
 		logLevel: LOG_LEVEL || 'info',
 		maps: {
