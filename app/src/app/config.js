@@ -38,6 +38,7 @@ export function loadConfig() {
 		AUTH_TENANT_ID,
 		ENTRA_GROUP_CACHE_TTL,
 		GIT_SHA,
+		GOV_NOTIFY_API_KEY,
 		LOG_LEVEL,
 		PORT,
 		MAPS_API_KEY,
@@ -102,6 +103,9 @@ export function loadConfig() {
 		maps: {
 			key: MAPS_API_KEY,
 			secret: MAPS_API_SECRET
+		},
+		notify: {
+			key: GOV_NOTIFY_API_KEY
 		},
 		NODE_ENV: NODE_ENV || 'development',
 		// the HTTP port to listen on

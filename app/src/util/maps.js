@@ -6,10 +6,9 @@ export async function getLatLongForPostcode({ key }, postcode) {
 		key
 	});
 	const res = await fetch(`https://api.os.uk/search/places/v1/postcode?${params.toString()}`);
-	console.log(res);
 
 	const places = await res.json();
-	console.log(places, key, postcode);
+
 	if (!places.results) {
 		return null;
 	}
