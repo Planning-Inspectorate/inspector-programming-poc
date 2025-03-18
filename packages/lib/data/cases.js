@@ -25,15 +25,16 @@ for (const c of cases) {
  */
 export function fetchCases(count = 10, filters = {}, sort = sortCasesByAge) {
 	const filter = applyFilters(filters);
+	const sortedCases = cases.toSorted(sort);
 	const filteredCases = [];
 
-	for (let i = 0; filteredCases.length < count && i < cases.length; i++) {
-		if (filter(cases[i])) {
-			filteredCases.push(cases[i]);
+	for (let i = 0; filteredCases.length < count && i < sortedCases.length; i++) {
+		if (filter(sortedCases[i])) {
+			filteredCases.push(sortedCases[i]);
 		}
 	}
 
-	return filteredCases.toSorted(sort);
+	return filteredCases;
 }
 
 /**
@@ -196,7 +197,7 @@ export async function createSortByDistance(inspectorLatLong) {
  * @param {import('./types.js').LatLong} latLongB
  * @returns {number}
  */
-function distanceBetween(latLongA, latLongB) {
+export function distanceBetween(latLongA, latLongB) {
 	const earthRadius = 6371;
 	const latDiff = ((latLongB.latitude - latLongA.latitude) * Math.PI) / 180;
 	const longDiff = ((latLongB.longitude - latLongA.longitude) * Math.PI) / 180;
