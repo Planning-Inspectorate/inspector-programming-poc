@@ -12,7 +12,6 @@ export function buildViewHome({ logger, config }) {
 		logger.info('view home');
 
 		const mapsKey = config.maps.key;
-
 		const inspectors = await fetchInspectors(config);
 		const selectedInspector = inspectors.find((i) => req.query.inspector === i.id) || inspectors[0];
 		const filters = req.query.filters || selectedInspector.filters;
