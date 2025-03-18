@@ -55,18 +55,13 @@ export class EntraClient {
 	 *
 	 * @param {string} userId
 	 * @param {string} subject
-	 * @param {string} body
 	 * @param {Date} start
 	 * @param {number} lengthMins
 	 * @returns {Promise<import('@microsoft/microsoft-graph-client').ClientResponse>}
 	 */
-	async createEvent(userId, subject, body, start, lengthMins) {
+	async createEvent(userId, subject, start, lengthMins) {
 		const event = {
 			subject,
-			body: {
-				contentType: 'text',
-				content: body
-			},
 			start: {
 				dateTime: start,
 				timeZone: 'UTC'

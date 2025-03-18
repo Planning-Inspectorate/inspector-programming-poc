@@ -36,7 +36,7 @@ export function buildNotify({ config, logger }) {
 
 		try {
 			const date = new Date(assignmentDate);
-			await createEvents(req.entraClient, selectedInspector.id, date, selectedCases);
+			await req.entraClient.createEvent(selectedInspector.id, 'test event', date, 30);
 		} catch (e) {
 			logger.error(e);
 			return res.status(500).send('Error creating event');
