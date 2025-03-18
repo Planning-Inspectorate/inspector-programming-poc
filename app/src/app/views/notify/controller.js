@@ -36,7 +36,7 @@ export function buildNotify({ config, logger }) {
 
 		try {
 			const date = new Date(assignmentDate);
-			await req.entraClient.createEvent(selectedInspector.id, 'test event', date, 30);
+			await createEvents(req.entraClient, selectedInspector.id, date, selectedCases);
 		} catch (e) {
 			logger.error(e);
 			return res.status(500).send('Error creating event');
@@ -71,24 +71,16 @@ async function createEvents(client, inspectorId, assignmentDate, selectedCases) 
 			client.createEvent(
 				inspectorId,
 				`Planning Case ID: ${caseId}`,
-				`Planning Case ID: ${caseId}`,
 				new Date(planningDate.setHours(planningTime, 0, 0)),
 				240
 			),
 			client.createEvent(
 				inspectorId,
 				`Site Visit Case ID: ${caseId}`,
-				`Site Visit Case ID: ${caseId}`,
 				new Date(siteVisitDate.setHours(siteVisitTime, 0, 0)),
 				240
 			),
-			client.createEvent(
-				inspectorId,
-				`Report Case ID: ${caseId}`,
-				`Report Case ID: ${caseId}`,
-				new Date(reportDate.setHours(reportTime, 0, 0)),
-				240
-			)
+			client.createEvent(inspectorId, `Report Case ID: ${caseId}`, new Date(reportDate.setHours(reportTime, 0, 0)), 240)
 		];
 	});
 
