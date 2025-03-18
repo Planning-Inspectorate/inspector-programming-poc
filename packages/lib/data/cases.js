@@ -1,32 +1,37 @@
 import { fakerEN_GB as faker } from '@faker-js/faker';
 import { APPEAL_CASE_STATUS, APPEAL_EVENT_TYPE } from 'pins-data-model';
+import cases from './cases.json';
 
 const arrayElement = faker.helpers.arrayElement;
-const fakerPostCode = async () => faker.location.zipCode();
 
 /**
  * @param {number} count
- * @param {() => Promise<string>} randomPostcode
  * @param {Record<string, string | string[]>} filters
  * @param {(a: import('./types.js').AppealCase, b: import('./types.js').AppealCase) => number} sort
- * @returns {Promise<import('./types.js').AppealCase[]>}
+ * @returns {import('./types.js').AppealCase[]}
  */
-export async function fetchCases(count = 10, filters = {}, sort = sortCasesByAge, randomPostcode = fakerPostCode) {
-	const cases = [];
+export function fetchCases(count = 10, filters = {}, sort = sortCasesByAge) {
 	const filter = applyFilters(filters);
-	let i = 0;
-	let maxAttempts = count * 10;
+	const filteredCases = [];
 
-	while (cases.length < count && i++ < maxAttempts) {
-		const caseData = await createCase(randomPostcode);
-		if (filter(caseData)) {
-			cases.push(caseData);
+	for (let i = 0; i < count && i < cases.length; ) {
+		if (filter(cases[i])) {
+			filteredCases.push(cases[i++]);
 		}
 	}
 
-	return cases.toSorted(sort);
+	return filteredCases.toSorted(sort);
 }
 
+/**
+ * @param {string} caseId
+ * @returns {import('./types.js').AppealCase}
+ */
+export function fetchCase(caseId) {
+	return cases.find((c) => c.caseId === caseId);
+}
+
+// eslint-disable-next-line no-unused-vars
 async function createCase(randomPostcode) {
 	const allocationBand = arrayElement([1, 2, 3]);
 	const caseAge = faker.number.int({ min: 1, max: 52 });
