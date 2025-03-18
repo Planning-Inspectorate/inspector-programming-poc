@@ -6,8 +6,7 @@
   "type": "module",
   "main": "index.js",
   "workspaces": [
-    "app",
-      "packages/*"
+    "app"
   ],
   "scripts": {
     "commitlint": "commitlint --from=$(git cherry origin/main | head -n 1 | cut -c 3-)",

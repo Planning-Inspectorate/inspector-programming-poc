@@ -8,7 +8,7 @@ const inspectors = [
 		id: 'a46af091-8445-4094-b7db-6ba7aae00f49',
 		firstName: 'Ferne',
 		lastName: 'Fisher',
-		emailAddress: 'Ferne_Fisher@fake.pins.gov.uk',
+		emailAddress: 'linus.norton.dt@planninginspectorate.gov.uk',
 		address: { addressLine1: '946 Rippin Yard', postcode: 'NM46 3FR' },
 		grade: 'B3',
 		fte: 0.6,
