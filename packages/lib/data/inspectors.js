@@ -104,8 +104,8 @@ const inspectors = [
 	},
 	{
 		id: '8d94d3a4-d979-429e-b816-6befab73441e',
-		firstName: 'Thurman',
-		lastName: 'Schaden',
+		firstName: 'Joanne',
+		lastName: 'Hodgson',
 		emailAddress: 'Thurman_Schaden56@fake.pins.gov.uk',
 		address: { addressLine1: '947 Andre Mount', postcode: 'TR57 2AH' },
 		grade: 'B2',
