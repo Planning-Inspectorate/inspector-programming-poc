@@ -240,12 +240,17 @@
                 </form>
                 <form method="get" novalidate>
                     <input type="hidden" name="inspector" value="{{ inspectorId }}">
-                    <input type="hidden" name="ageRange" value="{{ ageRange }}">
-                    <input type="hidden" name="caseProcedure" value="{{ caseProcedure }}">
-                    <input type="hidden" name="lpaRegion" value="{{ lpaRegion }}">
-                    <input type="hidden" name="caseType" value="{{ caseType }}">
-                    <input type="hidden" name="caseSpecialisms" value="{{ caseSpecialisms }}">
-                    <input type="hidden" name="allocationLevel" value="{{ allocationLevel }}">
+
+                    {% for key, value in data.filters %}
+                        {% if value is iterable and not value is string %}
+                            {% for item in value %}
+                                <input type="hidden" name="filters[{{ key }}][]" value="{{ item }}">
+                            {% endfor %}
+                        {% else %}
+                            <input type="hidden" name="filters[{{ key }}]" value="{{ value }}">
+                        {% endif %}
+                    {% endfor %}
+                    
                     <div class="app-filter__header">
                         <div class="app-filter__header-title">
                             <h2 class="govuk-heading-m bold-title">Sort by</h2>

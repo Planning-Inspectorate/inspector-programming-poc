@@ -1,32 +1,51 @@
 import { fakerEN_GB as faker } from '@faker-js/faker';
 import { APPEAL_CASE_STATUS, APPEAL_EVENT_TYPE } from 'pins-data-model';
+import fs from 'node:fs';
 
 const arrayElement = faker.helpers.arrayElement;
-const fakerPostCode = async () => faker.location.zipCode();
+const casesString = fs.readFileSync(import.meta.dirname + '/cases.json', 'utf-8');
+const cases = JSON.parse(casesString);
+
+for (const c of cases) {
+	c.finalCommentsDate = new Date(c.finalCommentsDate);
+	c.caseSubmittedDate = new Date(c.caseSubmittedDate);
+	c.caseValidDate = new Date(c.caseValidDate);
+	c.caseStartedDate = new Date(c.caseStartedDate);
+	c.targetDate = new Date(c.targetDate);
+	c.rosewellTarget = new Date(c.rosewellTarget);
+	c.personalTargetDate = new Date(c.personalTargetDate);
+	c.appealEventDate = new Date(c.appealEventDate);
+}
 
 /**
  * @param {number} count
- * @param {() => Promise<string>} randomPostcode
  * @param {Record<string, string | string[]>} filters
  * @param {(a: import('./types.js').AppealCase, b: import('./types.js').AppealCase) => number} sort
- * @returns {Promise<import('./types.js').AppealCase[]>}
+ * @returns {import('./types.js').AppealCase[]}
  */
-export async function fetchCases(count = 10, filters = {}, sort = sortCasesByAge, randomPostcode = fakerPostCode) {
-	const cases = [];
+export function fetchCases(count = 10, filters = {}, sort = sortCasesByAge) {
 	const filter = applyFilters(filters);
-	let i = 0;
-	let maxAttempts = count * 10;
+	const sortedCases = cases.toSorted(sort);
+	const filteredCases = [];
 
-	while (cases.length < count && i++ < maxAttempts) {
-		const caseData = await createCase(randomPostcode);
-		if (filter(caseData)) {
-			cases.push(caseData);
+	for (let i = 0; filteredCases.length < count && i < sortedCases.length; i++) {
+		if (filter(sortedCases[i])) {
+			filteredCases.push(sortedCases[i]);
 		}
 	}
 
-	return cases.toSorted(sort);
+	return filteredCases;
 }
 
+/**
+ * @param {string} caseId
+ * @returns {import('./types.js').AppealCase}
+ */
+export function fetchCase(caseId) {
+	return cases.find((c) => c.caseId === caseId);
+}
+
+// eslint-disable-next-line no-unused-vars
 async function createCase(randomPostcode) {
 	const allocationBand = arrayElement([1, 2, 3]);
 	const caseAge = faker.number.int({ min: 1, max: 52 });
@@ -178,7 +197,7 @@ export async function createSortByDistance(inspectorLatLong) {
  * @param {import('./types.js').LatLong} latLongB
  * @returns {number}
  */
-function distanceBetween(latLongA, latLongB) {
+export function distanceBetween(latLongA, latLongB) {
 	const earthRadius = 6371;
 	const latDiff = ((latLongB.latitude - latLongA.latitude) * Math.PI) / 180;
 	const longDiff = ((latLongB.longitude - latLongA.longitude) * Math.PI) / 180;

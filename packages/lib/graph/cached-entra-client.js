@@ -72,11 +72,12 @@ export class CachedEntraClient {
 	 *
 	 * @param {string} userId
 	 * @param {string} subject
+	 * @param {string} body
 	 * @param {Date} start
 	 * @param {number} lengthMins
 	 * @returns {Promise<import('@microsoft/microsoft-graph-client').ClientResponse>}
 	 */
-	async createEvent(userId, subject, start, lengthMins) {
-		return this.#client.createEvent(userId, subject, start, lengthMins);
+	async createEvent(userId, subject, body, start, lengthMins) {
+		return this.#client.createEvent(userId, subject, body, start, lengthMins);
 	}
 }
