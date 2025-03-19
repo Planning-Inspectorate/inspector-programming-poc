@@ -332,12 +332,13 @@
         </div>
     </div>
 
-    <div id="map-view" class="view">
-        <div class="pins-map">
-            <div class="pins-map__container">
-                <div id="map" class="pins-map__content"></div>
-                <div class="map-container">
-                    {{ map(apiKey, pins) }}
+    <div id="map-view_test" class="view">
+        <div class="pins-map_test">
+            <div class="pins-map__container_test">
+                <div id="map_test" class="pins-map__content_test">
+                    <div class="map-container_test">
+                        {{ map(apiKey, pins) }}
+                    </div>
                 </div>
             </div>
         </div>
@@ -353,16 +354,15 @@
                 checkbox.checked = selectAllCheckbox.checked;
             });
         });
-/*
         const tableTab = document.getElementById('tab-table');
         const mapTab = document.getElementById('tab-map');
         const tableView = document.getElementById('table-view');
-        const mapView = document.getElementById('map-view');
+        const mapView = document.getElementById('map-view_test');
 
         mapTab.classList.add('active');
         tableTab.classList.remove('active');
-        tableView.style.display = 'none';
-        mapView.style.display = 'block';
+        tableView.style.display = 'block';
+        mapView.style.display = 'none';
 
         tableTab.addEventListener('click', function (e) {
             e.preventDefault();
@@ -380,7 +380,6 @@
             mapView.style.display = 'block';
         });
     });
-*/
 </script>
 
 {% endblock %}
