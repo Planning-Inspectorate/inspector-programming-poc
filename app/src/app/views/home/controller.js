@@ -16,9 +16,9 @@ export function buildViewHome({ logger, config }) {
 		const selectedInspector = inspectors.find((i) => req.query.inspector === i.id) || inspectors[0];
 		const filters = req.query.filters || selectedInspector.filters;
 		const sort = req.query.sort || 'age';
-		const inspectorLatLong = { latitude: 53.4808, longitude: 0.0927 };
+		const inspectorLatLong = { latitude: 52.42950704867449, longitude: -1.8996231835728423 };
 		const sortFunc = sort === 'age' ? sortCasesByAge : await createSortByDistance(inspectorLatLong);
-		const cases = await fetchCases(10, filters, sortFunc);
+		const cases = fetchCases(10, filters, sortFunc);
 
 		const pins = cases.map((caseData) => {
 			const { latitude, longitude } = caseData.siteAddressLatLong;
