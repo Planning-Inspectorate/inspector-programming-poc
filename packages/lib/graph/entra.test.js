@@ -139,13 +139,18 @@ describe('EntraClient', () => {
 			const subject = 'Subject';
 			const start = new Date();
 			const lengthMins = 60;
-			await entra.createEvent(userId, subject, start, lengthMins);
+			const body = 'Body';
+			await entra.createEvent(userId, subject, body, start, lengthMins);
 			assert.strictEqual(client.post.mock.callCount(), 1);
 			assert.strictEqual(calls.length, 1);
 			assert.strictEqual(calls[0], `/users/${userId}/events`);
 			assert.strictEqual(callData.length, 1);
 			assert.deepStrictEqual(callData[0], {
 				subject,
+				body: {
+					contentType: 'text',
+					content: body
+				},
 				start: {
 					dateTime: start,
 					timeZone: 'UTC'
