@@ -50,10 +50,12 @@ export function loadConfig() {
 		USER_EMAIL_1,
 		USER_EMAIL_2,
 		USER_EMAIL_3,
+		USER_EMAIL_4,
 		USER_ID_0,
 		USER_ID_1,
 		USER_ID_2,
-		USER_ID_3
+		USER_ID_3,
+		USER_ID_4
 	} = process.env;
 
 	const buildConfig = loadBuildConfig();
@@ -110,7 +112,8 @@ export function loadConfig() {
 			{ id: USER_ID_0, emailAddress: USER_EMAIL_0 },
 			{ id: USER_ID_1, emailAddress: USER_EMAIL_1 },
 			{ id: USER_ID_2, emailAddress: USER_EMAIL_2 },
-			{ id: USER_ID_3, emailAddress: USER_EMAIL_3 }
+			{ id: USER_ID_3, emailAddress: USER_EMAIL_3 },
+			{ id: USER_ID_4, emailAddress: USER_EMAIL_4 }
 		],
 		// the log level to use
 		logLevel: LOG_LEVEL || 'info',
