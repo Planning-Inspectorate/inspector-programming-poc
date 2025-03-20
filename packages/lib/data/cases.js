@@ -20,21 +20,14 @@ for (const c of cases) {
 /**
  * @param {number} count
  * @param {Record<string, string | string[]>} filters
- * @param {(a: import('./types.js').AppealCase, b: import('./types.js').AppealCase) => number} sort
+ * @param {(cases: import('./types.js').AppealCase[]) => import('./types.js').AppealCase[]} sort
  * @returns {import('./types.js').AppealCase[]}
  */
 export function fetchCases(count = 10, filters = {}, sort = sortCasesByAge) {
 	const filter = applyFilters(filters);
-	const sortedCases = cases.toSorted(sort);
-	const filteredCases = [];
+	const filteredCases = cases.filter(filter);
 
-	for (let i = 0; filteredCases.length < count && i < sortedCases.length; i++) {
-		if (filter(sortedCases[i])) {
-			filteredCases.push(sortedCases[i]);
-		}
-	}
-
-	return filteredCases;
+	return sort(filteredCases).slice(0, Math.min(count, filteredCases.length));
 }
 
 /**
@@ -178,15 +171,37 @@ function applyFilters(filters) {
 	};
 }
 
-export function sortCasesByAge(a, b) {
-	return b.caseAge - a.caseAge;
+export function sortCasesByAge(inputCases) {
+	return inputCases.toSorted((a, b) => b.caseAge - a.caseAge);
 }
 
-export async function createSortByDistance(inspectorLatLong) {
-	return (a, b) => {
-		const distanceA = distanceBetween(a.siteAddressLatLong, inspectorLatLong);
-		const distanceB = distanceBetween(b.siteAddressLatLong, inspectorLatLong);
-		return distanceA - distanceB;
+export function createSortByDistance(inspectorLatLong) {
+	return (inputCases) =>
+		inputCases.toSorted((a, b) => {
+			const distanceA = distanceBetween(a.siteAddressLatLong, inspectorLatLong);
+			const distanceB = distanceBetween(b.siteAddressLatLong, inspectorLatLong);
+			return distanceA - distanceB;
+		});
+}
+
+export function sortByAgeAndDistance(baseLatLong, distanceWeight = 1, ageWeight = 1) {
+	const sortByDistance = createSortByDistance(baseLatLong);
+	return (inputCases) => {
+		const casesByAge = sortCasesByAge(inputCases);
+		const casesByDistance = sortByDistance(inputCases);
+
+		return (
+			inputCases
+				// this could be optimized by using a map to store the index of each case
+				.map((caseI) => {
+					const distanceScore = casesByDistance.indexOf(caseI);
+					const ageScore = casesByAge.indexOf(caseI);
+					const score = distanceWeight * distanceScore + ageWeight * ageScore;
+					return { case: caseI, score };
+				})
+				.toSorted((a, b) => a.score - b.score)
+				.map((pair) => pair.case)
+		);
 	};
 }
 
@@ -195,7 +210,7 @@ export async function createSortByDistance(inspectorLatLong) {
  *
  * @param {import('./types.js').LatLong} latLongA
  * @param {import('./types.js').LatLong} latLongB
- * @returns {number}
+ * @returns {number} Distance in km
  */
 export function distanceBetween(latLongA, latLongB) {
 	const earthRadius = 6371;
@@ -209,4 +224,53 @@ export function distanceBetween(latLongA, latLongB) {
 			Math.sin(longDiff / 2);
 	const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 	return earthRadius * c;
+}
+
+/**
+ * Pairs cases that are geographically close and of a similar age using a weighted algorithm.
+ * @param {Array} inputCases - Array of case objects with latitude, longitude, and age properties.
+ * @param {number} distanceWeight - Weight for the distance component.
+ * @param {number} ageWeight - Weight for the age component.
+ * @returns {Array} - Array of paired cases.
+ */
+export function pairCases(inputCases, distanceWeight = 1, ageWeight = 1) {
+	let casesByAge = sortCasesByAge(inputCases);
+	const pairs = [];
+
+	while (casesByAge.length > 1) {
+		let bestPair = null;
+		let bestScore = Infinity;
+		const caseI = casesByAge[0];
+		const sortByDistance = createSortByDistance(caseI.siteAddressLatLong);
+		const casesByDistance = sortByDistance(casesByAge);
+
+		for (let j = 1; j < casesByAge.length; j++) {
+			// we normalise the score by saying that case i is the nth closest case to case j
+			// that keeps the scoring relative it's score against other cases
+			// if we'd just use the raw kilometer distance then the weighting would work differently
+			// depending on the area covered by inspectors in more rural areas
+			const distanceScore = casesByDistance.indexOf(casesByAge[j]);
+			// we do something similar here for age where we select the next oldest case
+			// as the cases are already sorted we can just use j as j is the nth oldest case
+			const ageScore = j;
+			const score = distanceWeight * distanceScore + ageWeight * ageScore;
+
+			if (score < bestScore) {
+				bestPair = [caseI, casesByAge[j]];
+				bestScore = score;
+			}
+		}
+
+		if (bestPair) {
+			pairs.push(bestPair);
+			// Remove the paired cases from the list to avoid re-pairing
+			casesByAge = casesByAge.filter((c) => c !== bestPair[0] && c !== bestPair[1]);
+		}
+	}
+
+	if (casesByAge.length > 0) {
+		pairs.push(casesByAge);
+	}
+
+	return pairs;
 }

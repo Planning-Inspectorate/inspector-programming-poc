@@ -1,6 +1,7 @@
 import { TEMPLATE_IDS } from '#util/notify.js';
 import { NotifyClient } from 'notifications-node-client';
 import { fetchInspectors } from '@pins/inspector-programming-poc-lib/data/inspectors.js';
+import { fetchCase, pairCases } from '@pins/inspector-programming-poc-lib/data/cases.js';
 
 const { TestTemplate } = TEMPLATE_IDS;
 
@@ -36,7 +37,8 @@ export function buildNotify({ config, logger }) {
 
 		try {
 			const date = new Date(assignmentDate);
-			await createEvents(req.entraClient, selectedInspector.id, date, selectedCases);
+			const cases = selectedCases.map((id) => fetchCase(id));
+			await createEvents(req.entraClient, selectedInspector.id, date, cases);
 		} catch (e) {
 			logger.error(e);
 			return res.status(500).send('Error creating event');
@@ -54,7 +56,9 @@ async function createEvents(client, inspectorId, assignmentDate, selectedCases) 
 	const wednesday = new Date(monday);
 	wednesday.setDate(monday.getDate() + 2);
 
-	const events = selectedCases.flatMap((caseId, index) => {
+	const orderedCases = pairCases(selectedCases, 1, 1).flat();
+
+	const events = orderedCases.flatMap((caseData, index) => {
 		const weekOffset = Math.floor(index / 2) * 7;
 		const planningDate = new Date(monday);
 		planningDate.setDate(monday.getDate() + weekOffset);
@@ -70,22 +74,22 @@ async function createEvents(client, inspectorId, assignmentDate, selectedCases) 
 		return [
 			client.createEvent(
 				inspectorId,
-				`Planning Case ID: ${caseId}`,
-				`Planning Case ID: ${caseId}`,
+				`Planning Case ID: ${caseData.caseId}`,
+				`Planning Case ID: ${caseData.caseId}`,
 				new Date(planningDate.setHours(planningTime, 0, 0)),
 				240
 			),
 			client.createEvent(
 				inspectorId,
-				`Site Visit Case ID: ${caseId}`,
-				`Site Visit Case ID: ${caseId}`,
+				`Site Visit Case ID: ${caseData.caseId}`,
+				`Site Visit Case ID: ${caseData.caseId}`,
 				new Date(siteVisitDate.setHours(siteVisitTime, 0, 0)),
 				240
 			),
 			client.createEvent(
 				inspectorId,
-				`Report Case ID: ${caseId}`,
-				`Report Case ID: ${caseId}`,
+				`Report Case ID: ${caseData.caseId}`,
+				`Report Case ID: ${caseData.caseId}`,
 				new Date(reportDate.setHours(reportTime, 0, 0)),
 				240
 			)

@@ -21,7 +21,7 @@ const inspectors = [
 		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
-			lpaRegion: ['North'],
+			lpaRegion: ['East'],
 			caseType: ['W', 'D'],
 			caseSpecialisms: ['Roads and traffics', 'Natural heritage', 'Schedule 1'],
 			allocationLevel: ['D', 'E', 'F', 'G', 'H']
@@ -31,7 +31,8 @@ const inspectors = [
 			{ organisation: 'Schroeder Group' },
 			{ organisation: 'Schiller, Hegmann and Considine' },
 			{ lpaId: 'uMCybo' }
-		]
+		],
+		homeLatLong: { latitude: 52.6309, longitude: 1.2974 }
 	},
 	{
 		id: process.env.USER_ID_1,
@@ -47,13 +48,14 @@ const inspectors = [
 		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
-			lpaRegion: ['West'],
+			lpaRegion: ['South'],
 			caseType: ['W', 'D'],
 			caseSpecialisms: ['Access', 'Listed building and enforcement', 'Roads and traffics'],
 			allocationLevel: ['A', 'B', 'C', 'D', 'E']
 		},
 		specialisms: [{ name: 'Schedule 1', proficiency: 'in-training', validFrom: '2026-02-02T12:21:13.655Z' }],
-		preclusions: [{ organisation: 'Ryan, Cassin and McDermott' }, { lpaId: '3JKfh1' }, { postcode: 'TH8 6XW' }]
+		preclusions: [{ organisation: 'Ryan, Cassin and McDermott' }, { lpaId: '3JKfh1' }, { postcode: 'TH8 6XW' }],
+		homeLatLong: { latitude: 51.5074, longitude: -0.1278 }
 	},
 	{
 		id: process.env.USER_ID_2,
@@ -69,7 +71,7 @@ const inspectors = [
 		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
-			lpaRegion: ['East'],
+			lpaRegion: ['West'],
 			caseType: ['W'],
 			caseSpecialisms: [
 				'Access',
@@ -81,7 +83,8 @@ const inspectors = [
 			allocationLevel: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 		},
 		specialisms: [{ name: 'Access', proficiency: 'trained', validFrom: '2024-09-16T09:47:28.450Z' }],
-		preclusions: []
+		preclusions: [],
+		homeLatLong: { latitude: 51.4545, longitude: -2.5879 }
 	},
 	{
 		id: process.env.USER_ID_3,
@@ -97,13 +100,14 @@ const inspectors = [
 		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
-			lpaRegion: ['South', 'East'],
+			lpaRegion: ['North'],
 			caseType: ['W', 'D'],
 			caseSpecialisms: ['Access', 'Listed building and enforcement', 'Schedule 1'],
 			allocationLevel: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 		},
 		specialisms: [],
-		preclusions: [{ lpaId: 'A9Qy6O' }, { lpaId: 'PuaLPH' }, { organisation: 'Hills, Ferry and Thompson' }]
+		preclusions: [{ lpaId: 'A9Qy6O' }, { lpaId: 'PuaLPH' }, { organisation: 'Hills, Ferry and Thompson' }],
+		homeLatLong: { latitude: 54.9783, longitude: -1.6174 }
 	},
 	{
 		id: '8d94d3a4-d979-429e-b816-6befab73441e',
@@ -119,13 +123,14 @@ const inspectors = [
 		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
-			lpaRegion: ['North', 'West'],
+			lpaRegion: ['South', 'East'],
 			caseType: ['W', 'D'],
 			caseSpecialisms: ['Natural heritage', 'Schedule 1'],
 			allocationLevel: ['F', 'G', 'H']
 		},
 		specialisms: [],
-		preclusions: []
+		preclusions: [],
+		homeLatLong: { latitude: 51.2802, longitude: 1.0789 }
 	},
 	{
 		id: '969c6a8d-ece0-4ec1-955d-237d95faad32',
@@ -159,7 +164,8 @@ const inspectors = [
 				validFrom: '2026-01-25T09:56:04.979Z'
 			}
 		],
-		preclusions: []
+		preclusions: [],
+		homeLatLong: { latitude: 52.4862, longitude: -1.8904 }
 	},
 	{
 		id: '9f20bf0c-0f24-49a3-b133-b2659cadfb45',
@@ -175,7 +181,7 @@ const inspectors = [
 		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
-			lpaRegion: ['North', 'South', 'East', 'West'],
+			lpaRegion: ['North'],
 			caseType: ['W', 'D'],
 			caseSpecialisms: [
 				'Access',
@@ -187,7 +193,8 @@ const inspectors = [
 			allocationLevel: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 		},
 		specialisms: [],
-		preclusions: [{ organisation: 'Glover - Stoltenberg' }, { lpaId: '9UkVPl' }, { organisation: 'Graham - Bayer' }]
+		preclusions: [{ organisation: 'Glover - Stoltenberg' }, { lpaId: '9UkVPl' }, { organisation: 'Graham - Bayer' }],
+		homeLatLong: { latitude: 55.9533, longitude: -3.1883 }
 	},
 	{
 		id: 'f84bc7b1-b543-455a-a781-400577e6e909',
@@ -215,7 +222,8 @@ const inspectors = [
 			allocationLevel: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 		},
 		specialisms: [],
-		preclusions: [{ organisation: 'Keeling LLC' }, { postcode: 'WV96 0AI' }, { lpaId: 'vEdzfu' }]
+		preclusions: [{ organisation: 'Keeling LLC' }, { postcode: 'WV96 0AI' }, { lpaId: 'vEdzfu' }],
+		homeLatLong: { latitude: 53.4808, longitude: -2.2426 }
 	},
 	{
 		id: '2978d8e4-1fec-45ca-b5ef-6ff609dc7f45',
@@ -231,7 +239,7 @@ const inspectors = [
 		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
-			lpaRegion: ['North', 'South', 'East', 'West'],
+			lpaRegion: ['West'],
 			caseType: ['W', 'D'],
 			caseSpecialisms: [
 				'Access',
@@ -243,7 +251,8 @@ const inspectors = [
 			allocationLevel: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 		},
 		specialisms: [],
-		preclusions: [{ organisation: 'Franecki LLC' }, { lpaId: '6jQX6s' }, { postcode: 'FR98 7SZ' }]
+		preclusions: [{ organisation: 'Franecki LLC' }, { lpaId: '6jQX6s' }, { postcode: 'FR98 7SZ' }],
+		homeLatLong: { latitude: 53.3113, longitude: -4.6339 }
 	},
 	{
 		id: '1a63dd9e-4738-462a-907e-84fcb02b9746',
@@ -259,7 +268,7 @@ const inspectors = [
 		chartingOfficerPhone: faker.phone.number(),
 		filters: {
 			caseProcedure: ['Written reps', 'Hearing', 'Inquiry'],
-			lpaRegion: ['North', 'South', 'East', 'West'],
+			lpaRegion: ['South'],
 			caseType: ['W', 'D'],
 			caseSpecialisms: [
 				'Access',
@@ -271,7 +280,8 @@ const inspectors = [
 			allocationLevel: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 		},
 		specialisms: [],
-		preclusions: [{ postcode: 'RH3 0VP' }, { lpaId: 'nAlJli' }, { organisation: 'Stehr Group' }]
+		preclusions: [{ postcode: 'RH3 0VP' }, { lpaId: 'nAlJli' }, { organisation: 'Stehr Group' }],
+		homeLatLong: { latitude: 50.9097, longitude: -1.4044 }
 	}
 ];
 
