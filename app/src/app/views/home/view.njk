@@ -246,133 +246,104 @@
     </div>
 <div class="cases-inspectors-container">
     <div id="table-view" class="view">
-        <div>
-            <input type="checkbox" id="select-all" />
-            <label for="select-all">Select All</label>
-        </div>
-        <form method="post" action="/notify" novalidate>
-            <input type="hidden" name="inspector" value="{{ inspectorId }}">
-            <div class="align-right">
-                <div class="govuk-form-group">
-                    <label class="govuk-label" for="assignment-date">Event date: </label>
-                </div>
-                <div class="govuk-form-group">
-                    <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
-                </div>
-                <div class="govuk-form-group">
-                    {{ govukButton({
-                        text: "Assign selected cases",
-                        type: "submit"
-                    }) }}
-                </div>
-            </div>
-                {% set caseRows = [] %}
-                {% for c in cases %}
-                    {% set caseRows = (caseRows.push([
-                        { html: govukCheckboxes({
-                            name: "selectedCases",
-                            classes: "govuk-checkboxes--small",
-                            items: [{ value: c.caseId, text: " ", checked: false }]
-                        }) },
-                        { html: '<a href="/case/' + c.caseId + '" class="govuk-link">' + c.caseId + '</a>' },
-                        { text: c.caseType },
-                        { text: c.caseProcedure },
-                        { text: c.allocationBand },
-                        { text: c.caseLevel },
-                        { text: c.siteAddressPostcode },
-                        { text: c.lpaName },
-                        { text: c.lpaRegion },
-                        { text: c.caseStatus },
-                        { text: c.caseAge },
-                        { html: '<a href="/case/' + c.linkedCases + '" class="govuk-link">' + c.linkedCases + '</a>' },
-                        { text: c.finalCommentsDate },
-                        { text: c.programmingStatus }
-                    ]), caseRows) %}
-                {% endfor %}
 
-                {% set casesTable %}
-                    {{ govukTable({
-                        classes: "govuk-!-font-size-14",
-                        head: [
-                            { text: "" },
-                            { text: "Reference" },
-                            { text: "Type" },
-                            { text: "Procedure" },
-                            { text: "Band" },
-                            { text: "Level" },
-                            { text: "Location" },
-                            { text: "LPA" },
-                            { text: "Region" },
-                            { text: "Case Status" },
-                            { text: "Age" },
-                            { text: "Linked cases" },
-                            { text: "Final comments date" },
-                            { text: "Prog Status" }
-                        ],
-                        rows: caseRows
-                    }) }}
-                {% endset %}
+        {% set caseRows = [] %}
+        {% for c in cases %}
+            {% set caseRows = (caseRows.push([
+                { html: govukCheckboxes({
+                    name: "selectedCases",
+                    classes: "govuk-checkboxes--small",
+                    items: [{ value: c.caseId, text: " ", checked: false }]
+                }) },
+                { html: '<a href="/case/' + c.caseId + '" class="govuk-link">' + c.caseId + '</a>' },
+                { text: c.caseType },
+                { text: c.caseProcedure },
+                { text: c.allocationBand },
+                { text: c.caseLevel },
+                { text: c.siteAddressPostcode },
+                { text: c.lpaName },
+                { text: c.lpaRegion },
+                { text: c.caseStatus },
+                { text: c.caseAge },
+                { html: '<a href="/case/' + c.linkedCases + '" class="govuk-link">' + c.linkedCases + '</a>' },
+                { text: c.finalCommentsDate },
+                { text: c.programmingStatus }
+            ]), caseRows) %}
+        {% endfor %}
 
-                {% set mapView %}
-                    <div class="home-map">
-                        <div class="map-container_test">
-                            <div id="map_test" class="map-content_test">
-                                {{ map(apiKey, pins) }}
-                            </div>
-                        </div>
+        {% set casesTable %}
+            <form method="post" action="/notify" novalidate>
+                <input type="hidden" name="inspector" value="{{ inspectorId }}">
+                <div class="align-right">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="assignment-date">Event date: </label>
                     </div>
-                {% endset %}
-
-                {{ govukTabs({
-                    items: [
-                        {
-                            label: "Cases Table",
-                            id: "cases",
-                            panel: { html: casesTable }
-                        },
-                        {
-                            label: "Map View",
-                            id: "map",
-                            panel: { html: mapView }
-                        }
-                    ]
+                    <div class="govuk-form-group">
+                        <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
+                    </div>
+                    <div class="govuk-form-group">
+                        {{ govukButton({
+                            text: "Assign selected cases",
+                            type: "submit"
+                        }) }}
+                    </div>
+                </div>
+                {{ govukTable({
+                    classes: "govuk-!-font-size-14",
+                    head: [
+                        { html: govukCheckboxes({
+                            idPrefix: "select-all",
+                            name: "select-all",
+                            classes: "govuk-checkboxes--small",
+                            items: [{ value: "select-all", text: " ", checked: false }]
+                        }) },
+                        { text: "Reference" },
+                        { text: "Type" },
+                        { text: "Procedure" },
+                        { text: "Band" },
+                        { text: "Level" },
+                        { text: "Location" },
+                        { text: "LPA" },
+                        { text: "Region" },
+                        { text: "Case Status" },
+                        { text: "Age" },
+                        { text: "Linked cases" },
+                        { text: "Final comments date" },
+                        { text: "Prog Status" }
+                    ],
+                    rows: caseRows
                 }) }}
-        </form>
+            </form>
+        {% endset %}
+
+        {% set mapView %}
+            <div class="home-map">
+                {{ map(apiKey, pins) }}
+            </div>
+        {% endset %}
+
+        {{ govukTabs({
+            items: [
+                {
+                    label: "Cases Table",
+                    id: "cases",
+                    panel: { html: casesTable }
+                },
+                {
+                    label: "Map View",
+                    id: "mapView",
+                    panel: { html: mapView }
+                }
+            ]
+        }) }}
     </div>
 </div>
 <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %}>
-    document.addEventListener('DOMContentLoaded', function () {
-        const selectAllCheckbox = document.querySelector('#select-all');
-        const checkboxes = document.querySelectorAll('input[type="checkbox"][name="selectedCases"]');
-        selectAllCheckbox.addEventListener('change', function () {
-            checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
-            });
-        });
-        const tableTab = document.getElementById('tab-table');
-        const mapTab = document.getElementById('tab-map');
-        const tableView = document.getElementById('table-view');
-        const mapView = document.getElementById('map-view_test');
-
-        mapTab.classList.add('active');
-        tableTab.classList.remove('active');
-        tableView.style.display = 'block';
-        mapView.style.display = 'none';
-
-        tableTab.addEventListener('click', function (e) {
-            e.preventDefault();
-            tableTab.classList.add('active');
-            mapTab.classList.remove('active');
-            tableView.style.display = 'block';
-            mapView.style.display = 'none';
-        });
-
-        mapTab.addEventListener('click', function (e) {
-            e.preventDefault();
-            mapTab.classList.add('active');
-            tableTab.classList.remove('active');
-            tableView.style.display = 'none';
-            mapView.style.display = 'block';
+    const selectAllCheckbox = document.querySelector('#select-all');
+    const checkboxes = document.querySelectorAll('input[type="checkbox"][name="selectedCases"]');
+    selectAllCheckbox.addEventListener('change', function () {
+        checkboxes.forEach(checkbox => {
+            checkbox.checked = selectAllCheckbox.checked;
         });
     });
 </script>
