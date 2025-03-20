@@ -139,31 +139,18 @@ $font-family: arial, helvetica, sans-serif;
 	color: white;
 }
 
-#map_view_test {
-	height: 1046px; 
-	width: 1200.63px; 
+.home-map #map_test {
+    width: 0px; /* Custom width for home view */
+    height: 800px; /* Custom height for home view */
+	display: absolute;
+    margin: auto; /* Center the map */
 }
 
-.pins-map_test {
-    height: 1046px; 
-    width: 1200.63px; 
-}
-
-.pins-map__container_test {
-    height: 100%; 
-    width: 100%; 
-}
-
-.pins-map__content_test {
-    height: 100%; 
-    width: 100%; 
-}
-.map-container_test {
-	height: 100%; 
-	width: 100%; 
-}
-
-#map_test {
-    height: 100%; 
-    width: 100%; 
+.govuk-frontend-supported .govuk-tabs__panel {
+    margin-bottom: 0;
+    padding: 0px;
+    border: 1px solid #b1b4b6;
+    border-top: 0;
+	width: 1000px;
+	height: 800px
 }

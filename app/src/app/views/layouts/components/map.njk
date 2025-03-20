@@ -1,21 +1,21 @@
 {% macro map(apiKey, pins) %}
 
 <style>
-    #map {
-        position: absolute;
+    .default-map #map {
         top: 0;
         bottom: 0;
         width: 100%;
+
     }
 
-    .pins-map {
+    .default-map .pins-map {
         position: relative;
         width: 100%;
         height: 0;
         padding-top: calc(2.5 / 4 * 100%);
     }
 
-    .pins-map__container {
+    .default-map .pins-map__container {
         position: absolute;
         top: 0;
         left: 0;
@@ -23,14 +23,16 @@
         height: 100%;
     }
 
-    .pins-map__content {
+    .default-map .pins-map__content {
         width: 100%;
         height: 100%;
     }
 </style>
-<div class="pins-map">
-    <div class="pins-map__container">
-        <div id="map" class="pins-map__content"></div>
+<div class="default-map">
+    <div class="pins-map">
+        <div class="pins-map__container">
+            <div id="map" class="pins-map__content"></div>
+        </div>
     </div>
 </div>
 
