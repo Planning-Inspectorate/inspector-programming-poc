@@ -1,4 +1,9 @@
-import { createSortByDistance, fetchCases, sortCasesByAge } from '@pins/inspector-programming-poc-lib/data/cases.js';
+import {
+	createSortByDistance,
+	fetchCases,
+	sortByAgeAndDistance,
+	sortCasesByAge
+} from '@pins/inspector-programming-poc-lib/data/cases.js';
 import { fetchInspectors } from '@pins/inspector-programming-poc-lib/data/inspectors.js';
 
 /**
@@ -14,10 +19,8 @@ export function buildViewHome({ logger, config }) {
 		const inspectors = await fetchInspectors(config);
 		const selectedInspector = inspectors.find((i) => req.query.inspector === i.id) || inspectors[0];
 		const filters = req.query.filters || selectedInspector.filters;
-		const sort = req.query.sort || 'age';
-		const inspectorLatLong = { latitude: 52.42950704867449, longitude: -1.8996231835728423 };
-		const sortFunc = sort === 'age' ? sortCasesByAge : await createSortByDistance(inspectorLatLong);
-		const cases = fetchCases(10, filters, sortFunc);
+		const sort = getSort(req.query.sort, selectedInspector);
+		const cases = fetchCases(10, filters, sort);
 
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
@@ -29,9 +32,19 @@ export function buildViewHome({ logger, config }) {
 			data: {
 				filters
 			},
-			sort
+			sort: req.query.sort
 		});
 	};
+}
+
+function getSort(sort, selectedInspector) {
+	const sortFunctions = {
+		age: sortCasesByAge,
+		distance: createSortByDistance(selectedInspector.homeLatLong),
+		hybrid: sortByAgeAndDistance(selectedInspector.homeLatLong)
+	};
+
+	return sortFunctions[sort] || sortFunctions.age;
 }
 
 function caseViewModel(c) {
