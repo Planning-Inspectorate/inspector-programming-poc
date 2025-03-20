@@ -74,22 +74,40 @@ async function createEvents(client, inspectorId, assignmentDate, selectedCases) 
 		return [
 			client.createEvent(
 				inspectorId,
-				`Planning Case ID: ${caseData.caseId}`,
-				`Planning Case ID: ${caseData.caseId}`,
+				`Planning Case ID: ${caseData.caseId} - ${caseData.caseProcedure} - ${caseData.caseAge} - ${caseData.lpaName} - ${caseData.lpaRegion}- ${caseData.siteAddressPostcode}`,
+				`Planning Case Details:\n` +
+					`Case ID: ${caseData.caseId},\n` +
+					`Procedure: ${caseData.caseProcedure},\n` +
+					`Case Age: ${caseData.caseAge},\n` +
+					`LPA Name: ${caseData.lpaName},\n` +
+					`LPA Region: ${caseData.lpaRegion},\n` +
+					`Site Address Postcode: ${caseData.siteAddressPostcode},\n`,
 				new Date(planningDate.setHours(planningTime, 0, 0)),
 				240
 			),
 			client.createEvent(
 				inspectorId,
-				`Site Visit Case ID: ${caseData.caseId}`,
-				`Site Visit Case ID: ${caseData.caseId}`,
+				`Site Visit Case ID: ${caseData.caseId} - ${caseData.caseProcedure} - ${caseData.caseAge} - ${caseData.lpaName} - ${caseData.lpaRegion} - ${caseData.siteAddressPostcode}`,
+				`Site Visit Details:\n` +
+					`Case ID: ${caseData.caseId},\n` +
+					`Procedure: ${caseData.caseProcedure},\n` +
+					`Case Age: ${caseData.caseAge},\n` +
+					`LPA Name: ${caseData.lpaName},\n` +
+					`LPA Region: ${caseData.lpaRegion},\n` +
+					`Site Address Postcode: ${caseData.siteAddressPostcode}\n`,
 				new Date(siteVisitDate.setHours(siteVisitTime, 0, 0)),
 				240
 			),
 			client.createEvent(
 				inspectorId,
-				`Report Case ID: ${caseData.caseId}`,
-				`Report Case ID: ${caseData.caseId}`,
+				`Report Case ID: ${caseData.caseId} - ${caseData.caseProcedure} - ${caseData.caseAge} - ${caseData.lpaName} - ${caseData.lpaRegion}- ${caseData.siteAddressPostcode}`,
+				`Report Details:\n` +
+					`Case ID: ${caseData.caseId},\n` +
+					`Procedure: ${caseData.caseProcedure},\n` +
+					`Case Age: ${caseData.caseAge},\n` +
+					`LPA Name: ${caseData.lpaName},\n` +
+					`LPA Region: ${caseData.lpaRegion},\n` +
+					`Site Address Postcode: ${caseData.siteAddressPostcode}\n`,
 				new Date(reportDate.setHours(reportTime, 0, 0)),
 				240
 			)
