@@ -339,15 +339,16 @@
     </div>
 </div>
 <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %}>
-    const selectAllCheckbox = document.querySelector('#select-all');
-    const checkboxes = document.querySelectorAll('input[type="checkbox"][name="selectedCases"]');
-    selectAllCheckbox.addEventListener('change', function () {
-        checkboxes.forEach(checkbox => {
-            checkbox.checked = selectAllCheckbox.checked;
+    document.addEventListener('DOMContentLoaded', function () {
+        const selectAllCheckbox = document.querySelector('#select-all');
+        const checkboxes = document.querySelectorAll('input[type="checkbox"][name="selectedCases"]');
+        selectAllCheckbox.addEventListener('change', function () {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
         });
     });
 </script>
-
 {% endblock %}
 
 
