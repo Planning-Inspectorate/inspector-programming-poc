@@ -5,39 +5,8 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/details/macro.njk" import govukDetails %}
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
-
-{% if apiKey %}
-<style>
-    #map {
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-    }
-    .pins-map {
-        position: relative;
-        width: 100%;
-        height: 0;
-        padding-top: calc(9 / 16 * 100%);
-    }
-    .pins-map__container {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-    .pins-map__content {
-        width: 100%;
-        height: 100%;
-    }
-</style>
-<div class="pins-map">
-    <div class="pins-map__container">
-        <div id="map" class="pins-map__content"></div>
-    </div>
-</div>
-{% endif %}
+{% from "views/layouts/components/map.njk" import map %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
 
 {% block pageContent %}
 <div class="filter-container">
@@ -275,25 +244,8 @@
             </div>
         </div>
     </div>
-
 <div class="cases-inspectors-container">
-    <form method="post" action="/notify" novalidate>
-        <input type="hidden" name="inspector" value="{{ inspectorId }}">
-        <div class="align-right">
-            <div class="govuk-form-group">
-                <label class="govuk-label" for="assignment-date">Event date: </label>
-            </div>
-            <div class="govuk-form-group">
-                <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
-            </div>
-            <div class="govuk-form-group">
-                {{ govukButton({
-                    text: "Assign selected cases",
-                    type: "submit"
-                }) }}
-            </div>
-        </div>
-
+    <div id="table-view" class="view">
 
         {% set caseRows = [] %}
         {% for c in cases %}
@@ -319,36 +271,73 @@
             ]), caseRows) %}
         {% endfor %}
 
-        {{ govukTable({
-            classes: "govuk-!-font-size-14",
-            head: [
-                { html: govukCheckboxes({
-                    idPrefix: "select-all",
-                    name: "select-all",
-                    classes: "govuk-checkboxes--small",
-                    items: [
-                        { value: "select-all", text: " ", checked: false }
-                    ]
-                }) },
-                { text: "Reference" },
-                { text: "Type" },
-                { text: "Procedure" },
-                { text: "Band" },
-                { text: "Level" },
-                { text: "Location" },
-                { text: "LPA" },
-                { text: "Region" },
-                { text: "Case Status" },
-                { text: "Age" },
-                { text: "Linked cases" },
-                { text: "Final comments date" },
-                { text: "Prog Status" }
-            ],
-            rows: caseRows
-        }) }}
-    </form>
-</div>
+        {% set casesTable %}
+            <form method="post" action="/notify" novalidate>
+                <input type="hidden" name="inspector" value="{{ inspectorId }}">
+                <div class="align-right">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="assignment-date">Event date: </label>
+                    </div>
+                    <div class="govuk-form-group">
+                        <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
+                    </div>
+                    <div class="govuk-form-group">
+                        {{ govukButton({
+                            text: "Assign selected cases",
+                            type: "submit"
+                        }) }}
+                    </div>
+                </div>
+                {{ govukTable({
+                    classes: "govuk-!-font-size-14",
+                    head: [
+                        { html: govukCheckboxes({
+                            idPrefix: "select-all",
+                            name: "select-all",
+                            classes: "govuk-checkboxes--small",
+                            items: [{ value: "select-all", text: " ", checked: false }]
+                        }) },
+                        { text: "Reference" },
+                        { text: "Type" },
+                        { text: "Procedure" },
+                        { text: "Band" },
+                        { text: "Level" },
+                        { text: "Location" },
+                        { text: "LPA" },
+                        { text: "Region" },
+                        { text: "Case Status" },
+                        { text: "Age" },
+                        { text: "Linked cases" },
+                        { text: "Final comments date" },
+                        { text: "Prog Status" }
+                    ],
+                    rows: caseRows
+                }) }}
+            </form>
+        {% endset %}
 
+        {% set mapView %}
+            <div class="home-map">
+                {{ map(apiKey, pins) }}
+            </div>
+        {% endset %}
+
+        {{ govukTabs({
+            items: [
+                {
+                    label: "Cases Table",
+                    id: "cases",
+                    panel: { html: casesTable }
+                },
+                {
+                    label: "Map View",
+                    id: "mapView",
+                    panel: { html: mapView }
+                }
+            ]
+        }) }}
+    </div>
+</div>
 <script {% if cspNonce %}nonce={{ cspNonce }}{% endif %}>
     document.addEventListener('DOMContentLoaded', function () {
         const selectAllCheckbox = document.querySelector('#select-all');

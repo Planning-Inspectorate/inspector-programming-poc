@@ -16,11 +16,17 @@ export function buildViewHome({ logger, config }) {
 	return async (req, res) => {
 		logger.info('view home');
 
+		const mapsKey = config.maps.key;
 		const inspectors = await fetchInspectors(config);
 		const selectedInspector = inspectors.find((i) => req.query.inspector === i.id) || inspectors[0];
 		const filters = req.query.filters || selectedInspector.filters;
 		const sort = getSort(req.query.sort, selectedInspector);
 		const cases = fetchCases(10, filters, sort);
+
+		const pins = cases.map((caseData) => {
+			const { latitude, longitude } = caseData.siteAddressLatLong;
+			return { lat: latitude, long: longitude };
+		});
 
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
@@ -32,6 +38,8 @@ export function buildViewHome({ logger, config }) {
 			data: {
 				filters
 			},
+			apiKey: mapsKey,
+			pins,
 			sort: req.query.sort
 		});
 	};
