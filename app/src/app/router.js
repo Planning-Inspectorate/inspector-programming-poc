@@ -42,12 +42,6 @@ export function buildRouter({ logger, config }) {
 		logger.warn('auth disabled; auth routes and guards skipped');
 	}
 
-	router.use((req, res, next) => {
-		res.header('Access-Control-Allow-Origin', '*');
-		res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-		next();
-	});
-
 	const entraClientMiddleware = buildEntraClientMiddleware({ logger });
 	const viewHome = buildViewHome({ logger, config });
 	const viewNotify = buildNotify({ logger, config });
