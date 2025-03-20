@@ -101,6 +101,7 @@
             };
             const simpleMarkerSymbol = {
                 type: 'simple-marker',
+                content: 'Case Info',
                 color,
                 outline: {
                     color: [255, 255, 255], // White
@@ -108,9 +109,16 @@
                 }
             };
 
+            const markerTootltip = {
+                title: "Marker Tooltip",
+                content: "Test 1"
+            };
+
+
             const pointGraphic = new Graphic({
                 geometry: point,
-                symbol: simpleMarkerSymbol
+                symbol: simpleMarkerSymbol,
+                popupTemplate: markerTootltip
             });
             view.graphics.add(pointGraphic);
         }
