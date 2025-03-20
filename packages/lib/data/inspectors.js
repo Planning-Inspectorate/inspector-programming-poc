@@ -2,9 +2,6 @@ import { fakerEN_GB as faker } from '@faker-js/faker';
 
 const arrayElement = faker.helpers.arrayElement;
 const fakerPostCode = async () => faker.location.zipCode();
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 const inspectors = [
 	{
