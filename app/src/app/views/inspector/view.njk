@@ -2,9 +2,10 @@
 
 {% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 {% from "govuk/components/table/macro.njk" import govukTable %}
+{% from "govuk/components/tabs/macro.njk" import govukTabs %}
 
 {% block pageContent %}
-
+{% set inspectorDetails %}
 <div class="pins-container-wide govuk-grid-row">
     <div class="govuk-grid-column-one-half">
         <h2 class="govuk-heading-m">{{ inspector.firstName + " " + inspector.lastName }}</h2>
@@ -29,7 +30,6 @@
                 ]
             }) }}    
     </div>
-
     <div class="govuk-grid-column-one-half govuk-!-margin-top-8">
         {{ govukTable({
             caption: "Specialisms",
@@ -53,7 +53,193 @@
             }) }}
     </div>
 </div>
+{% endset %}
 
+{% set outlookView %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 Calendar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
+    <style>
+    body { font-family: Arial, sans-serif; }
+    .calendar-container { width: 80%; margin: auto; text-align: center; }
+    .calendar-table { width: 100%; border-collapse: collapse; }
+    .calendar-table th, .calendar-table td { border: 1px solid #ccc; padding: 3px 6px; font-size: 10px; text-align: center; }
+    .calendar-table th.time-column, .calendar-table td.time-column { width: 4%; }
+    .calendar-table th:not(.time-column), .calendar-table td:not(.time-column) { width: 19.2%; }
+    .calendar-table td { height: 30px; }
+    .nav-buttons { margin: 0 10px; }
+    .calendar-header { display: flex; align-items: center; gap: 10px; justify-content: flex-start; text-align: left; }
+    #weekPicker { cursor: pointer; display: none; }
+    .flatpickr-calendar .arrowDown { transform: rotate(180deg); }
+    .nav-buttons button { font-size: 24px; padding: 5px 10px; border: none; background: none; cursor: pointer; }
+    .nav-buttons button:hover { opacity: 0.7; }
+    .arrow-button { font-size: 24px; cursor: pointer; }
+    .arrow-button:hover { opacity: 0.7; }
+    .flatpickr-calendar {
+        position: absolute !important; /* Ensure the calendar is positioned absolutely */
+        z-index: 9999; /* Ensure it appears on top */
+        top: 40px; /* Adjust to move it below the button */
+        left: 0; /* Align it to the left of the button */
+        margin-left: 10px; /* Space it a bit from the button */
+    }
+    </style>
+</head>
+<body>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <button onclick="goToToday()">Today</button>
+            <div class="nav-buttons">
+                <button onclick="prevWeek()">&lt;</button>
+                <button onclick="nextWeek()">&gt;</button>
+            </div>
+            <h2 id="monthYear"></h2>
+            <label for="weekPicker" class="arrow-button">↓</label>
+            <input type="text" id="weekPicker" placeholder="Select date" readonly>
+        </div>
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    <th class="time-column"></th>
+                    <th id="mon"></th>
+                    <th id="tue"></th>
+                    <th id="wed"></th>
+                    <th id="thu"></th>
+                    <th id="fri"></th>
+                </tr>
+            </thead>
+            <tbody id="calendar-body">
+            </tbody>
+        </table>
+    </div>
+    
+    <script>
+        let currentWeek = 0;
+        const year = 2025;
+
+        // Get today's date and calculate the current week
+        function getCurrentWeek() {
+            const today = new Date();
+            const startDate = new Date(year, 0, 1);
+            while (startDate.getDay() !== 1) {
+                startDate.setDate(startDate.getDate() - 1);
+            }
+            const diff = Math.floor((today - startDate) / (7 * 24 * 60 * 60 * 1000));
+            return diff;
+        }
+
+        function generateCalendar(weekOffset) {
+            const startDate = new Date(year, 0, 1 + (weekOffset * 7));
+            while (startDate.getDay() !== 1) {
+                startDate.setDate(startDate.getDate() - 1);
+            }
+
+            // Update the header title to "dd-dd Month, yyyy"
+            const weekStartDate = startDate.toLocaleDateString("en-GB");
+            const weekEndDate = new Date(startDate);
+            weekEndDate.setDate(weekEndDate.getDate() + 4);
+            const formattedTitle = `${("0" + startDate.getDate()).slice(-2)}-${("0" + weekEndDate.getDate()).slice(-2)} ${startDate.toLocaleString('en-US', { month: 'long' })}, ${year}`;
+            document.getElementById("monthYear").innerText = formattedTitle;
+            
+            const headers = ["mon", "tue", "wed", "thu", "fri"];
+            for (let i = 0; i < 5; i++) {
+                const day = new Date(startDate);
+                day.setDate(day.getDate() + i);
+                document.getElementById(headers[i]).innerText = `${("0" + day.getDate()).slice(-2)} ${day.toLocaleString('en-US', { weekday: 'short' })}`;
+            }
+            
+            const tbody = document.getElementById("calendar-body");
+            tbody.innerHTML = "";
+            
+            for (let hour = 9; hour <= 17; hour++) {
+                for (let min of [0, 30]) {
+                    const row = document.createElement("tr");
+                    const timeCell = document.createElement("td");
+                    timeCell.classList.add("time-column");
+                    // Only set time for the hour rows, not for the 30-minute blocks
+                    if (min === 0) {
+                        timeCell.innerText = `${hour}`;
+                    } else {
+                        timeCell.innerText = "";
+                    }
+                    row.appendChild(timeCell);
+                    
+                    for (let i = 0; i < 5; i++) {
+                        const cell = document.createElement("td");
+                        row.appendChild(cell);
+                    }
+                    tbody.appendChild(row);
+                }
+            }
+        }
+        
+        function prevWeek() {
+            if (currentWeek > 0) {
+                currentWeek--;
+                generateCalendar(currentWeek);
+            }
+        }
+        
+        function nextWeek() {
+            if (currentWeek < 51) {
+                currentWeek++;
+                generateCalendar(currentWeek);
+            }
+        }
+
+        // Go to today's week
+        function goToToday() {
+            currentWeek = getCurrentWeek();
+            generateCalendar(currentWeek); 
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // Set the calendar to the current week when the page loads
+            currentWeek = getCurrentWeek();
+            generateCalendar(currentWeek);
+
+            flatpickr("#weekPicker", {
+                enableTime: false,
+                dateFormat: "d/m/Y",
+                weekNumbers: true,
+                onChange: function(selectedDates) {
+                    const selectedDate = selectedDates[0];
+                    const startDate = new Date(year, 0, 1);
+                    while (startDate.getDay() !== 1) {
+                        startDate.setDate(startDate.getDate() - 1);
+                    }
+                    const diff = Math.floor((selectedDate - startDate) / (7 * 24 * 60 * 60 * 1000));
+                    currentWeek = diff;
+                    generateCalendar(currentWeek);
+                },
+                position: 'auto'
+            });
+        });
+    </script>
+</body>
+</html>
+
+{% endset %}
+
+    {{ govukTabs({
+            items: [
+                {
+                    label: "Inspector Details",
+                    id: "cases",
+                    panel: { html: inspectorDetails }
+                },
+                {
+                    label: "Calendar View",
+                    id: "mapView",
+                    panel: { html: outlookView }
+                }
+            ]
+        }) }}
 {% endblock %}
 
 
