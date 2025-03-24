@@ -1,4 +1,4 @@
-{% macro map(apiKey, pins, inspectorPin) %}
+{% macro map(apiKey, cases, inspectorPin) %}
 
 <style>
     #map {
@@ -70,9 +70,9 @@
             layers: [tileLayer]
         });
 
-        const pins = {{ pins | dump | safe}};
+        const pins = {{ cases | dump | safe}};
 
-        const center = pins.reduce((acc, {latitude, longitude}) => {
+        const center = pins.reduce((acc, { siteAddressLatLong: { latitude, longitude } }) => {
             acc.longitude += longitude;
             acc.latitude += latitude;
             return acc;
@@ -114,8 +114,8 @@
             view.graphics.add(pointGraphic);
         }
 
-        for (const coords of pins) {
-            addMarker(coords, [255, 0, 0]);
+        for (const caseData of pins) {
+            addMarker(caseData.siteAddressLatLong, '#' + caseData.color);
         }
 
         {% if inspectorPin %}
