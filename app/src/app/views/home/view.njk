@@ -23,7 +23,7 @@
                     {% set inspectorList = (inspectorList.push({
                         text: i.lastName + ', ' + i.firstName,
                         value: i.id,
-                        selected: i.id == inspectorId
+                        selected: i.id == data.inspectorId
                     }), inspectorList) %}
                 {% endfor %}
                 {{ govukSelect({
@@ -204,11 +204,11 @@
                         }),
                         classes: "custom-filter-dropdown"
                     }) }}
-                    <input type="hidden" name="inspector" value="{{ inspectorId }}">
-                    <input type="hidden" name="sort" value="{{ sort }}">
+                    <input type="hidden" name="inspector" value="{{ data.inspectorId }}">
+                    <input type="hidden" name="sort" value="{{ data.sort }}">
                 </form>
                 <form method="get" novalidate>
-                    <input type="hidden" name="inspector" value="{{ inspectorId }}">
+                    <input type="hidden" name="inspector" value="{{ data.inspectorId }}">
 
                     {% for key, value in data.filters %}
                         {% if value is iterable and not value is string %}
@@ -230,9 +230,9 @@
                             id: "sort",
                             name: "sort",
                             items: [
-                                { text: "Age", value: "age", selected: sort == "age" },
-                                { text: "Distance", value: "distance", selected: sort == "distance" },
-                                { text: "Hybrid", value: "hybrid", selected: sort == "hybrid" }
+                                { text: "Age", value: "age", selected: data.sort == "age" },
+                                { text: "Distance", value: "distance", selected: data.sort == "distance" },
+                                { text: "Hybrid", value: "hybrid", selected: data.sort == "hybrid" }
                             ]
                         }) }}
                         {{ govukButton({
@@ -273,7 +273,7 @@
 
         {% set casesTable %}
             <form method="post" action="/notify" novalidate>
-                <input type="hidden" name="inspector" value="{{ inspectorId }}">
+                <input type="hidden" name="inspector" value="{{ data.inspectorId }}">
                 <div class="align-right">
                     <div class="govuk-form-group">
                         <label class="govuk-label" for="assignment-date">Event date: </label>

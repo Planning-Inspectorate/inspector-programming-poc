@@ -29,13 +29,13 @@ export function buildViewHome({ logger, config }) {
 			title: 'Unassigned Case List',
 			cases: cases.map(caseViewModel),
 			inspectors,
-			inspectorId: selectedInspector.id,
 			data: {
-				filters
+				filters,
+				sort: req.query.sort,
+				inspectorId: selectedInspector.id
 			},
 			apiKey: mapsKey,
-			inspectorLatLong: selectedInspector.homeLatLong,
-			sort: req.query.sort
+			inspectorLatLong: selectedInspector.homeLatLong
 		});
 	};
 }
