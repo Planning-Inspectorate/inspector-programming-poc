@@ -65,30 +65,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
-    <style>
-    body { font-family: Arial, sans-serif; }
-    .calendar-container { width: 80%; margin: auto; text-align: center; }
-    .calendar-table { width: 100%; border-collapse: collapse; }
-    .calendar-table th, .calendar-table td { border: 1px solid #ccc; padding: 3px 6px; font-size: 10px; text-align: center; }
-    .calendar-table th.time-column, .calendar-table td.time-column { width: 4%; }
-    .calendar-table th:not(.time-column), .calendar-table td:not(.time-column) { width: 19.2%; }
-    .calendar-table td { height: 30px; }
-    .nav-buttons { margin: 0 10px; }
-    .calendar-header { display: flex; align-items: center; gap: 10px; justify-content: flex-start; text-align: left; }
-    #weekPicker { cursor: pointer; display: none; }
-    .flatpickr-calendar .arrowDown { transform: rotate(180deg); }
-    .nav-buttons button { font-size: 24px; padding: 5px 10px; border: none; background: none; cursor: pointer; }
-    .nav-buttons button:hover { opacity: 0.7; }
-    .arrow-button { font-size: 24px; cursor: pointer; }
-    .arrow-button:hover { opacity: 0.7; }
-    .flatpickr-calendar {
-        position: absolute !important; /* Ensure the calendar is positioned absolutely */
-        z-index: 9999; /* Ensure it appears on top */
-        top: 40px; /* Adjust to move it below the button */
-        left: 0; /* Align it to the left of the button */
-        margin-left: 10px; /* Space it a bit from the button */
-    }
-    </style>
 </head>
 <body>
     <div class="calendar-container">
@@ -122,7 +98,6 @@
         let currentWeek = 0;
         const year = 2025;
 
-        // Get today's date and calculate the current week
         function getCurrentWeek() {
             const today = new Date();
             const startDate = new Date(year, 0, 1);
@@ -139,7 +114,6 @@
                 startDate.setDate(startDate.getDate() - 1);
             }
 
-            // Update the header title to "dd-dd Month, yyyy"
             const weekStartDate = startDate.toLocaleDateString("en-GB");
             const weekEndDate = new Date(startDate);
             weekEndDate.setDate(weekEndDate.getDate() + 4);
@@ -192,7 +166,6 @@
             }
         }
 
-        // Go to today's week
         function goToToday() {
             currentWeek = getCurrentWeek();
             generateCalendar(currentWeek); 
