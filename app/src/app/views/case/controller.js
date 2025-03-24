@@ -1,5 +1,6 @@
 import { fetchCase } from '@pins/inspector-programming-poc-lib/data/cases.js';
 import { fetchInspectors } from '@pins/inspector-programming-poc-lib/data/inspectors.js';
+import { caseViewModel } from '../home/controller.js';
 
 export function buildViewCase({ config }) {
 	return async (req, res) => {
@@ -11,7 +12,7 @@ export function buildViewCase({ config }) {
 			caseData,
 			inspectors,
 			apiKey: mapsKey,
-			pins: [caseData.siteAddressLatLong],
+			pins: [caseViewModel(caseData)],
 			containerClasses: 'pins-container-wide',
 			title: 'Case Details'
 		});

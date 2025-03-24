@@ -264,7 +264,7 @@
                 { text: c.lpaName },
                 { text: c.lpaRegion },
                 { text: c.caseStatus },
-                { text: c.caseAge },
+                { html: '<span style="padding: 5px; background-color: #' + c.color + '">' + c.caseAge + '</span>' },
                 { html: '<a href="/case/' + c.linkedCases + '" class="govuk-link">' + c.linkedCases + '</a>' },
                 { text: c.finalCommentsDate },
                 { text: c.programmingStatus }
@@ -318,7 +318,7 @@
 
         {% set mapView %}
             <div class="home-map">
-                {{ map(apiKey, pins, inspectorLatLong) }}
+                {{ map(apiKey, cases, inspectorLatLong) }}
             </div>
         {% endset %}
 
