@@ -23,7 +23,6 @@ export function buildViewInspector({ logger, config }) {
 		}));
 
 		logger.info(simplifiedEvents);
-
 		return res.render('views/inspector/view.njk', {
 			inspector,
 			events: simplifiedEvents,
