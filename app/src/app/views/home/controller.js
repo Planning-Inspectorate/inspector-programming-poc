@@ -25,7 +25,20 @@ export function buildViewHome({ logger, config }) {
 
 		const pins = cases.map((caseData) => {
 			const { latitude, longitude } = caseData.siteAddressLatLong;
-			return { lat: latitude, long: longitude };
+			return {
+				lat: latitude,
+				long: longitude,
+				caseId: caseData.caseId,
+				caseAge: caseData.caseAge,
+				finalCommentsDate: caseData.finalCommentsDate,
+				caseStatus: caseData.caseStatus,
+				lpaName: caseData.lpaName,
+				siteAddressPostcode: caseData.siteAddressPostcode,
+				caseSpecialisms: caseData.caseSpecialisms,
+				appealEventType: caseData.appealEventType,
+				caseProcedure: caseData.caseProcedure,
+				allocationLevel: caseData.allocationLevel
+			};
 		});
 
 		return res.render('views/home/view.njk', {

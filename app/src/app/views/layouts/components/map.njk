@@ -93,7 +93,7 @@
             }
         });
 
-        function addMarker({lat, long}, color = [226, 119, 40]) {
+            function addMarker({ lat, long, caseId, caseAge, finalCommentsDate, caseStatus, lpaName, siteAddressPostcode, caseSpecialisms, appealEventType, caseProcedure, allocationLevel }, color = [226, 119, 40]) {
             const point = {
                 type: 'point',
                 longitude: long,
@@ -110,8 +110,18 @@
             };
 
             const markerTootltip = {
-                title: "Marker Tooltip",
-                content: "Test 1"
+                title: `Case ID: ${caseId}`,
+                content: `
+                    <strong>Case Age:</strong> ${caseAge} Weeks<br>
+                    <strong>LPA Name:</strong> ${lpaName}<br>
+                    <strong>Case Status:</strong> ${caseStatus}<br>
+                    <strong>Site Postcode:</strong> ${siteAddressPostcode}<br>
+                    <strong>Case Specialism:</strong> ${caseSpecialisms}<br>
+                    <strong>Appeal Type:</strong> ${appealEventType}<br>
+                    <strong>Procedure:</strong> ${caseProcedure}<br>
+                    <strong>Allocation Level:</strong> ${allocationLevel}<br>
+                    <strong>Final Comments Date:</strong> ${finalCommentsDate}
+                `
             };
 
 
