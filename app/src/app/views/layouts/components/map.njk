@@ -1,4 +1,4 @@
-{% macro map(apiKey, pins) %}
+{% macro map(apiKey, pins, inspectorPin) %}
 
 <style>
     #map {
@@ -72,9 +72,9 @@
 
         const pins = {{ pins | dump | safe}};
 
-        const center = pins.reduce((acc, {lat, long}) => {
-            acc.longitude += long;
-            acc.latitude += lat;
+        const center = pins.reduce((acc, {latitude, longitude}) => {
+            acc.longitude += longitude;
+            acc.latitude += latitude;
             return acc;
         }, {longitude: 0, latitude: 0});
 
@@ -93,11 +93,10 @@
             }
         });
 
-            function addMarker({ lat, long, caseId, caseAge, finalCommentsDate, caseStatus, lpaName, siteAddressPostcode, caseSpecialisms, appealEventType, caseProcedure, allocationLevel }, color = [226, 119, 40]) {
+        function addMarker(latLong, color = [226, 119, 40]) {
             const point = {
                 type: 'point',
-                longitude: long,
-                latitude: lat
+                ...latLong
             };
             const simpleMarkerSymbol = {
                 type: 'simple-marker',
@@ -136,6 +135,10 @@
         for (const coords of pins) {
             addMarker(coords, [255, 0, 0]);
         }
+
+        {% if inspectorPin %}
+            addMarker({{ inspectorPin | dump | safe }}, [0, 255, 0]);
+        {% endif %}
     });
 </script>
 {% endmacro %}
