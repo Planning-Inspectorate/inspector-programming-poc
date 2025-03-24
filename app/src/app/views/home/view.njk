@@ -7,6 +7,7 @@
 {% from "govuk/components/date-input/macro.njk" import govukDateInput %}
 {% from "views/layouts/components/map.njk" import map %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
+{% from "govuk/components/pagination/macro.njk" import govukPagination %}
 
 {% block pageContent %}
 <div class="filter-container">
@@ -28,7 +29,7 @@
                 {% endfor %}
                 {{ govukSelect({
                     id: "inspectors",
-                    name: "inspector",
+                    name: "inspectorId",
                     items: inspectorList
                 }) }}
                 {{ govukButton({
@@ -204,11 +205,15 @@
                         }),
                         classes: "custom-filter-dropdown"
                     }) }}
-                    <input type="hidden" name="inspector" value="{{ data.inspectorId }}">
+                    <input type="hidden" name="inspectorId" value="{{ data.inspectorId }}">
+                    <input type="hidden" name="limit" value="{{ data.limit }}">
+                    <input type="hidden" name="page" value="{{ data.page }}">
                     <input type="hidden" name="sort" value="{{ data.sort }}">
                 </form>
                 <form method="get" novalidate>
-                    <input type="hidden" name="inspector" value="{{ data.inspectorId }}">
+                    <input type="hidden" name="inspectorId" value="{{ data.inspectorId }}">
+                    <input type="hidden" name="limit" value="{{ data.limit }}">
+                    <input type="hidden" name="page" value="{{ data.page }}">
 
                     {% for key, value in data.filters %}
                         {% if value is iterable and not value is string %}
@@ -273,7 +278,7 @@
 
         {% set casesTable %}
             <form method="post" action="/notify" novalidate>
-                <input type="hidden" name="inspector" value="{{ data.inspectorId }}">
+                <input type="hidden" name="inspectorId" value="{{ data.inspectorId }}">
                 <div class="align-right">
                     <div class="govuk-form-group">
                         <label class="govuk-label" for="assignment-date">Event date: </label>
@@ -314,6 +319,14 @@
                     rows: caseRows
                 }) }}
             </form>
+
+            <div class="govuk-form-group">
+                {{ govukPagination({
+                    next: nextPage,
+                    previous: previousPage,
+                    items: pageItems
+                }) }}
+            </div>
         {% endset %}
 
         {% set mapView %}

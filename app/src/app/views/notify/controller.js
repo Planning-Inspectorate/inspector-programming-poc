@@ -14,9 +14,9 @@ export function buildNotify({ config, logger }) {
 	const client = new NotifyClient(config.notify.key);
 
 	return async (req, res) => {
-		const { inspector, assignmentDate, selectedCases } = req.body;
+		const { inspectorId, assignmentDate, selectedCases } = req.body;
 		const inspectors = await fetchInspectors(config);
-		const selectedInspector = inspectors.find((i) => i.id === inspector);
+		const selectedInspector = inspectors.find((i) => i.id === inspectorId);
 		const selectedCasesFormatted = Array.isArray(selectedCases)
 			? selectedCases.join(', ')
 			: selectedCases || 'No cases assigned';

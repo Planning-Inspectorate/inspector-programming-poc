@@ -48,3 +48,8 @@ export interface LocationPreclusion {
 export interface OrganisationPreclusion {
 	organisation: string;
 }
+
+export interface FetchCasesResponse {
+	cases: AppealCase[];
+	total: number;
+}
