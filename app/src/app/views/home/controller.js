@@ -34,7 +34,6 @@ export function buildViewHome({ logger, config }) {
 				filters
 			},
 			apiKey: mapsKey,
-			pins: cases.map((caseData) => caseData.siteAddressLatLong),
 			inspectorLatLong: selectedInspector.homeLatLong,
 			sort: req.query.sort
 		});
@@ -51,10 +50,21 @@ function getSort(sort, selectedInspector) {
 	return sortFunctions[sort] || sortFunctions.age;
 }
 
-function caseViewModel(c) {
-	const copy = { ...c };
-	copy.finalCommentsDate = c.finalCommentsDate.toLocaleDateString();
-	return copy;
+export function caseViewModel(c) {
+	return {
+		...c,
+		finalCommentsDate: c.finalCommentsDate.toLocaleDateString(),
+		color:
+			c.caseAge > 45
+				? 'fa72a8'
+				: c.caseAge > 39
+					? 'dea529'
+					: c.caseAge > 28
+						? 'd0b300'
+						: c.caseAge > 24
+							? 'd0b300'
+							: '89a63a'
+	};
 }
 
 export function buildPostHome({ logger }) {
