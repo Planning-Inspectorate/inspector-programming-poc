@@ -79,6 +79,10 @@ export class EntraClient {
 		return this.#client.api(`/users/${userId}/events`).post(event);
 	}
 
+	async getEvents(userId) {
+		return this.#client.api(`/users/${userId}/events`).get();
+	}
+
 	/**
 	 * Get a skip token out of an '@odata.nextLink' value
 	 *

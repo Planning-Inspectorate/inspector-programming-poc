@@ -80,4 +80,8 @@ export class CachedEntraClient {
 	async createEvent(userId, subject, body, start, lengthMins) {
 		return this.#client.createEvent(userId, subject, body, start, lengthMins);
 	}
+
+	async getEvents(userId) {
+		return this.#client.getEvents(userId);
+	}
 }
