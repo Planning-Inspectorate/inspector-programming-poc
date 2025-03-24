@@ -23,11 +23,6 @@ export function buildViewHome({ logger, config }) {
 		const sort = getSort(req.query.sort, selectedInspector);
 		const cases = fetchCases(10, filters, sort);
 
-		const pins = cases.map((caseData) => {
-			const { latitude, longitude } = caseData.siteAddressLatLong;
-			return { lat: latitude, long: longitude };
-		});
-
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
@@ -39,7 +34,8 @@ export function buildViewHome({ logger, config }) {
 				filters
 			},
 			apiKey: mapsKey,
-			pins,
+			pins: cases.map((caseData) => caseData.siteAddressLatLong),
+			inspectorLatLong: selectedInspector.homeLatLong,
 			sort: req.query.sort
 		});
 	};
