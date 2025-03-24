@@ -53,7 +53,7 @@ export function buildRouter({ logger, config }) {
 	router.post('/notify', entraClientMiddleware, asyncHandler(viewNotify));
 	router.post('/', asyncHandler(postHome));
 	router.get('/case/:caseId', asyncHandler(viewCase));
-	router.get('/inspector/:inspectorId', asyncHandler(viewInspector));
+	router.get('/inspector/:inspectorId', entraClientMiddleware, asyncHandler(viewInspector));
 
 	return router;
 }
