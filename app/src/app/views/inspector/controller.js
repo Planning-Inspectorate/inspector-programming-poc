@@ -12,7 +12,10 @@ export function buildViewInspector({ logger, config }) {
 
 		const inspectors = await fetchInspectors(config);
 		const inspector = inspectors.find((i) => i.id === req.params.inspectorId);
-		logger.info(inspector);
+
+		const events = await req.entraClient.getEvents(inspector.id);
+		logger.info(events);
+
 		return res.render('views/inspector/view.njk', {
 			inspector,
 			containerClasses: 'pins-container-wide',
