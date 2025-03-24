@@ -56,8 +56,7 @@
 {% endset %}
 
 {% set outlookView %}
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -151,47 +150,45 @@
                 }
             }
 
-            const events = {{ events | dump | safe }};
+           const events = {{ events | dump | safe }};
 
-            if (events.length > 0) {
-                events.forEach(event => {
-                    const start = new Date(event.startDateTime);
-                    const end = new Date(event.endDateTime);
+            events.forEach(event => {
+                const start = new Date(event.startDateTime);
+                const end = new Date(event.endDateTime);
 
-                    if (start >= startDate && start <= weekEndDate) {
-                        const dayIndex = start.getDay() - 1;
-                        const startHour = start.getHours();
-                        const startMinutes = start.getMinutes();
-                        const endHour = end.getHours();
-                        const endMinutes = end.getMinutes();
+                if (start >= startDate && start <= weekEndDate) {
+                    const dayIndex = start.getDay() - 1;
+                    const startHour = start.getHours();
+                    const startMinutes = start.getMinutes();
+                    const endHour = end.getHours();
+                    const endMinutes = end.getMinutes();
 
-                        const startRow = (startHour - 9) * 2 + (startMinutes === 30 ? 1 : 0);
-                        const endRow = (endHour - 9) * 2 + (endMinutes === 30 ? 0 : -1);
+                    const startRow = (startHour - 9) * 2 + (startMinutes === 30 ? 1 : 0);
+                    const endRow = (endHour - 9) * 2 + (endMinutes === 30 ? 0 : -1);
 
-                        let backgroundColor = "lightblue";
-                        if (event.subject.includes("Planning")) {
-                            backgroundColor = "lightblue";
-                        } else if (event.subject.includes("Site Visit")) {
-                            backgroundColor = "lightcoral";
-                        } else if (event.subject.includes("Report")) {
-                            backgroundColor = "lightgrey";
-                        }
+                    let backgroundColor = "lightblue";
+                    if (event.subject.includes("Planning")) {
+                        backgroundColor = "lightblue";
+                    } else if (event.subject.includes("Site Visit")) {
+                        backgroundColor = "lightcoral";
+                    } else if (event.subject.includes("Report")) {
+                        backgroundColor = "lightgrey";
+                    }
 
-                        const rows = tbody.querySelectorAll("tr");
-                        for (let i = startRow; i <= endRow; i++) {
-                            const cell = rows[i].children[dayIndex + 1]; 
+                    const rows = tbody.querySelectorAll("tr");
+                    for (let i = startRow; i <= endRow; i++) {
+                        const cell = rows[i].children[dayIndex + 1]; 
 
-                            cell.style.backgroundColor = backgroundColor;
+                        cell.style.backgroundColor = backgroundColor;
 
-                            if (i === startRow) {
-                                cell.innerText = event.subject;
-                            } else {
-                                cell.innerText = "";
-                            }
+                        if (i === startRow) {
+                            cell.innerText = event.subject;
+                        } else {
+                            cell.innerText = "";
                         }
                     }
-                });
-            }
+                }
+            });
         }
 
         function prevWeek() {
@@ -220,7 +217,6 @@
     </script>
 </body>
 </html>
-
 {% endset %}
 
     {{ govukTabs({
