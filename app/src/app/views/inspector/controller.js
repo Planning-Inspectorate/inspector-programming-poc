@@ -13,11 +13,19 @@ export function buildViewInspector({ logger, config }) {
 		const inspectors = await fetchInspectors(config);
 		const inspector = inspectors.find((i) => i.id === req.params.inspectorId);
 
-		const events = await req.entraClient.getEvents(inspector.id);
-		logger.info(events);
+		const eventsResponse = await req.entraClient.getEvents(inspector.id);
+		const events = Array.isArray(eventsResponse.value) ? eventsResponse.value : [];
 
+		const simplifiedEvents = events.map((event) => ({
+			subject: event.subject,
+			startDateTime: event.start.dateTime,
+			endDateTime: event.end.dateTime
+		}));
+
+		logger.info(simplifiedEvents);
 		return res.render('views/inspector/view.njk', {
 			inspector,
+			events: simplifiedEvents,
 			containerClasses: 'pins-container-wide',
 			title: 'Inspector Details'
 		});

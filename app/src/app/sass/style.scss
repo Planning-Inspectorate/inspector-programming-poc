@@ -138,3 +138,100 @@ $font-family: arial, helvetica, sans-serif;
 	background-color: #6383a9;
 	color: white;
 }
+
+.align-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.app-filter .govuk-form-group {
+    margin-bottom: 0;
+}
+
+.custom-table-header .govuk-table__head {
+    background-color: #6383a9;
+    color: white;
+}
+
+.calendar-container {
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+.calendar-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.calendar-table th,
+.calendar-table td {
+    border: 1px solid #ccc;
+    padding: 3px 6px;
+    font-size: 10px;
+    text-align: center;
+}
+
+.calendar-table th.time-column,
+.calendar-table td.time-column {
+    width: 4%;
+}
+
+.calendar-table th:not(.time-column),
+.calendar-table td:not(.time-column) {
+    width: 19.2%;
+}
+
+.calendar-table td {
+    height: 30px;
+}
+
+.nav-buttons {
+    margin: 0 10px;
+}
+
+.calendar-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: flex-start;
+    text-align: left;
+}
+
+#weekPicker {
+    cursor: pointer;
+    display: none;
+}
+
+.flatpickr-calendar .arrowDown {
+    transform: rotate(180deg);
+}
+
+.nav-buttons button {
+    font-size: 24px;
+    padding: 5px 10px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.nav-buttons button:hover {
+    opacity: 0.7;
+}
+
+.arrow-button {
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.arrow-button:hover {
+    opacity: 0.7;
+}
+
+.flatpickr-calendar {
+    position: absolute !important; /* Ensure the calendar is positioned absolutely */
+    z-index: 9999; /* Ensure it appears on top */
+    top: 40px; /* Adjust to move it below the button */
+    left: 0; /* Align it to the left of the button */
+    margin-left: 10px; /* Space it a bit from the button */
+}
