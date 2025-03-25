@@ -93,13 +93,15 @@
             }
         });
 
-        function addMarker(latLong, color = [226, 119, 40]) {
+        function addMarker(caseData, color = [226, 119, 40]) {
             const point = {
                 type: 'point',
-                ...latLong
+                latitude: caseData.siteAddressLatLong.latitude,
+                longitude: caseData.siteAddressLatLong.longitude
             };
             const simpleMarkerSymbol = {
                 type: 'simple-marker',
+                content: 'Case Info',
                 color,
                 outline: {
                     color: [255, 255, 255], // White
@@ -107,15 +109,32 @@
                 }
             };
 
+            const markerTootltip = {
+                title: `Case ID: ${caseData.caseId}`,
+                content: `
+                    <strong>Case Age:</strong> ${caseData.caseAge} Weeks<br>
+                    <strong>LPA Name:</strong> ${caseData.lpaName}<br>
+                    <strong>Case Status:</strong> ${caseData.caseStatus}<br>
+                    <strong>Site Postcode:</strong> ${caseData.siteAddressPostcode}<br>
+                    <strong>Case Specialism:</strong> ${caseData.caseSpecialisms}<br>
+                    <strong>Appeal Type:</strong> ${caseData.appealEventType}<br>
+                    <strong>Procedure:</strong> ${caseData.caseProcedure}<br>
+                    <strong>Allocation Level:</strong> ${caseData.allocationLevel}<br>
+                    <strong>Final Comments Date:</strong> ${caseData.finalCommentsDate}
+                `
+             };
+
             const pointGraphic = new Graphic({
                 geometry: point,
-                symbol: simpleMarkerSymbol
+                symbol: simpleMarkerSymbol,
+                popupTemplate: markerTootltip
             });
             view.graphics.add(pointGraphic);
         }
 
         for (const caseData of pins) {
-            addMarker(caseData.siteAddressLatLong, '#' + caseData.color);
+            const markerColor = `#${caseData.color}`;
+            addMarker(caseData, markerColor);
         }
 
         {% if inspectorPin %}
