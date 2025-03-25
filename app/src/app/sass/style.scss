@@ -168,10 +168,9 @@ $font-family: arial, helvetica, sans-serif;
 .calendar-table td {
     border: 1px solid #ccc;
     padding: 3px 6px;
-    font-size: 10px;
-    text-align: center;
+    height: 30px;
+	font-size: 0.8rem;
 }
-
 .calendar-table th.time-column,
 .calendar-table td.time-column {
     width: 4%;
@@ -180,10 +179,6 @@ $font-family: arial, helvetica, sans-serif;
 .calendar-table th:not(.time-column),
 .calendar-table td:not(.time-column) {
     width: 19.2%;
-}
-
-.calendar-table td {
-    height: 30px;
 }
 
 .nav-buttons {
@@ -229,9 +224,9 @@ $font-family: arial, helvetica, sans-serif;
 }
 
 .flatpickr-calendar {
-    position: absolute !important; /* Ensure the calendar is positioned absolutely */
-    z-index: 9999; /* Ensure it appears on top */
-    top: 40px; /* Adjust to move it below the button */
-    left: 0; /* Align it to the left of the button */
-    margin-left: 10px; /* Space it a bit from the button */
+    font-family: "GDS Transport", Arial, sans-serif;
+    font-size: 16px;
+    color: #0b0c0c;
+	left: 700px !important;
+	top: 100px !important;
 }

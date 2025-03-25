@@ -56,6 +56,8 @@
 {% endset %}
 
 {% set outlookView %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
 <div class="calendar-container">
     <div class="calendar-header">
         <button onclick="goToToday()">Today</button>
@@ -85,7 +87,8 @@
 
 <script>
     let currentWeek = 0;
-    const year = 2025;
+    const year = new Date().getFullYear();
+    const events = {{ events | dump | safe }};
 
     function getCurrentWeek() {
         const today = new Date();
@@ -106,6 +109,7 @@
         const weekStartDate = startDate.toLocaleDateString("en-GB");
         const weekEndDate = new Date(startDate);
         weekEndDate.setDate(weekEndDate.getDate() + 4);
+        weekEndDate.setHours(23, 59, 59, 999);
         const formattedTitle = `${("0" + startDate.getDate()).slice(-2)}-${("0" + weekEndDate.getDate()).slice(-2)} ${startDate.toLocaleString('en-US', { month: 'long' })}, ${year}`;
         document.getElementById("monthYear").innerText = formattedTitle;
         
@@ -119,7 +123,7 @@
         const tbody = document.getElementById("calendar-body");
         tbody.innerHTML = "";
         
-        for (let hour = 9; hour <= 17; hour++) {
+        for (let hour = 8; hour < 18; hour++) {
             for (let min of [0, 30]) {
                 const row = document.createElement("tr");
                 const timeCell = document.createElement("td");
@@ -127,7 +131,7 @@
                 if (min === 0) {
                     timeCell.innerText = `${hour}:00`;
                 } else {
-                    timeCell.innerText = `${hour}:${min}`;
+                    timeCell.innerText = ``;
                 }
                 row.appendChild(timeCell);
                 
@@ -140,8 +144,6 @@
             }
         }
 
-        const events = {{ events | dump | safe }};
-
         events.forEach(event => {
             const start = new Date(event.startDateTime);
             const end = new Date(event.endDateTime);
@@ -153,8 +155,8 @@
                 const endHour = end.getHours();
                 const endMinutes = end.getMinutes();
 
-                const startRow = (startHour - 9) * 2 + (startMinutes === 30 ? 1 : 0);
-                const endRow = (endHour - 9) * 2 + (endMinutes === 30 ? 0 : -1);
+                const startRow = (startHour - 8) * 2 + (startMinutes === 30 ? 1 : 0);
+                const endRow = (endHour - 8) * 2 + (endMinutes === 30 ? 0 : -1);
 
                 let backgroundColor = "lightblue";
                 if (event.subject.includes("Planning")) {
@@ -166,9 +168,9 @@
                 }
 
                 const rows = tbody.querySelectorAll("tr");
-                for (let i = startRow; i <= endRow; i++) {
-                    const cell = rows[i].children[dayIndex + 1]; 
-
+                const validStartRow = Math.max(0, startRow);
+                for (let i = validStartRow; i <= endRow && i < rows.length; i++) {
+                    const cell = rows[i].children[dayIndex + 1];
                     cell.style.backgroundColor = backgroundColor;
 
                     if (i === startRow) {
@@ -203,6 +205,22 @@
     document.addEventListener("DOMContentLoaded", function() {
         currentWeek = getCurrentWeek();
         generateCalendar(currentWeek);
+
+        flatpickr("#weekPicker", {
+            enableTime: false,
+            dateFormat: "d/m/Y",
+            weekNumbers: true,
+            onChange: function(selectedDates) {
+                const selectedDate = selectedDates[0];
+                const startDate = new Date(year, 0, 1);
+                while (startDate.getDay() !== 1) {
+                    startDate.setDate(startDate.getDate() - 1);
+                }
+                const diff = Math.floor((selectedDate - startDate) / (7 * 24 * 60 * 60 * 1000));
+                currentWeek = diff;
+                generateCalendar(currentWeek);
+            },
+        });
     });
 </script>
 {% endset %}

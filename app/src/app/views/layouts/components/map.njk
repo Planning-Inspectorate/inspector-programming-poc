@@ -136,25 +136,24 @@
             addMarker(caseData, markerColor);
         }
 
-        function addInspectorMarker(latLong, color) {
+        function addInspectorMarker(latLong) {
             const point = {
                 type: 'point',
                 ...latLong
             };
-            const simpleMarkerSymbol = {
-                type: 'simple-marker',
-                content: 'Case Info',
-                color,
-                outline: {
-                    color: [255, 255, 255], // White
-                    width: 1
-                }
+
+            const pictureMarkerSymbol = {
+                type: 'picture-marker',
+                url: `./assets/images/people.png`,
+                width: '50px',  
+                height: '50px'
             };
 
             const pointGraphic = new Graphic({
                 geometry: point,
-                symbol: simpleMarkerSymbol
+                symbol: pictureMarkerSymbol
             });
+
             view.graphics.add(pointGraphic);
         }
 
