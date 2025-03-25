@@ -93,11 +93,10 @@
             }
         });
 
-        function addMarker(caseData, color = [226, 119, 40]) {
+        function addMarker(caseData, color) {
             const point = {
                 type: 'point',
-                latitude: caseData.siteAddressLatLong.latitude,
-                longitude: caseData.siteAddressLatLong.longitude
+                ... caseData.siteAddressLatLong
             };
             const simpleMarkerSymbol = {
                 type: 'simple-marker',
@@ -137,8 +136,30 @@
             addMarker(caseData, markerColor);
         }
 
+        function addInspectorMarker(latLong, color) {
+            const point = {
+                type: 'point',
+                ...latLong
+            };
+            const simpleMarkerSymbol = {
+                type: 'simple-marker',
+                content: 'Case Info',
+                color,
+                outline: {
+                    color: [255, 255, 255], // White
+                    width: 1
+                }
+            };
+
+            const pointGraphic = new Graphic({
+                geometry: point,
+                symbol: simpleMarkerSymbol
+            });
+            view.graphics.add(pointGraphic);
+        }
+
         {% if inspectorPin %}
-            addMarker({{ inspectorPin | dump | safe }}, [0, 255, 0]);
+            addInspectorMarker({{ inspectorPin | dump | safe }}, [0, 255, 0]);
         {% endif %}
     });
 </script>
