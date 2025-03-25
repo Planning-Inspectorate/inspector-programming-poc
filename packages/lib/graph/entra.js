@@ -80,7 +80,10 @@ export class EntraClient {
 	}
 
 	async getEvents(userId) {
-		return this.#client.api(`/users/${userId}/events?$top=999`).get();
+		return this.#client
+			.api(`/users/${userId}/events?$top=999&$select=subject,start,end`)
+			.header('Prefer', 'outlook.timezone="Europe/London"')
+			.get();
 	}
 
 	/**
