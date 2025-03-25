@@ -144,14 +144,11 @@
             }
         }
 
-        console.log(events.length);
-
         events.forEach(event => {
             const start = new Date(event.startDateTime);
             const end = new Date(event.endDateTime);
 
             if (start >= startDate && start <= weekEndDate) {
-                console.log("matched");
                 const dayIndex = start.getDay() - 1;
                 const startHour = start.getHours();
                 const startMinutes = start.getMinutes();
@@ -171,13 +168,9 @@
                 }
 
                 const rows = tbody.querySelectorAll("tr");
-                for (let i = startRow; i <= endRow && i < rows.length; i++) {
-                    if (!rows[i]) {
-                        continue;
-                    }
-
+                const validStartRow = Math.max(0, startRow);
+                for (let i = validStartRow; i <= endRow && i < rows.length; i++) {
                     const cell = rows[i].children[dayIndex + 1];
-
                     cell.style.backgroundColor = backgroundColor;
 
                     if (i === startRow) {
