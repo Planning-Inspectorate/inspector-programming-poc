@@ -86,6 +86,7 @@
 <script>
     let currentWeek = 0;
     const year = 2025;
+    const events = {{ events | dump | safe }};
 
     function getCurrentWeek() {
         const today = new Date();
@@ -106,6 +107,7 @@
         const weekStartDate = startDate.toLocaleDateString("en-GB");
         const weekEndDate = new Date(startDate);
         weekEndDate.setDate(weekEndDate.getDate() + 4);
+        weekEndDate.setHours(23, 59, 59, 999);
         const formattedTitle = `${("0" + startDate.getDate()).slice(-2)}-${("0" + weekEndDate.getDate()).slice(-2)} ${startDate.toLocaleString('en-US', { month: 'long' })}, ${year}`;
         document.getElementById("monthYear").innerText = formattedTitle;
         
@@ -140,13 +142,14 @@
             }
         }
 
-        const events = {{ events | dump | safe }};
+        console.log(events.length);
 
         events.forEach(event => {
             const start = new Date(event.startDateTime);
             const end = new Date(event.endDateTime);
-
+            console.log(start, startDate, start, weekEndDate);
             if (start >= startDate && start <= weekEndDate) {
+                console.log("matched");
                 const dayIndex = start.getDay() - 1;
                 const startHour = start.getHours();
                 const startMinutes = start.getMinutes();
@@ -166,8 +169,12 @@
                 }
 
                 const rows = tbody.querySelectorAll("tr");
-                for (let i = startRow; i <= endRow; i++) {
-                    const cell = rows[i].children[dayIndex + 1]; 
+                for (let i = startRow; i <= endRow && i < rows.length; i++) {
+                    if (!rows[i]) {
+                        continue;
+                    }
+
+                    const cell = rows[i].children[dayIndex + 1];
 
                     cell.style.backgroundColor = backgroundColor;
 
