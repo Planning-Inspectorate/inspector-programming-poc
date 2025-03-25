@@ -80,7 +80,7 @@ export class EntraClient {
 	}
 
 	async getEvents(userId) {
-		return this.#client.api(`/users/${userId}/events`).get();
+		return this.#client.api(`/users/${userId}/events?$top=999`).get();
 	}
 
 	/**
