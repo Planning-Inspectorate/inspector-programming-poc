@@ -18,16 +18,22 @@ for (const c of cases) {
 }
 
 /**
- * @param {number} count
+ * @param {number} limit
+ * @param {number} page
  * @param {Record<string, string | string[]>} filters
  * @param {(cases: import('./types.js').AppealCase[]) => import('./types.js').AppealCase[]} sort
- * @returns {import('./types.js').AppealCase[]}
+ * @returns {import('./types.js').FetchCasesResponse}
  */
-export function fetchCases(count = 10, filters = {}, sort = sortCasesByAge) {
+export function fetchCases(limit, page, filters, sort = sortCasesByAge) {
 	const filter = applyFilters(filters);
 	const filteredCases = cases.filter(filter);
+	const startIndex = Math.min(limit * (page - 1), filteredCases.length);
+	const endIndex = Math.min(limit * page, filteredCases.length);
 
-	return sort(filteredCases).slice(0, Math.min(count, filteredCases.length));
+	return {
+		cases: sort(filteredCases).slice(startIndex, endIndex),
+		total: filteredCases.length
+	};
 }
 
 /**

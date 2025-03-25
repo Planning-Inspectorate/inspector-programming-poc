@@ -7,7 +7,7 @@ describe('fetchCases', () => {
 		const count = 10;
 		const filters = {};
 
-		const cases = fetchCases(count, filters);
+		const { cases } = fetchCases(count, 1, filters);
 
 		assert.strictEqual(cases.length, 10);
 	});
@@ -18,7 +18,7 @@ describe('fetchCases', () => {
 			caseType: 'W'
 		};
 
-		const cases = fetchCases(count, filters);
+		const { cases } = fetchCases(count, 1, filters);
 
 		for (const c of cases) {
 			assert.strictEqual(c.caseType, 'W');
@@ -31,7 +31,7 @@ describe('fetchCases', () => {
 			caseSpecialisms: ['Access', 'Listed building and enforcement']
 		};
 
-		const cases = fetchCases(count, filters);
+		const { cases } = fetchCases(count, 1, filters);
 
 		for (const c of cases) {
 			assert.strictEqual(
@@ -45,7 +45,7 @@ describe('fetchCases', () => {
 		const count = 10;
 		const filters = {};
 
-		const cases = fetchCases(count, filters);
+		const { cases } = fetchCases(count, 1, filters);
 		const sortedCases = cases.toSorted((a, b) => b.caseAge - a.caseAge);
 
 		assert.deepStrictEqual(cases, sortedCases);
@@ -59,21 +59,21 @@ describe('pairCases', () => {
 	};
 
 	it('should return pairs of cases', async () => {
-		const cases = fetchCases(10, filters);
+		const { cases } = fetchCases(10, 1, filters);
 		const pairs = pairCases(cases);
 
 		assert.strictEqual(pairs.length, 5);
 	});
 
 	it('should return pairs of cases with odd number of cases', async () => {
-		const cases = fetchCases(11, filters);
+		const { cases } = fetchCases(11, 1, filters);
 		const pairs = pairCases(cases);
 
 		assert.strictEqual(pairs.length, 6);
 	});
 
 	it('return cases that are oldest first', async () => {
-		const cases = fetchCases(10, filters);
+		const { cases } = fetchCases(10, 1, filters);
 		const pairs = pairCases(cases);
 
 		for (const pair of pairs) {

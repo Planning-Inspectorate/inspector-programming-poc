@@ -16,12 +16,21 @@ export function buildViewHome({ logger, config }) {
 	return async (req, res) => {
 		logger.info('view home');
 
-		const mapsKey = config.maps.key;
 		const inspectors = await fetchInspectors(config);
-		const selectedInspector = inspectors.find((i) => req.query.inspector === i.id) || inspectors[0];
+		const selectedInspector = inspectors.find((i) => req.query.inspectorId === i.id) || inspectors[3];
 		const filters = req.query.filters || selectedInspector.filters;
 		const sort = getSort(req.query.sort, selectedInspector);
-		const cases = fetchCases(10, filters, sort);
+		const page = req.query.page ? parseInt(req.query.page) : 1;
+		const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+		const { cases, total } = fetchCases(limit, page, filters, sort);
+		const formData = {
+			filters,
+			limit,
+			page,
+			sort: req.query.sort || 'age',
+			inspectorId: selectedInspector.id
+		};
+		const pagination = getPagination(req, total, formData);
 
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
@@ -29,15 +38,57 @@ export function buildViewHome({ logger, config }) {
 			title: 'Unassigned Case List',
 			cases: cases.map(caseViewModel),
 			inspectors,
-			inspectorId: selectedInspector.id,
-			data: {
-				filters
-			},
-			apiKey: mapsKey,
-			inspectorLatLong: selectedInspector.homeLatLong,
-			sort: req.query.sort
+			...pagination,
+			data: formData,
+			apiKey: config.maps.key,
+			inspectorLatLong: selectedInspector.homeLatLong
 		});
 	};
+}
+
+function getPagination(req, total, formData) {
+	const currentUrl = '/?' + getCurrentUrl(new URLSearchParams(), formData).toString();
+	const pageItems = [];
+
+	for (let i = 0; i < Math.ceil(total / formData.limit); i++) {
+		pageItems.push({ href: currentUrl + '&page=' + (i + 1), number: i + 1, current: i + 1 === formData.page });
+	}
+
+	console.log(currentUrl);
+
+	return {
+		pageItems,
+		nextPage:
+			formData.page < Math.ceil(total / formData.limit)
+				? {
+						href: currentUrl + '&page=' + (formData.page + 1)
+					}
+				: null,
+		previousPage:
+			formData.page > 1
+				? {
+						href: currentUrl + '&page=' + (formData.page - 1)
+					}
+				: null
+	};
+}
+
+function getCurrentUrl(url, formData, prefix = '') {
+	for (const [key, value] of Object.entries(formData)) {
+		const prefixedKey = prefix ? `${prefix}[${key}]` : key;
+
+		if (Array.isArray(value)) {
+			for (const v of value) {
+				url.append(prefixedKey, v);
+			}
+		} else if (typeof value === 'object') {
+			getCurrentUrl(url, value, key);
+		} else if (key !== 'page') {
+			url.set(prefixedKey, value);
+		}
+	}
+
+	return url;
 }
 
 function getSort(sort, selectedInspector) {
@@ -72,7 +123,7 @@ export function buildPostHome({ logger }) {
 		logger.info('post home');
 
 		const redirectUrl =
-			req.body.action === 'view' ? `/inspector/${req.body.inspector}` : `/?inspector=${req.body.inspector}`;
+			req.body.action === 'view' ? `/inspector/${req.body.inspectorId}` : `/?inspectorId=${req.body.inspectorId}`;
 
 		return res.redirect(redirectUrl);
 	};
