@@ -93,13 +93,57 @@
             }
         });
 
-        function addMarker(latLong, color = [226, 119, 40]) {
+        function addMarker(caseData, color) {
+            const point = {
+                type: 'point',
+                ... caseData.siteAddressLatLong
+            };
+            const simpleMarkerSymbol = {
+                type: 'simple-marker',
+                content: 'Case Info',
+                color,
+                outline: {
+                    color: [255, 255, 255], // White
+                    width: 1
+                }
+            };
+
+            const markerTootltip = {
+                title: `Case ID: ${caseData.caseId}`,
+                content: `
+                    <strong>Case Age:</strong> ${caseData.caseAge} Weeks<br>
+                    <strong>LPA Name:</strong> ${caseData.lpaName}<br>
+                    <strong>Case Status:</strong> ${caseData.caseStatus}<br>
+                    <strong>Site Postcode:</strong> ${caseData.siteAddressPostcode}<br>
+                    <strong>Case Specialism:</strong> ${caseData.caseSpecialisms}<br>
+                    <strong>Appeal Type:</strong> ${caseData.appealEventType}<br>
+                    <strong>Procedure:</strong> ${caseData.caseProcedure}<br>
+                    <strong>Allocation Level:</strong> ${caseData.allocationLevel}<br>
+                    <strong>Final Comments Date:</strong> ${caseData.finalCommentsDate}
+                `
+             };
+
+            const pointGraphic = new Graphic({
+                geometry: point,
+                symbol: simpleMarkerSymbol,
+                popupTemplate: markerTootltip
+            });
+            view.graphics.add(pointGraphic);
+        }
+
+        for (const caseData of pins) {
+            const markerColor = `#${caseData.color}`;
+            addMarker(caseData, markerColor);
+        }
+
+        function addInspectorMarker(latLong, color) {
             const point = {
                 type: 'point',
                 ...latLong
             };
             const simpleMarkerSymbol = {
                 type: 'simple-marker',
+                content: 'Case Info',
                 color,
                 outline: {
                     color: [255, 255, 255], // White
@@ -114,12 +158,8 @@
             view.graphics.add(pointGraphic);
         }
 
-        for (const caseData of pins) {
-            addMarker(caseData.siteAddressLatLong, '#' + caseData.color);
-        }
-
         {% if inspectorPin %}
-            addMarker({{ inspectorPin | dump | safe }}, [0, 255, 0]);
+            addInspectorMarker({{ inspectorPin | dump | safe }}, [0, 255, 0]);
         {% endif %}
     });
 </script>
