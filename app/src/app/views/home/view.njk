@@ -260,7 +260,7 @@
                     classes: "govuk-checkboxes--small",
                     items: [{ value: c.caseId, text: " ", checked: false }]
                 }) },
-                { html: '<a href="/case/' + c.caseId + '" class="govuk-link">' + c.caseId + '</a>' },
+                { html: '<a href="/case/' + c.caseId + '?inspectorId=' + data.inspectorId + '" class="govuk-link">' + c.caseId + '</a>' },
                 { text: c.caseType },
                 { text: c.caseProcedure },
                 { text: c.allocationBand },
