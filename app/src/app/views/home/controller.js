@@ -21,7 +21,7 @@ export function buildViewHome({ logger, config }) {
 		const filters = req.query.filters || selectedInspector.filters;
 		const sort = getSort(req.query.sort, selectedInspector);
 		const page = req.query.page ? parseInt(req.query.page) : 1;
-		const limit = req.query.limit ? parseInt(req.query.limit) : 10;
+		const limit = req.query.limit ? parseInt(req.query.limit, 10) : 10;
 		const { cases, total } = fetchCases(limit, page, filters, sort);
 		const formData = {
 			filters,

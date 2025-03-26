@@ -16,11 +16,19 @@ export function buildViewInspector({ logger, config }) {
 		const eventsResponse = await req.entraClient.getEvents(inspector.id);
 		const events = Array.isArray(eventsResponse.value) ? eventsResponse.value : [];
 
-		const simplifiedEvents = events.map((event) => ({
-			subject: event.subject,
-			startDateTime: event.start.dateTime,
-			endDateTime: event.end.dateTime
-		}));
+		const simplifiedEvents = events.map((event) => {
+			const startDateTime = new Date(event.start.dateTime);
+			const endDateTime = new Date(event.end.dateTime);
+			const durationMinutes = (endDateTime - startDateTime) / (1000 * 60);
+			const roundedDurationMinutes = Math.ceil(durationMinutes / 30) * 30;
+			const adjustedEndDateTime = new Date(startDateTime.getTime() + roundedDurationMinutes * 60 * 1000);
+
+			return {
+				subject: event.subject,
+				startDateTime: startDateTime.toISOString(),
+				endDateTime: adjustedEndDateTime.toISOString()
+			};
+		});
 
 		logger.info(simplifiedEvents);
 		return res.render('views/inspector/view.njk', {
