@@ -227,7 +227,7 @@
                     
                     <div class="app-filter__header">
                         <div class="app-filter__header-title">
-                            <h2 class="govuk-heading-m bold-title">Sort by</h2>
+                            <h2 class="govuk-heading-m bold-title">Sort By</h2>
                         </div>
                     </div>
                     <div class="govuk-form-group" style="display: flex; gap: 5px; margin-bottom 0">
@@ -320,12 +320,26 @@
                 }) }}
             </form>
 
-            <div class="govuk-form-group">
-                {{ govukPagination({
-                    next: nextPage,
-                    previous: previousPage,
-                    items: pageItems
-                }) }}
+            <div class="govuk-form-group" style="display: flex; justify-content: space-between; align-items: center; margin: 0; padding: 0;">
+                <div style="margin: 0; padding: 0;">
+                    {{ govukPagination({
+                        next: nextPage,
+                        previous: previousPage,
+                        items: pageItems
+                    }) }}
+                </div>
+
+                <div style="margin: 0; padding: 0;">
+                    <form method="get" action="/" class="govuk-form-group" style="margin: 0; padding: 0;">
+                        <label class="govuk-label" for="limit" style="margin-right: 10px;">Cases per page:</label>
+                        <select class="govuk-select" id="limit" name="limit" onchange="this.form.submit()">
+                            <option value="5" {% if data.limit == 5 %}selected{% endif %}>5</option>
+                            <option value="10" {% if data.limit == 10 %}selected{% endif %}>10</option>
+                            <option value="12" {% if data.limit == 12 %}selected{% endif %}>12</option>
+                            <option value="15" {% if data.limit == 15 %}selected{% endif %}>15</option>
+                        </select>
+                    </form>
+                </div>
             </div>
         {% endset %}
 
