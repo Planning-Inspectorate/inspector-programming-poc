@@ -5,6 +5,13 @@
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 
 {% block pageContent %}
+<nav class="govuk-header__navigation pins-header-navigation" aria-label="Menu">
+<ul class="govuk-header__navigation-list">
+    <li class="govuk-header__navigation-item">
+        <a class="govuk-button return-button" href="/">Return</a>
+    </li>
+</ul>
+</nav>
 {% set inspectorDetails %}
 <div class="pins-container-wide govuk-grid-row">
     <div class="govuk-grid-column-one-half">

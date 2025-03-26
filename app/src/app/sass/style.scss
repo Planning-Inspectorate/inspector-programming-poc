@@ -230,3 +230,15 @@ $font-family: arial, helvetica, sans-serif;
 	left: 700px !important;
 	top: 100px !important;
 }
+
+.centered-page-title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0; 
+}
+
+.govuk-grid-column-full {
+	padding: 0;
+	height: 55px;
+}

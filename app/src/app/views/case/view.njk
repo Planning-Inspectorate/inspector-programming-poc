@@ -4,7 +4,13 @@
 {% from "views/layouts/components/map.njk" import map %}
 
 {% block pageContent %}
-
+<nav class="govuk-header__navigation pins-header-navigation" aria-label="Menu">
+<ul class="govuk-header__navigation-list">
+    <li class="govuk-header__navigation-item">
+        <a class="govuk-button return-button" href="/">Return</a>
+    </li>
+</ul>
+</nav>
 <div class="pins-container-wide govuk-grid-row">
     <div class="govuk-grid-column-one-half">
     <h2 class="govuk-heading-m">Case</h2>
