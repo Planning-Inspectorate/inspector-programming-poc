@@ -5,14 +5,14 @@
 
 {% block pageContent %}
 <nav class="govuk-header__navigation pins-header-navigation" aria-label="Menu">
-<ul class="govuk-header__navigation-list">
-    <li class="govuk-header__navigation-item">
-        <a class="govuk-button return-button" href="/">Return</a>
-    </li>
-</ul>
+    <ul class="govuk-header__navigation-list">
+        <li class="govuk-header__navigation-item">
+            <a href="/" class="govuk-back-link govuk-!-font-size-19">Back</a>
+        </li>
+    </ul>
 </nav>
 <div class="pins-container-wide govuk-grid-row">
-    <div class="govuk-grid-column-one-half">
+    <div class="govuk-grid-column-one-third">
     <h2 class="govuk-heading-m">Case</h2>
         {{ govukSummaryList({
             rows: [
@@ -51,7 +51,7 @@
         }) }}
     </div>
 
-    <div class="govuk-grid-column-one-half">
+    <div class="govuk-grid-column-two-thirds">
         <h2 class="govuk-heading-m">Key dates</h2>
         {{ govukSummaryList({
             rows: [

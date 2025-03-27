@@ -79,9 +79,13 @@ $font-family: arial, helvetica, sans-serif;
 	gap: 12px;
 }
 
-.govuk-button {
+.govuk-button--primary {
 	background-color: #00703c;
 	border-color: #005a30;
+}
+
+.govuk-button--secondary {
+	background-color: #bfbfbfcd;
 }
 
 .govuk-button:hover {
@@ -134,11 +138,6 @@ $font-family: arial, helvetica, sans-serif;
 	margin-bottom: 0;
 }
 
-.custom-table-header .govuk-table__head {
-	background-color: #6383a9;
-	color: white;
-}
-
 .align-right {
     display: flex;
     justify-content: flex-end;
@@ -146,11 +145,6 @@ $font-family: arial, helvetica, sans-serif;
 
 .app-filter .govuk-form-group {
     margin-bottom: 0;
-}
-
-.custom-table-header .govuk-table__head {
-    background-color: #6383a9;
-    color: white;
 }
 
 .calendar-container {
@@ -241,4 +235,13 @@ $font-family: arial, helvetica, sans-serif;
 .govuk-grid-column-full {
 	padding: 0;
 	height: 55px;
+}
+
+.home-cases-table th {
+    font-size: 18px;
+    font-weight: bold; 
+}
+
+.home-cases-table td {
+    font-size: 18px;
 }
