@@ -280,7 +280,8 @@
             <form method="post" action="/notify" novalidate>
                 <input type="hidden" name="inspectorId" value="{{ data.inspectorId }}">
                 
-                <div class="govuk-form-group" style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 10px; width: 100%;">
+                <!-- Container for top controls -->
+                <div class="govuk-form-group" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; width: 100%;">
                     
                     <!-- Cases per page dropdown -->
                     <div style="display: flex; align-items: center;">
@@ -295,7 +296,8 @@
                         </form>
                     </div>
                     
-                    <div style="display: flex; align-items: center; gap: 10px; justify-content: flex-end; flex-grow: 1;">
+                    <!-- Event date and Assign button -->
+                    <div style="display: flex; align-items: center; gap: 10px; justify-content: flex-end; flex-grow: 1; height: 100%;">
                         <div style="display: flex; align-items: center; white-space: nowrap;">
                             <label class="govuk-label" for="assignment-date" style="margin-right: 8px;">Event date:</label>
                             <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
@@ -312,7 +314,8 @@
                         </div>
                     </div>
                 </div>
-
+                
+                <!-- Cases Table -->
                 {{ govukTable({
                     classes: "govuk-!-font-size-14",
                     head: [
@@ -340,6 +343,7 @@
                 }) }}
             </form>
             
+            <!-- Pagination -->
             <div class="govuk-form-group" style="display: flex; justify-content: space-between; align-items: center; margin: 0; padding: 0;">
                 <div style="margin: 0; padding: 0;">
                     {{ govukPagination({
@@ -348,6 +352,12 @@
                         items: pageItems
                     }) }}
                 </div>
+            </div>
+        {% endset %}
+
+        {% set mapView %}
+            <div class="home-map">
+                {{ map(apiKey, cases, inspectorPin) }}
             </div>
         {% endset %}
 
