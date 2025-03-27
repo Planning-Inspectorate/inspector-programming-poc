@@ -6,10 +6,8 @@ import { fetchInspectors } from '@pins/inspector-programming-poc-lib/data/inspec
  * @param {import('../config-types.js').Config} opts.config
  * @returns {import('express').Handler}
  */
-export function buildViewInspector({ logger, config }) {
+export function buildViewInspector({ config }) {
 	return async (req, res) => {
-		logger.info(req.params.inspectorId);
-
 		const inspectors = await fetchInspectors(config);
 		const inspector = inspectors.find((i) => i.id === req.params.inspectorId);
 
@@ -30,7 +28,6 @@ export function buildViewInspector({ logger, config }) {
 			};
 		});
 
-		logger.info(simplifiedEvents);
 		return res.render('views/inspector/view.njk', {
 			inspector,
 			events: simplifiedEvents,
