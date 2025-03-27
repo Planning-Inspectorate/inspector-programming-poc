@@ -12,10 +12,8 @@ import { fetchInspectors } from '@pins/inspector-programming-poc-lib/data/inspec
  * @param {import('../config-types.js').Config} opts.config
  * @returns {import('express').Handler}
  */
-export function buildViewHome({ logger, config }) {
+export function buildViewHome({ config }) {
 	return async (req, res) => {
-		logger.info('view home');
-
 		const inspectors = await fetchInspectors(config);
 		const selectedInspector = inspectors.find((i) => req.query.inspectorId === i.id) || inspectors[3];
 		const filters = req.query.filters || selectedInspector.filters;
@@ -31,17 +29,26 @@ export function buildViewHome({ logger, config }) {
 			inspectorId: selectedInspector.id
 		};
 		const pagination = getPagination(req, total, formData);
-
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
-			title: 'Unassigned Case List',
+			title: 'Unassigned case list',
 			cases: cases.map(caseViewModel),
 			inspectors,
 			...pagination,
 			data: formData,
 			apiKey: config.maps.key,
-			inspectorLatLong: selectedInspector.homeLatLong
+			inspectorLatLong: selectedInspector.homeLatLong,
+			inspectorPin: {
+				id: selectedInspector.id,
+				homeLatLong: selectedInspector.homeLatLong,
+				firstName: selectedInspector.firstName,
+				lastName: selectedInspector.lastName,
+				address: selectedInspector.address.postcode,
+				grade: selectedInspector.grade,
+				fte: selectedInspector.fte,
+				caseSpecialisms: selectedInspector.filters.caseSpecialisms
+			}
 		});
 	};
 }

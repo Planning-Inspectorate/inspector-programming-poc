@@ -16,65 +16,65 @@
     <h2 class="govuk-heading-m">Case</h2>
         {{ govukSummaryList({
             rows: [
-                { key: { text: "Case Number" }, value: { text: caseData.caseId } },
-                { key: { text: "Site Address" }, value: { text: caseData.siteAddressPostcode } },
-                { key: { text: "Job Details" }, value: { text: caseData.jobDetails } },
+                { key: { text: "Case number" }, value: { text: caseData.caseId } },
+                { key: { text: "Site address" }, value: { text: caseData.siteAddressPostcode } },
+                { key: { text: "Job details" }, value: { text: caseData.jobDetails } },
                 { key: { text: "Procedure" }, value: { text: caseData.caseProcedure } },
                 { key: { text: "Jurisdiction" }, value: { text: caseData.jurisdiction } },
-                { key: { text: "Case Status" }, value: { text: caseData.caseStatus } }
+                { key: { text: "Case status" }, value: { text: caseData.caseStatus } }
             ]
         }) }}
 
         {{ govukSummaryList({
             rows: [
                 { key: { text: "Band" }, value: { text: inspectors[0].grade } },
-                { key: { text: "Case Level" }, value: { text: caseData.caseLevel } },
-                { key: { text: "Special Circumstances" }, value: { text:caseData.specialCircumstances } },
-                { key: { text: "Costs Applied For" }, value: { text: caseData.appellantCostsAppliedFor } }
+                { key: { text: "Case level" }, value: { text: caseData.caseLevel } },
+                { key: { text: "Special circumstances" }, value: { text:caseData.specialCircumstances } },
+                { key: { text: "Costs applied for" }, value: { text: caseData.appellantCostsAppliedFor } }
             ]
         }) }}
 
-        <h2 class="govuk-heading-m">Contact Details</h2>
+        <h2 class="govuk-heading-m">Contact details</h2>
         {{ govukSummaryList({
             rows: [
-                { key: { "text": "Local Planning Authority (LPA)" }, "value": { "text": caseData.lpaName } },
+                { key: { "text": "Local planning authority (LPA)" }, "value": { "text": caseData.lpaName } },
                 { key: { "text": "Agent" }, "value": { "text": caseData.agentId } },
                 { key: { "text": "Appellant" }, "value": { "text":caseData.appellantId } },
-                { key: { "text": "Case Officer" }, "value": { "text": caseData.caseOfficerId } },
-                { key: { "text": "EO Responsible" }, "value": { "text": caseData.eoResponsible } },
-                { key: { text: "LPA Phone" }, value: { text: caseData.lpaPhone } },
-                { key: { text: "Agent Phone" }, value: { text:caseData.agentPhone } },
-                { key: { text: "Appellant Phone" }, value: { text: caseData.appellantPhone } },
-                { key: { text: "Case Officer Phone" }, value: { text: caseData.caseOfficerPhone } },
-                { key: { text: "EO Phone" }, value: { text: caseData.eoPhone } }
+                { key: { "text": "Case officer" }, "value": { "text": caseData.caseOfficerId } },
+                { key: { "text": "EO responsible" }, "value": { "text": caseData.eoResponsible } },
+                { key: { text: "LPA phone" }, value: { text: caseData.lpaPhone } },
+                { key: { text: "Agent phone" }, value: { text:caseData.agentPhone } },
+                { key: { text: "Appellant phone" }, value: { text: caseData.appellantPhone } },
+                { key: { text: "Case officer phone" }, value: { text: caseData.caseOfficerPhone } },
+                { key: { text: "EO phone" }, value: { text: caseData.eoPhone } }
             ]
         }) }}
     </div>
 
     <div class="govuk-grid-column-one-half">
-        <h2 class="govuk-heading-m">Key Dates</h2>
+        <h2 class="govuk-heading-m">Key dates</h2>
         {{ govukSummaryList({
             rows: [
-                { key: { text: "Appeal Start Date" }, value: { text: caseData.caseStartedDate } },
-                { key: { text: "Target Date" }, value: { text: caseData.targetDate } },
-                { key: { text: "Rosewell Target" }, value: { text: caseData.rosewellTarget } },
-                { key: { text: "Personal Target Date" }, value: { text: caseData.personalTargetDate } }
+                { key: { text: "Appeal start date" }, value: { text: caseData.caseStartedDate } },
+                { key: { text: "Target date" }, value: { text: caseData.targetDate } },
+                { key: { text: "Rosewell target" }, value: { text: caseData.rosewellTarget } },
+                { key: { text: "Personal target date" }, value: { text: caseData.personalTargetDate } }
             ]
         }) }}
 
         <h2 class="govuk-heading-m">Event Arrangements</h2>
         {{ govukSummaryList({
             rows: [
-                { key: { text: "Event Type" }, value: { text: caseData.appealEventType } },
-                { key: { text: "Event Date" }, value: { text: caseData.appealEventDate } },
-                { key: { text: "Charting Notes" }, value: { text: caseData.chartingNotes } },
-                { key: { text: "Event Status" }, value: { text: caseData.caseStatus } },
+                { key: { text: "Event type" }, value: { text: caseData.appealEventType } },
+                { key: { text: "Event date" }, value: { text: caseData.appealEventDate } },
+                { key: { text: "Charting notes" }, value: { text: caseData.chartingNotes } },
+                { key: { text: "Event status" }, value: { text: caseData.caseStatus } },
                 { key: { text: "Duration" }, value: { text: caseData.appellantProcedurePreferenceDuration } },
                 { key: { text: "Venue" }, value: { text: caseData.venue } }
             ]
         }) }}
         <div class="map-container">
-            {{ map(apiKey, pins, inspectorLatLong) }}
+            {{ map(apiKey, pins, inspectorPin) }}
         </div>
     </div>
 </div>

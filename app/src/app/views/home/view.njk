@@ -14,7 +14,7 @@
     <div class="app-filter">
         <div class="app-filter__header">
             <div class="app-filter__header-title">
-                <h2 class="govuk-heading-m bold-title">Select Inspector</h2>
+                <h2 class="govuk-heading-m bold-title">Select inspector</h2>
             </div>
         </div>
         <form method="post" novalidate>
@@ -69,7 +69,7 @@
                     
                     <div class="app-filter__header">
                         <div class="app-filter__header-title">
-                            <h2 class="govuk-heading-m bold-title">Sort By</h2>
+                            <h2 class="govuk-heading-m bold-title">Sort by</h2>
                         </div>
                     </div>
                     <div class="govuk-form-group" style="display: flex; gap: 5px; margin-bottom 0">
@@ -90,7 +90,7 @@
                 </form>
                 <div class="app-filter__header">
                     <div class="app-filter__header-title">
-                        <h2 class="govuk-heading-m">Case Filters</h2>
+                        <h2 class="govuk-heading-m">Case filters</h2>
                     </div>
                 </div>
                 <form method="get" novalidate>
@@ -99,7 +99,7 @@
                     </button>
 
                     {{ govukDetails({
-                        summaryText: "Case Age",
+                        summaryText: "Case age",
                         html: govukSelect({
                         id: "filters[ageRange]",
                         name: "filters[ageRange]",
@@ -150,7 +150,7 @@
                         classes: "custom-filter-dropdown"
                     }) }}
                     {{ govukDetails({
-                        summaryText: "LPA Region",
+                        summaryText: "LPA region",
                         html: govukCheckboxes({
                             idPrefix: "filters[lpaRegion]",
                             name: "filters[lpaRegion]",
@@ -172,7 +172,7 @@
                         classes: "custom-filter-dropdown"
                     }) }}
                     {{ govukDetails({
-                        summaryText: "Case Type",
+                        summaryText: "Case type",
                         html: govukCheckboxes({
                             idPrefix: "filters[caseType]",
                             name: "filters[caseType]",
@@ -216,7 +216,7 @@
                     }) }}
 
                     {{ govukDetails({
-                        summaryText: "Specialism Code",
+                        summaryText: "Specialism code",
                         html: govukCheckboxes({
                             idPrefix: "filters[allocationLevel]",
                             name: "filters[allocationLevel]",
@@ -279,20 +279,38 @@
         {% set casesTable %}
             <form method="post" action="/notify" novalidate>
                 <input type="hidden" name="inspectorId" value="{{ data.inspectorId }}">
-                <div class="align-right">
-                    <div class="govuk-form-group">
-                        <label class="govuk-label" for="assignment-date">Event date: </label>
+                <div class="govuk-form-group" style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; width: 100%;">
+    
+                    <div style="display: flex; align-items: center;">
+                        <label class="govuk-label" for="limit" style="margin-right: 8px;">Cases per page:</label>
+                        <form method="get" action="/">
+                            <select class="govuk-select" id="limit" name="limit" onchange="this.form.submit()">
+                                <option value="5" {% if data.limit == 5 %}selected{% endif %}>5</option>
+                                <option value="10" {% if data.limit == 10 %}selected{% endif %}>10</option>
+                                <option value="12" {% if data.limit == 12 %}selected{% endif %}>12</option>
+                                <option value="15" {% if data.limit == 15 %}selected{% endif %}>15</option>
+                            </select>
+                        </form>
                     </div>
-                    <div class="govuk-form-group">
-                        <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
-                    </div>
-                    <div class="govuk-form-group">
-                        {{ govukButton({
-                            text: "Assign selected cases",
-                            type: "submit"
-                        }) }}
+                    
+                    <div style="display: flex; align-items: center; gap: 10px; justify-content: flex-end; flex-grow: 1; height: 100%;">
+                        <div style="display: flex; align-items: center; white-space: nowrap;">
+                            <label class="govuk-label" for="assignment-date" style="margin-right: 8px;">Event date:</label>
+                            <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
+                        </div>
+                        <div>
+                            {{ govukButton({
+                                text: "Assign selected cases",
+                                type: "submit",
+                                classes: "govuk-button--align-right",
+                                attributes: {
+                                    style: "margin-bottom: 3px;"
+                                }
+                            }) }}
+                        </div>
                     </div>
                 </div>
+                
                 {{ govukTable({
                     classes: "govuk-!-font-size-14",
                     head: [
@@ -310,16 +328,16 @@
                         { text: "Location" },
                         { text: "LPA" },
                         { text: "Region" },
-                        { text: "Case Status" },
+                        { text: "Case status" },
                         { text: "Age" },
                         { text: "Linked cases" },
                         { text: "Final comments date" },
-                        { text: "Prog Status" }
+                        { text: "Prog status" }
                     ],
                     rows: caseRows
                 }) }}
             </form>
-
+            
             <div class="govuk-form-group" style="display: flex; justify-content: space-between; align-items: center; margin: 0; padding: 0;">
                 <div style="margin: 0; padding: 0;">
                     {{ govukPagination({
@@ -328,36 +346,24 @@
                         items: pageItems
                     }) }}
                 </div>
-
-                <div style="margin: 0; padding: 0;">
-                    <form method="get" action="/" class="govuk-form-group" style="margin: 0; padding: 0;">
-                        <label class="govuk-label" for="limit" style="margin-right: 10px;">Cases per page:</label>
-                        <select class="govuk-select" id="limit" name="limit" onchange="this.form.submit()">
-                            <option value="5" {% if data.limit == 5 %}selected{% endif %}>5</option>
-                            <option value="10" {% if data.limit == 10 %}selected{% endif %}>10</option>
-                            <option value="12" {% if data.limit == 12 %}selected{% endif %}>12</option>
-                            <option value="15" {% if data.limit == 15 %}selected{% endif %}>15</option>
-                        </select>
-                    </form>
-                </div>
             </div>
         {% endset %}
 
         {% set mapView %}
             <div class="home-map">
-                {{ map(apiKey, cases, inspectorLatLong) }}
+                {{ map(apiKey, cases, inspectorPin) }}
             </div>
         {% endset %}
 
         {{ govukTabs({
             items: [
                 {
-                    label: "Cases Table",
+                    label: "Cases table",
                     id: "cases",
                     panel: { html: casesTable }
                 },
                 {
-                    label: "Map View",
+                    label: "Map view",
                     id: "mapView",
                     panel: { html: mapView }
                 }

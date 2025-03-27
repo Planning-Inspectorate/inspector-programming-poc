@@ -136,10 +136,10 @@
             addMarker(caseData, markerColor);
         }
 
-        function addInspectorMarker(latLong) {
+        function addInspectorMarker(inspectorData) {
             const point = {
                 type: 'point',
-                ...latLong
+                ...inspectorData.homeLatLong
             };
 
             const pictureMarkerSymbol = {
@@ -149,9 +149,20 @@
                 height: '50px'
             };
 
+            const inspectorTooltip = {
+                title: `Inspector: ${inspectorData.firstName} ${inspectorData.lastName}`,
+                content: `
+                    <strong>Address:</strong> ${inspectorData.address}<br>
+                    <strong>Grade:</strong> ${inspectorData.grade}<br>
+                    <strong>FTE:</strong> ${inspectorData.fte}<br>
+                    <strong>Specialisms:</strong> ${inspectorData.caseSpecialisms}<br>
+                `
+            };
+
             const pointGraphic = new Graphic({
                 geometry: point,
-                symbol: pictureMarkerSymbol
+                symbol: pictureMarkerSymbol,
+                popupTemplate: inspectorTooltip
             });
 
             view.graphics.add(pointGraphic);

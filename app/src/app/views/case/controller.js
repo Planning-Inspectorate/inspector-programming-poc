@@ -19,7 +19,17 @@ export function buildViewCase({ config }) {
 			inspectorLatLong,
 			pins: [caseViewModel(caseData)],
 			containerClasses: 'pins-container-wide',
-			title: 'Case Details'
+			title: 'Case details',
+			inspectorPin: {
+				id: associatedInspector.id,
+				homeLatLong: associatedInspector.homeLatLong,
+				firstName: associatedInspector.firstName,
+				lastName: associatedInspector.lastName,
+				address: associatedInspector.address.postcode,
+				grade: associatedInspector.grade,
+				fte: associatedInspector.fte,
+				caseSpecialisms: associatedInspector.filters.caseSpecialisms
+			}
 		});
 	};
 }

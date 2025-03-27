@@ -16,24 +16,24 @@
 <div class="pins-container-wide govuk-grid-row">
     <div class="govuk-grid-column-one-half">
         <h2 class="govuk-heading-m">{{ inspector.firstName + " " + inspector.lastName }}</h2>
-        <h2 class="govuk-heading-m">Contact Details</h2>
+        <h2 class="govuk-heading-m">Contact details</h2>
             {{ govukSummaryList({
                 rows: [
                     { key: { text: "Address" }, value: { text: inspector.address.addressLine1 + ", " + inspector.address.postcode } },
-                    { key: { text: "Work Phone" }, value: { text: inspector.inspectorPhone } },
-                    { key: { text: "Mobile Phone" }, value: { text: inspector.inspectorPhone  } }
+                    { key: { text: "Work phone" }, value: { text: inspector.inspectorPhone } },
+                    { key: { text: "Mobile phone" }, value: { text: inspector.inspectorPhone  } }
                 ]
             }) }}
 
-            <h2 class="govuk-heading-m">Work Details</h2>
+            <h2 class="govuk-heading-m">Work details</h2>
             {{ govukSummaryList({
                 rows: [
-                    { key: { text: "Resource Group" }, value: { text: "" } },
+                    { key: { text: "Resource group" }, value: { text: "" } },
                     { key: { text: "Grade" }, value: { text: inspector.grade } },
                     { key: { text: "FTE" }, value: { text: inspector.fte } },
-                    { key: { text: "Charting Officer" }, value: { text: inspector.chartingOfficerId } },
-                    { key: { text: "Charting Officer Phone" }, value: { text: inspector.chartingOfficerPhone } },
-                    { key: { text: "Inspector Manager" }, value: { text: inspector.inspectorManager } }
+                    { key: { text: "Charting officer" }, value: { text: inspector.chartingOfficerId } },
+                    { key: { text: "Charting officer phone" }, value: { text: inspector.chartingOfficerPhone } },
+                    { key: { text: "Inspector manager" }, value: { text: inspector.inspectorManager } }
                 ]
             }) }}    
     </div>
@@ -45,16 +45,16 @@
             head: [
                 { text: "Name", classes: "govuk-!-width-one-half" },
                 { text: "Proficiency", classes: "govuk-!-width-one-quarter" },
-                { text: "Valid From", classes: "govuk-!-width-one-quarter" }
+                { text: "Valid from", classes: "govuk-!-width-one-quarter" }
             ],
             rows: [
                 [ { text: "Advertisements" }, { text: "Trained" }, { text: "11/03/24" } ],
-                [ { text: "Appeal Against Conditions" }, { text: "Trained" }, { text: "17/11/23" } ],
-                [ { text: "General Allocation" }, { text: "Trained" }, { text: "12/12/21" } ],
-                [ { text: "Appearance Design" }, { text: "Trained" }, { text: "02/06/23" } ],
-                [ { text: "Green Belt" }, { text: "Trained" }, { text: "29/11/24" } ],
-                [ { text: "Hearings Trained" }, { text: "Trained" }, { text: "01/01/19" } ],
-                [ { text: "Special Protection Area" }, { text: "Trained" }, { text: "25/08/19" } ]
+                [ { text: "Appeal against conditions" }, { text: "Trained" }, { text: "17/11/23" } ],
+                [ { text: "General allocation" }, { text: "Trained" }, { text: "12/12/21" } ],
+                [ { text: "Appearance design" }, { text: "Trained" }, { text: "02/06/23" } ],
+                [ { text: "Green belt" }, { text: "Trained" }, { text: "29/11/24" } ],
+                [ { text: "Hearings trained" }, { text: "Trained" }, { text: "01/01/19" } ],
+                [ { text: "Special protection area" }, { text: "Trained" }, { text: "25/08/19" } ]
                 ],
             classes: 'custom-table-header'
             }) }}
@@ -235,12 +235,12 @@
     {{ govukTabs({
             items: [
                 {
-                    label: "Inspector Details",
+                    label: "Inspector details",
                     id: "cases",
                     panel: { html: inspectorDetails }
                 },
                 {
-                    label: "Calendar View",
+                    label: "Calendar view",
                     id: "mapView",
                     panel: { html: outlookView }
                 }
