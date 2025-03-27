@@ -112,7 +112,7 @@ export function caseViewModel(c) {
 	return {
 		...c,
 		finalCommentsDate: c.finalCommentsDate.toLocaleDateString(),
-		color:
+		borderColor:
 			c.caseAge > 45
 				? 'fa72a8'
 				: c.caseAge > 39
