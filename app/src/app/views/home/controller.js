@@ -12,10 +12,8 @@ import { fetchInspectors } from '@pins/inspector-programming-poc-lib/data/inspec
  * @param {import('../config-types.js').Config} opts.config
  * @returns {import('express').Handler}
  */
-export function buildViewHome({ logger, config }) {
+export function buildViewHome({ config }) {
 	return async (req, res) => {
-		logger.info('view home');
-
 		const inspectors = await fetchInspectors(config);
 		const selectedInspector = inspectors.find((i) => req.query.inspectorId === i.id) || inspectors[3];
 		const filters = req.query.filters || selectedInspector.filters;
@@ -31,10 +29,6 @@ export function buildViewHome({ logger, config }) {
 			inspectorId: selectedInspector.id
 		};
 		const pagination = getPagination(req, total, formData);
-		console.log('Inspector Pin:', {
-			id: selectedInspector.id,
-			homeLatLong: selectedInspector.homeLatLong
-		});
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
