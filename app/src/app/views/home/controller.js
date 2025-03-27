@@ -31,7 +31,10 @@ export function buildViewHome({ logger, config }) {
 			inspectorId: selectedInspector.id
 		};
 		const pagination = getPagination(req, total, formData);
-
+		console.log('Inspector Pin:', {
+			id: selectedInspector.id,
+			homeLatLong: selectedInspector.homeLatLong
+		});
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
@@ -41,7 +44,17 @@ export function buildViewHome({ logger, config }) {
 			...pagination,
 			data: formData,
 			apiKey: config.maps.key,
-			inspectorLatLong: selectedInspector.homeLatLong
+			inspectorLatLong: selectedInspector.homeLatLong,
+			inspectorPin: {
+				id: selectedInspector.id,
+				homeLatLong: selectedInspector.homeLatLong,
+				firstName: selectedInspector.firstName,
+				lastName: selectedInspector.lastName,
+				address: selectedInspector.address.postcode,
+				grade: selectedInspector.grade,
+				fte: selectedInspector.fte,
+				caseSpecialisms: selectedInspector.filters.caseSpecialisms
+			}
 		});
 	};
 }
