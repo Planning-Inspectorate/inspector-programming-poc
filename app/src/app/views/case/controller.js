@@ -19,7 +19,7 @@ export function buildViewCase({ config }) {
 			inspectorLatLong,
 			pins: [caseViewModel(caseData)],
 			containerClasses: 'pins-container-wide',
-			title: 'Case Details'
+			title: 'Case details'
 		});
 	};
 }

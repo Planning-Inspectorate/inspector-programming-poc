@@ -38,7 +38,7 @@ export function buildViewHome({ logger, config }) {
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
-			title: 'Unassigned Case List',
+			title: 'Unassigned case list',
 			cases: cases.map(caseViewModel),
 			inspectors,
 			...pagination,

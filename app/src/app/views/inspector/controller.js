@@ -35,7 +35,7 @@ export function buildViewInspector({ logger, config }) {
 			inspector,
 			events: simplifiedEvents,
 			containerClasses: 'pins-container-wide',
-			title: 'Inspector Details'
+			title: 'Inspector details'
 		});
 	};
 }
