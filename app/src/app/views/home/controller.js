@@ -17,22 +17,29 @@ export function buildViewHome({ config }) {
 		const inspectors = await fetchInspectors(config);
 		const selectedInspector = inspectors.find((i) => req.query.inspectorId === i.id) || inspectors[3];
 
-		const eventsResponse = await req.entraClient.getEvents(selectedInspector.id);
-		const events = Array.isArray(eventsResponse.value) ? eventsResponse.value : [];
+		let simplifiedEvents = [];
+		let calendarError = null;
+		try {
+			const eventsResponse = await req.entraClient.getEvents(selectedInspector.id);
+			const events = Array.isArray(eventsResponse.value) ? eventsResponse.value : [];
 
-		const simplifiedEvents = events.map((event) => {
-			const startDateTime = new Date(event.start.dateTime);
-			const endDateTime = new Date(event.end.dateTime);
-			const durationMinutes = (endDateTime - startDateTime) / (1000 * 60);
-			const roundedDurationMinutes = Math.ceil(durationMinutes / 30) * 30;
-			const adjustedEndDateTime = new Date(startDateTime.getTime() + roundedDurationMinutes * 60 * 1000);
+			simplifiedEvents = events.map((event) => {
+				const startDateTime = new Date(event.start.dateTime);
+				const endDateTime = new Date(event.end.dateTime);
+				const durationMinutes = (endDateTime - startDateTime) / (1000 * 60);
+				const roundedDurationMinutes = Math.ceil(durationMinutes / 30) * 30;
+				const adjustedEndDateTime = new Date(startDateTime.getTime() + roundedDurationMinutes * 60 * 1000);
 
-			return {
-				subject: event.subject,
-				startDateTime: startDateTime.toISOString(),
-				endDateTime: adjustedEndDateTime.toISOString()
-			};
-		});
+				return {
+					subject: event.subject,
+					startDateTime: startDateTime.toISOString(),
+					endDateTime: adjustedEndDateTime.toISOString()
+				};
+			});
+		} catch (error) {
+			console.error('Error retrieving calendar events:', error);
+			calendarError = "Can't view this calendar";
+		}
 
 		const filters = req.query.filters || selectedInspector.filters;
 		const sort = getSort(req.query.sort, selectedInspector);
@@ -60,7 +67,8 @@ export function buildViewHome({ config }) {
 			inspectorPin: {
 				...selectedInspector
 			},
-			events: simplifiedEvents
+			events: simplifiedEvents,
+			calendarError
 		});
 	};
 }

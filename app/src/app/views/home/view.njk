@@ -297,58 +297,58 @@
             </form>
         </div>
         <form method="post" action="/notify" novalidate>
-                 <input type="hidden" name="inspectorId" value="{{ data.inspectorId }}">
-                 <div class="align-right">
-                     <div class="govuk-form-group">
-                         <label class="govuk-label" for="assignment-date">Event date: </label>
-                     </div>
-                     <div class="govuk-form-group">
-                         <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
-                     </div>
-                     <div class="govuk-form-group">
-                         {{ govukButton({
-                             text: "Assign selected cases",
-                             type: "submit"
-                         }) }}
-                     </div>
-                 </div>
-                 {{ govukTable({
-                     classes: "govuk-!-font-size-14 home-cases-table",
-                     head: [
-                         { html: govukCheckboxes({
-                             idPrefix: "select-all",
-                             name: "select-all",
-                             classes: "govuk-checkboxes--small",
-                             items: [{ value: "select-all", text: " ", checked: false }]
-                         }) },
-                         { text: "Reference" },
-                         { text: "Type" },
-                         { text: "Procedure" },
-                         { text: "Band" },
-                         { text: "Level" },
-                         { text: "Location" },
-                         { text: "LPA" },
-                         { text: "Region" },
-                         { text: "Case Status" },
-                         { text: "Age" },
-                         { text: "Linked cases" },
-                         { text: "Final comments date" },
-                         { text: "Prog Status" }
-                     ],
-                     rows: caseRows
-                 }) }}
-             </form>
- 
-             <div class="govuk-form-group" style="display: flex; justify-content: space-between; align-items: center; margin: 0; padding: 0;">
-                 <div style="margin: 0; padding: 0;">
-                     {{ govukPagination({
-                         next: nextPage,
-                         previous: previousPage,
-                         items: pageItems
-                     }) }}
-                 </div>
-             </div>
-         {% endset %}
+                <input type="hidden" name="inspectorId" value="{{ data.inspectorId }}">
+                <div class="align-right">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="assignment-date">Event date: </label>
+                    </div>
+                    <div class="govuk-form-group">
+                        <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
+                    </div>
+                    <div class="govuk-form-group">
+                        {{ govukButton({
+                            text: "Assign selected cases",
+                            type: "submit"
+                        }) }}
+                    </div>
+                </div>
+                {{ govukTable({
+                    classes: "govuk-!-font-size-14 home-cases-table",
+                    head: [
+                        { html: govukCheckboxes({
+                            idPrefix: "select-all",
+                            name: "select-all",
+                            classes: "govuk-checkboxes--small",
+                            items: [{ value: "select-all", text: " ", checked: false }]
+                        }) },
+                        { text: "Reference" },
+                        { text: "Type" },
+                        { text: "Procedure" },
+                        { text: "Band" },
+                        { text: "Level" },
+                        { text: "Location" },
+                        { text: "LPA" },
+                        { text: "Region" },
+                        { text: "Case Status" },
+                        { text: "Age" },
+                        { text: "Linked cases" },
+                        { text: "Final comments date" },
+                        { text: "Prog Status" }
+                    ],
+                    rows: caseRows
+                }) }}
+            </form>
+
+            <div class="govuk-form-group" style="display: flex; justify-content: space-between; align-items: center; margin: 0; padding: 0;">
+                <div style="margin: 0; padding: 0;">
+                    {{ govukPagination({
+                        next: nextPage,
+                        previous: previousPage,
+                        items: pageItems
+                    }) }}
+                </div>
+            </div>
+        {% endset %}
 
         {% set mapView %}
             <div class="home-map">
@@ -410,33 +410,39 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
         <div class="calendar-container">
-            <div class="calendar-header">
-                <button onclick="goToToday()">Today</button>
-                <div class="nav-buttons">
-                    <button onclick="prevWeek()">&lt;</button>
-                    <button onclick="nextWeek()">&gt;</button>
+            {% if calendarError %}
+                <div class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> {{ calendarError }}
                 </div>
-                <h2 id="monthYear"></h2>
-                <label for="weekPicker" class="arrow-button">↓</label>
-                <input type="text" id="weekPicker" placeholder="Select date" readonly>
-            </div>
-            <table class="calendar-table">
-                <thead>
-                    <tr>
-                        <th class="time-column"></th>
-                        <th id="mon"></th>
-                        <th id="tue"></th>
-                        <th id="wed"></th>
-                        <th id="thu"></th>
-                        <th id="fri"></th>
-                    </tr>
-                </thead>
-                <tbody id="calendar-body">
-                </tbody>
-            </table>
+            {% else %}
+                <div class="calendar-header">
+                    <button onclick="goToToday()">Today</button>
+                    <div class="nav-buttons">
+                        <button onclick="prevWeek()">&lt;</button>
+                        <button onclick="nextWeek()">&gt;</button>
+                    </div>
+                    <h2 id="monthYear"></h2>
+                    <label for="weekPicker" class="arrow-button">↓</label>
+                    <input type="text" id="weekPicker" placeholder="Select date" readonly>
+                </div>
+                <table class="calendar-table">
+                    <thead>
+                        <tr>
+                            <th class="time-column"></th>
+                            <th id="mon"></th>
+                            <th id="tue"></th>
+                            <th id="wed"></th>
+                            <th id="thu"></th>
+                            <th id="fri"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-body">
+                    </tbody>
+                </table>
+            {% endif %}
         </div>
-
         <script>
+            {% if not calendarError %}
             let currentWeek = 0;
             const year = new Date().getFullYear();
             const events = {{ events | dump | safe }};
@@ -573,6 +579,7 @@
                     },
                 });
             });
+            {% endif %}
         </script>
         {% endset %}
 
@@ -593,7 +600,7 @@
                     id: "inspector",
                     panel: { html: inspectorDetails }
                 },
-                                {
+                {
                     label: "Inspector calendar",
                     id: "outlookView",
                     panel: { html: outlookView }
