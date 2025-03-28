@@ -41,12 +41,9 @@
                 { key: { "text": "Agent" }, "value": { "text": caseData.agentId } },
                 { key: { "text": "Appellant" }, "value": { "text":caseData.appellantId } },
                 { key: { "text": "Case officer" }, "value": { "text": caseData.caseOfficerId } },
-                { key: { "text": "EO responsible" }, "value": { "text": caseData.eoResponsible } },
-                { key: { text: "LPA phone" }, value: { text: caseData.lpaPhone } },
                 { key: { text: "Agent phone" }, value: { text:caseData.agentPhone } },
                 { key: { text: "Appellant phone" }, value: { text: caseData.appellantPhone } },
-                { key: { text: "Case officer phone" }, value: { text: caseData.caseOfficerPhone } },
-                { key: { text: "EO phone" }, value: { text: caseData.eoPhone } }
+                { key: { text: "Case officer phone" }, value: { text: caseData.caseOfficerPhone } }
             ]
         }) }}
     </div>
@@ -55,10 +52,7 @@
         <h2 class="govuk-heading-m">Key dates</h2>
         {{ govukSummaryList({
             rows: [
-                { key: { text: "Appeal start date" }, value: { text: caseData.caseStartedDate } },
-                { key: { text: "Target date" }, value: { text: caseData.targetDate } },
-                { key: { text: "Rosewell target" }, value: { text: caseData.rosewellTarget } },
-                { key: { text: "Personal target date" }, value: { text: caseData.personalTargetDate } }
+                { key: { text: "Appeal start date" }, value: { text: caseData.caseStartedDate } }
             ]
         }) }}
 
@@ -67,7 +61,7 @@
             rows: [
                 { key: { text: "Event type" }, value: { text: caseData.appealEventType } },
                 { key: { text: "Event date" }, value: { text: caseData.appealEventDate } },
-                { key: { text: "Charting notes" }, value: { text: caseData.chartingNotes } },
+                { key: { text: "Programming notes" }, value: { text: caseData.programmingNotes } },
                 { key: { text: "Event status" }, value: { text: caseData.caseStatus } },
                 { key: { text: "Duration" }, value: { text: caseData.appellantProcedurePreferenceDuration } },
                 { key: { text: "Venue" }, value: { text: caseData.venue } }

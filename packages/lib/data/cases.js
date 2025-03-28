@@ -137,7 +137,7 @@ async function createCase(randomPostcode) {
 		appellantProcedurePreferenceDuration: faker.string.numeric(1),
 		appealEventType: arrayElement(Object.values(APPEAL_EVENT_TYPE)),
 		appealEventDate: faker.date.future(),
-		chartingNotes: faker.lorem.sentence(),
+		programmingNotes: faker.lorem.sentence(),
 		venue: faker.location.streetAddress(),
 		jobDetails: faker.lorem.sentence(),
 		specialCircumstances: faker.lorem.sentence()
