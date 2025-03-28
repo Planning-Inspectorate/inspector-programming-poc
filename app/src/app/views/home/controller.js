@@ -40,14 +40,7 @@ export function buildViewHome({ config }) {
 			apiKey: config.maps.key,
 			inspectorLatLong: selectedInspector.homeLatLong,
 			inspectorPin: {
-				id: selectedInspector.id,
-				homeLatLong: selectedInspector.homeLatLong,
-				firstName: selectedInspector.firstName,
-				lastName: selectedInspector.lastName,
-				address: selectedInspector.address.postcode,
-				grade: selectedInspector.grade,
-				fte: selectedInspector.fte,
-				caseSpecialisms: selectedInspector.filters.caseSpecialisms
+				...selectedInspector
 			}
 		});
 	};
