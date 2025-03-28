@@ -16,6 +16,24 @@ export function buildViewHome({ config }) {
 	return async (req, res) => {
 		const inspectors = await fetchInspectors(config);
 		const selectedInspector = inspectors.find((i) => req.query.inspectorId === i.id) || inspectors[3];
+
+		const eventsResponse = await req.entraClient.getEvents(selectedInspector.id);
+		const events = Array.isArray(eventsResponse.value) ? eventsResponse.value : [];
+
+		const simplifiedEvents = events.map((event) => {
+			const startDateTime = new Date(event.start.dateTime);
+			const endDateTime = new Date(event.end.dateTime);
+			const durationMinutes = (endDateTime - startDateTime) / (1000 * 60);
+			const roundedDurationMinutes = Math.ceil(durationMinutes / 30) * 30;
+			const adjustedEndDateTime = new Date(startDateTime.getTime() + roundedDurationMinutes * 60 * 1000);
+
+			return {
+				subject: event.subject,
+				startDateTime: startDateTime.toISOString(),
+				endDateTime: adjustedEndDateTime.toISOString()
+			};
+		});
+
 		const filters = req.query.filters || selectedInspector.filters;
 		const sort = getSort(req.query.sort, selectedInspector);
 		const page = req.query.page ? parseInt(req.query.page) : 1;
@@ -41,7 +59,8 @@ export function buildViewHome({ config }) {
 			inspectorLatLong: selectedInspector.homeLatLong,
 			inspectorPin: {
 				...selectedInspector
-			}
+			},
+			events: simplifiedEvents
 		});
 	};
 }

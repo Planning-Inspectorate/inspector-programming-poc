@@ -49,7 +49,7 @@ export function buildRouter({ logger, config }) {
 	const viewCase = buildViewCase({ logger, config });
 	const viewInspector = buildViewInspector({ logger, config });
 
-	router.get('/', asyncHandler(viewHome));
+	router.get('/', entraClientMiddleware, asyncHandler(viewHome));
 	router.post('/notify', entraClientMiddleware, asyncHandler(viewNotify));
 	router.post('/', asyncHandler(postHome));
 	router.get('/case/:caseId', asyncHandler(viewCase));
