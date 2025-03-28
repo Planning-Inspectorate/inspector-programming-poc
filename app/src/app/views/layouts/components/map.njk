@@ -43,7 +43,6 @@
     const apiKey = '{{ apiKey }}';
     const serviceUrl = 'https://api.os.uk/maps/vector/v1/vts';
     const pins = {{ cases | dump | safe }};
-    let view = null;
 
     require([
         'esri/Map',
@@ -81,7 +80,7 @@
         center.longitude /= pins.length;
         center.latitude /= pins.length;
 
-        view = new MapView({
+        const view = new MapView({
             container: 'map',
             map: map,
             zoom: 3,
@@ -107,10 +106,58 @@
             (event) => {
                 if (event.action.title === "Select Case" || event.action.title === "Unselect Case") {
                     const selectedCase = event.action.id.replace('toggle-select-case-', '');
-                    toggleCaseSelection(selectedCase);
+                    document.dispatchEvent(new CustomEvent('caseStateChange', {
+                        detail: {
+                            caseId: selectedCase,
+                            selected: !pins.find(({ caseId }) => caseId === selectedCase).selected
+                        }
+                    }));
                 }
             }
         );
+
+        document.addEventListener('caseStateChange', function (event) {
+            const graphic = view.graphics.find((graphic) => graphic.attributes?.caseId === event.detail.caseId);
+
+            if (graphic) {
+                const caseData = pins.find(({ caseId }) => caseId === event.detail.caseId);
+                caseData.selected = event.detail.selected;
+
+                updatePopupAction(caseData, graphic);
+            }
+        });
+
+        function updatePopupAction(caseData, pointGraphic) {
+            const actionTitle = caseData.selected ? 'Unselect Case' : 'Select Case';
+            pointGraphic.popupTemplate = {
+                title: `Case ID: ${caseData.caseId}`,
+                content: `
+                    <strong>Case Age:</strong> ${caseData.caseAge} Weeks<br>
+                    <strong>LPA Name:</strong> ${caseData.lpaName}<br>
+                    <strong>Case Status:</strong> ${caseData.caseStatus}<br>
+                    <strong>Site Postcode:</strong> ${caseData.siteAddressPostcode}<br>
+                    <strong>Case Specialism:</strong> ${caseData.caseSpecialisms}<br>
+                    <strong>Appeal Type:</strong> ${caseData.appealEventType}<br>
+                    <strong>Procedure:</strong> ${caseData.caseProcedure}<br>
+                    <strong>Allocation Level:</strong> ${caseData.allocationLevel}<br>
+                    <strong>Final Comments Date:</strong> ${caseData.finalCommentsDate}
+                `,
+                actions: [
+                    {
+                        id: 'toggle-select-case-' + caseData.caseId,
+                        title: actionTitle
+                    }
+                ]
+            };
+            pointGraphic.symbol = {
+                type: 'simple-marker',
+                color: caseData.markerColor,
+                outline: {
+                    color: !caseData.selected ? [255, 255, 255] : [0, 0, 0],
+                    width: 1
+                }
+            }
+        }
 
         function addMarker(caseData, color) {
             const point = {
@@ -127,8 +174,6 @@
 
             view.graphics.add(pointGraphic);
         }
-
-
 
         for (const caseData of pins) {
             caseData.selected = false;
@@ -173,36 +218,5 @@
         {% endif %}
     });
 
-    function updatePopupAction(caseData, pointGraphic) {
-        const actionTitle = caseData.selected ? 'Unselect Case' : 'Select Case';
-        pointGraphic.popupTemplate = {
-            title: `Case ID: ${caseData.caseId}`,
-            content: `
-                <strong>Case Age:</strong> ${caseData.caseAge} Weeks<br>
-                <strong>LPA Name:</strong> ${caseData.lpaName}<br>
-                <strong>Case Status:</strong> ${caseData.caseStatus}<br>
-                <strong>Site Postcode:</strong> ${caseData.siteAddressPostcode}<br>
-                <strong>Case Specialism:</strong> ${caseData.caseSpecialisms}<br>
-                <strong>Appeal Type:</strong> ${caseData.appealEventType}<br>
-                <strong>Procedure:</strong> ${caseData.caseProcedure}<br>
-                <strong>Allocation Level:</strong> ${caseData.allocationLevel}<br>
-                <strong>Final Comments Date:</strong> ${caseData.finalCommentsDate}
-            `,
-            actions: [
-                {
-                    id: 'toggle-select-case-' + caseData.caseId,
-                    title: actionTitle
-                }
-            ]
-        };
-        pointGraphic.symbol = {
-            type: 'simple-marker',
-            color: caseData.markerColor,
-            outline: {
-                color: !caseData.selected ? [255, 255, 255] : [0, 0, 0],
-                width: 1
-            }
-        }
-    }
 </script>
 {% endmacro %}

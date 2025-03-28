@@ -375,36 +375,33 @@
     document.addEventListener('DOMContentLoaded', function () {
         const selectAllCheckbox = document.querySelector('#select-all');
         const checkboxes = document.querySelectorAll('input[type="checkbox"][name="selectedCases"]');
+
         selectAllCheckbox.addEventListener('change', function () {
             checkboxes.forEach(checkbox => {
-                toggleCaseSelection(checkbox.value, selectAllCheckbox.checked);
+                document.dispatchEvent(new CustomEvent('caseStateChange', {
+                    detail: {
+                        caseId: checkbox.value,
+                        selected: selectAllCheckbox.checked
+                    }
+                }));
             });
         });
 
         checkboxes.forEach(checkbox => {
             checkbox.addEventListener('change', function () {
-                toggleCaseSelection(checkbox.value);
+                document.dispatchEvent('caseStateChange', {
+                    caseId: checkbox.value,
+                    selected: checkbox.checked
+                });
             });
         });
 
-        window.toggleCaseSelection = (selectedCase, force = undefined) => {
-            const graphic = view.graphics.find((graphic) => graphic.attributes?.caseId === selectedCase);
+        document.addEventListener('caseStateChange', function (event) {
+            const { caseId, selected } = event.detail;
 
-            if (graphic) {
-                const caseData = pins.find(({ caseId }) => caseId === selectedCase);
+            document.querySelector(`input[type="checkbox"][name="selectedCases"][value="${caseId}"]`).checked = selected;
+        });
 
-                if (force !== undefined) {
-                    caseData.selected = force;
-                } else {
-                    caseData.selected = !caseData.selected;
-                }
-                updatePopupAction(caseData, graphic);
-
-                document.querySelector(`input[type="checkbox"][name="selectedCases"][value="${selectedCase}"]`).checked = caseData.selected;
-            } else {
-                console.error(`Could not find graphic for case ID: ${selectedCase}`);
-            }
-        };
     });
 </script>
 {% endblock %}
