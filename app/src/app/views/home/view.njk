@@ -377,9 +377,34 @@
         const checkboxes = document.querySelectorAll('input[type="checkbox"][name="selectedCases"]');
         selectAllCheckbox.addEventListener('change', function () {
             checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
+                toggleCaseSelection(checkbox.value, selectAllCheckbox.checked);
             });
         });
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                toggleCaseSelection(checkbox.value);
+            });
+        });
+
+        window.toggleCaseSelection = (selectedCase, force = undefined) => {
+            const graphic = view.graphics.find((graphic) => graphic.attributes?.caseId === selectedCase);
+
+            if (graphic) {
+                const caseData = pins.find(({ caseId }) => caseId === selectedCase);
+
+                if (force !== undefined) {
+                    caseData.selected = force;
+                } else {
+                    caseData.selected = !caseData.selected;
+                }
+                updatePopupAction(caseData, graphic);
+
+                document.querySelector(`input[type="checkbox"][name="selectedCases"][value="${selectedCase}"]`).checked = caseData.selected;
+            } else {
+                console.error(`Could not find graphic for case ID: ${selectedCase}`);
+            }
+        };
     });
 </script>
 {% endblock %}
