@@ -375,11 +375,33 @@
     document.addEventListener('DOMContentLoaded', function () {
         const selectAllCheckbox = document.querySelector('#select-all');
         const checkboxes = document.querySelectorAll('input[type="checkbox"][name="selectedCases"]');
+
         selectAllCheckbox.addEventListener('change', function () {
             checkboxes.forEach(checkbox => {
-                checkbox.checked = selectAllCheckbox.checked;
+                document.dispatchEvent(new CustomEvent('caseStateChange', {
+                    detail: {
+                        caseId: checkbox.value,
+                        selected: selectAllCheckbox.checked
+                    }
+                }));
             });
         });
+
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function () {
+                document.dispatchEvent('caseStateChange', {
+                    caseId: checkbox.value,
+                    selected: checkbox.checked
+                });
+            });
+        });
+
+        document.addEventListener('caseStateChange', function (event) {
+            const { caseId, selected } = event.detail;
+
+            document.querySelector(`input[type="checkbox"][name="selectedCases"][value="${caseId}"]`).checked = selected;
+        });
+
     });
 </script>
 {% endblock %}
