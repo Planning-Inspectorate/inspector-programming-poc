@@ -49,9 +49,9 @@
         'esri/Graphic',
         'esri/layers/VectorTileLayer',
         'esri/geometry/Point',
-        'esri/config'
-    ], function(Map, MapView, Graphic, VectorTileLayer, Point, esriConfig) {
-        // Add the 'key' and 'srs' options to the request URL before it is sent.
+        'esri/config',
+        'esri/core/reactiveUtils'
+    ], function(Map, MapView, Graphic, VectorTileLayer, Point, esriConfig, reactiveUtils) {
         esriConfig.request.interceptors.push({
             urls: serviceUrl,
             before: function(params) {
@@ -70,7 +70,7 @@
             layers: [tileLayer]
         });
 
-        const pins = {{ cases | dump | safe}};
+        const pins = {{ cases | dump | safe }};
 
         const center = pins.reduce((acc, { siteAddressLatLong: { latitude, longitude } }) => {
             acc.longitude += longitude;
@@ -90,25 +90,55 @@
                 minZoom: 2,
                 maxZoom: 15,
                 rotationEnabled: false
+            },
+            popup: {
+                defaultPopupTemplateEnabled: false,
+                dockEnabled: true,
+                dockOptions: {
+                    buttonEnabled: false,
+                    breakpoint: false
+                }
             }
         });
+
+        reactiveUtils.on(
+            () => view.popup,
+            "trigger-action",
+            (event) => {
+                if (event.action.title === "Select Case" || event.action.title === "Unselect Case") {
+                    const selectedCase = event.action.id.replace('toggle-select-case-', '');
+                    const graphic = view.graphics.find((graphic) => graphic.attributes?.caseId === selectedCase);
+
+                    if (graphic) {
+                        const caseData = pins.find(({ caseId }) => caseId === selectedCase);
+                        caseData.selected = !caseData.selected;
+                        updatePopupAction(caseData, graphic);
+                    } else {
+                        console.error(`Could not find graphic for case ID: ${selectedCase}`);
+                    }
+                }
+            }
+        );
 
         function addMarker(caseData, color) {
             const point = {
                 type: 'point',
-                ... caseData.siteAddressLatLong
-            };
-            const simpleMarkerSymbol = {
-                type: 'simple-marker',
-                content: 'Case Info',
-                color,
-                outline: {
-                    color: [255, 255, 255], // White
-                    width: 1
-                }
+                ...caseData.siteAddressLatLong
             };
 
-            const markerTootltip = {
+            const pointGraphic = new Graphic({
+                geometry: point,
+                attributes: caseData
+            });
+
+            updatePopupAction(caseData, pointGraphic);
+
+            view.graphics.add(pointGraphic);
+        }
+
+        function updatePopupAction(caseData, pointGraphic) {
+            const actionTitle = caseData.selected ? 'Unselect Case' : 'Select Case';
+            pointGraphic.popupTemplate = {
                 title: `Case ID: ${caseData.caseId}`,
                 content: `
                     <strong>Case Age:</strong> ${caseData.caseAge} Weeks<br>
@@ -120,20 +150,28 @@
                     <strong>Procedure:</strong> ${caseData.caseProcedure}<br>
                     <strong>Allocation Level:</strong> ${caseData.allocationLevel}<br>
                     <strong>Final Comments Date:</strong> ${caseData.finalCommentsDate}
-                `
-             };
-
-            const pointGraphic = new Graphic({
-                geometry: point,
-                symbol: simpleMarkerSymbol,
-                popupTemplate: markerTootltip
-            });
-            view.graphics.add(pointGraphic);
+                `,
+                actions: [
+                    {
+                        id: 'toggle-select-case-' + caseData.caseId,
+                        title: actionTitle
+                    }
+                ]
+            };
+            pointGraphic.symbol = {
+                type: 'simple-marker',
+                color: caseData.markerColor,
+                outline: {
+                    color: !caseData.selected ? [255, 255, 255] : [0, 0, 0],
+                    width: 1
+                }
+            }
         }
 
         for (const caseData of pins) {
-            const markerColor = `#${caseData.color}`;
-            addMarker(caseData, markerColor);
+            caseData.selected = false;
+            caseData.markerColor = `#${caseData.color}`;
+            addMarker(caseData);
         }
 
         function addInspectorMarker(inspectorData) {
@@ -145,7 +183,7 @@
             const pictureMarkerSymbol = {
                 type: 'picture-marker',
                 url: `/assets/images/people.png`,
-                width: '50px',  
+                width: '50px',
                 height: '50px'
             };
 
@@ -169,7 +207,7 @@
         }
 
         {% if inspectorPin %}
-            addInspectorMarker({{ inspectorPin | dump | safe }}, [0, 255, 0]);
+            addInspectorMarker({{ inspectorPin | dump | safe }});
         {% endif %}
     });
 </script>
