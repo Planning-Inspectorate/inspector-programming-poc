@@ -407,8 +407,6 @@
         {% endset %}
 
         {% set outlookView %}
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.css">
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/flatpickr/4.6.13/flatpickr.min.js"></script>
         <div class="calendar-container">
             {% if calendarError %}
                 <div class="govuk-error-message">
@@ -469,17 +467,17 @@
                 weekEndDate.setHours(23, 59, 59, 999);
                 const formattedTitle = `${("0" + startDate.getDate()).slice(-2)}-${("0" + weekEndDate.getDate()).slice(-2)} ${startDate.toLocaleString('en-US', { month: 'long' })}, ${year}`;
                 document.getElementById("monthYear").innerText = formattedTitle;
-                
+
                 const headers = ["mon", "tue", "wed", "thu", "fri"];
                 for (let i = 0; i < 5; i++) {
                     const day = new Date(startDate);
                     day.setDate(day.getDate() + i);
                     document.getElementById(headers[i]).innerText = `${("0" + day.getDate()).slice(-2)} ${day.toLocaleString('en-US', { weekday: 'short' })}`;
                 }
-                
+
                 const tbody = document.getElementById("calendar-body");
                 tbody.innerHTML = "";
-                
+
                 for (let hour = 8; hour < 18; hour++) {
                     for (let min of [0, 30]) {
                         const row = document.createElement("tr");
@@ -491,7 +489,7 @@
                             timeCell.innerText = ``;
                         }
                         row.appendChild(timeCell);
-                        
+
                         for (let i = 0; i < 5; i++) {
                             const cell = document.createElement("td");
                             cell.classList.add("calendar-cell");
@@ -556,28 +554,13 @@
 
             function goToToday() {
                 currentWeek = getCurrentWeek();
-                generateCalendar(currentWeek); 
+                generateCalendar(currentWeek);
             }
 
             document.addEventListener("DOMContentLoaded", function() {
                 currentWeek = getCurrentWeek();
                 generateCalendar(currentWeek);
 
-                flatpickr("#weekPicker", {
-                    enableTime: false,
-                    dateFormat: "d/m/Y",
-                    weekNumbers: true,
-                    onChange: function(selectedDates) {
-                        const selectedDate = selectedDates[0];
-                        const startDate = new Date(year, 0, 1);
-                        while (startDate.getDay() !== 1) {
-                            startDate.setDate(startDate.getDate() - 1);
-                        }
-                        const diff = Math.floor((selectedDate - startDate) / (7 * 24 * 60 * 60 * 1000));
-                        currentWeek = diff;
-                        generateCalendar(currentWeek);
-                    },
-                });
             });
             {% endif %}
         </script>

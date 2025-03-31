@@ -64,7 +64,6 @@ export function buildViewHome({ config }) {
 			...pagination,
 			data: formData,
 			apiKey: config.maps.key,
-			inspectorLatLong: selectedInspector.homeLatLong,
 			inspectorPin: {
 				...selectedInspector
 			},
