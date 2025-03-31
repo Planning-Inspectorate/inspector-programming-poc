@@ -34,15 +34,6 @@
                     items: inspectorList
                 }) }}
                 {{ govukButton({
-                    text: "View",
-                    classes: "govuk-button--secondary",
-                    value: "view",
-                    name: "action",
-                    type: "submit"
-                }) }}
-            </div>
-            <div class="govuk-form-group" style="margin-top: 5px;">
-                {{ govukButton({
                     text: "Select",
                     classes: "govuk-button--secondary",
                     value: "select",
@@ -333,7 +324,7 @@
                         { text: "Weeks" },
                         { text: "Linked cases" },
                         { text: "Final comments date" },
-                        { text: "Prog Status" }
+                        { text: "Prog status" }
                     ],
                     rows: caseRows
                 }) }}
@@ -408,9 +399,9 @@
 
         {% set outlookView %}
         <div class="calendar-container">
-            {% if calendarError %}
+            {% if calendarData.error %}
                 <div class="govuk-error-message">
-                    <span class="govuk-visually-hidden">Error:</span> {{ calendarError }}
+                    <span class="govuk-visually-hidden">Error:</span> {{ calendarData.error }}
                 </div>
             {% else %}
                 <div class="calendar-header">
@@ -443,7 +434,7 @@
             {% if not calendarError %}
             let currentWeek = 0;
             const year = new Date().getFullYear();
-            const events = {{ events | dump | safe }};
+            const events = {{ calendarData.events | dump | safe }};
 
             function getCurrentWeek() {
                 const today = new Date();
@@ -456,6 +447,10 @@
             }
 
             function generateCalendar(weekOffset) {
+                if (events.length === 0) {
+                    return;
+                }
+
                 const startDate = new Date(year, 0, 1 + (weekOffset * 7));
                 while (startDate.getDay() !== 1) {
                     startDate.setDate(startDate.getDate() - 1);
@@ -579,7 +574,7 @@
                     panel: { html: mapView }
                 },
                 {
-                    label: "Inspector",
+                    label: "Inspector personal details",
                     id: "inspector",
                     panel: { html: inspectorDetails }
                 },

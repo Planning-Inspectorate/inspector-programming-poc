@@ -16,7 +16,6 @@ export function buildViewHome({ config }) {
 	return async (req, res) => {
 		const inspectors = await fetchInspectors(config);
 		const selectedInspector = inspectors.find((i) => req.query.inspectorId === i.id) || inspectors[3];
-		const { simplifiedEvents, calendarError } = await getSimplifiedEvents(req.entraClient, selectedInspector);
 		const filters = req.query.filters || selectedInspector.filters;
 		const sort = getSort(req.query.sort, selectedInspector);
 		const page = req.query.page ? parseInt(req.query.page) : 1;
@@ -30,6 +29,16 @@ export function buildViewHome({ config }) {
 			inspectorId: selectedInspector.id
 		};
 		const pagination = getPagination(req, total, formData);
+		const calendarData = {};
+
+		try {
+			calendarData.events = await getSimplifiedEvents(req.entraClient, selectedInspector);
+		} catch (error) {
+			console.error('Error fetching events:', error);
+			calendarData.events = [];
+			calendarData.error =
+				"Can't view this calendar. Please contact the inspector to ensure their calendar is shared with you.";
+		}
 
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
@@ -43,8 +52,7 @@ export function buildViewHome({ config }) {
 			inspectorPin: {
 				...selectedInspector
 			},
-			events: simplifiedEvents,
-			calendarError
+			calendarData
 		});
 	};
 }
@@ -131,30 +139,20 @@ export function buildPostHome({ logger }) {
 }
 
 async function getSimplifiedEvents(entraClient, selectedInspector) {
-	let simplifiedEvents = [];
-	let calendarError = null;
+	const eventsResponse = await entraClient.getEvents(selectedInspector.id);
+	const events = Array.isArray(eventsResponse.value) ? eventsResponse.value : [];
 
-	try {
-		const eventsResponse = await entraClient.getEvents(selectedInspector.id);
-		const events = Array.isArray(eventsResponse.value) ? eventsResponse.value : [];
+	return events.map((event) => {
+		const startDateTime = new Date(event.start.dateTime);
+		const endDateTime = new Date(event.end.dateTime);
+		const durationMinutes = (endDateTime - startDateTime) / (1000 * 60);
+		const roundedDurationMinutes = Math.ceil(durationMinutes / 30) * 30;
+		const adjustedEndDateTime = new Date(startDateTime.getTime() + roundedDurationMinutes * 60 * 1000);
 
-		simplifiedEvents = events.map((event) => {
-			const startDateTime = new Date(event.start.dateTime);
-			const endDateTime = new Date(event.end.dateTime);
-			const durationMinutes = (endDateTime - startDateTime) / (1000 * 60);
-			const roundedDurationMinutes = Math.ceil(durationMinutes / 30) * 30;
-			const adjustedEndDateTime = new Date(startDateTime.getTime() + roundedDurationMinutes * 60 * 1000);
-
-			return {
-				subject: event.subject,
-				startDateTime: startDateTime.toISOString(),
-				endDateTime: adjustedEndDateTime.toISOString()
-			};
-		});
-	} catch (error) {
-		console.error('Error retrieving calendar events:', error);
-		calendarError = "Can't view this calendar";
-	}
-
-	return { simplifiedEvents, calendarError };
+		return {
+			subject: event.subject,
+			startDateTime: startDateTime.toISOString(),
+			endDateTime: adjustedEndDateTime.toISOString()
+		};
+	});
 }
