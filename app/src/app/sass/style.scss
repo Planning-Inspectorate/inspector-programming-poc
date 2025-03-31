@@ -139,97 +139,97 @@ $font-family: arial, helvetica, sans-serif;
 }
 
 .align-right {
-    display: flex;
-    justify-content: flex-end;
+	display: flex;
+	justify-content: flex-end;
 }
 
 .app-filter .govuk-form-group {
-    margin-bottom: 0;
+	margin-bottom: 0;
 }
 
 .calendar-container {
-    width: 80%;
-    margin: auto;
-    text-align: center;
+	width: 80%;
+	margin: auto;
+	text-align: center;
 }
 
 .calendar-table {
-    width: 100%;
-    border-collapse: collapse;
+	width: 100%;
+	border-collapse: collapse;
 }
 
 .calendar-table th,
 .calendar-table td {
-    border: 1px solid #ccc;
-    padding: 3px 6px;
-    height: 30px;
+	border: 1px solid #ccc;
+	padding: 3px 6px;
+	height: 30px;
 	font-size: 0.8rem;
 }
 .calendar-table th.time-column,
 .calendar-table td.time-column {
-    width: 4%;
+	width: 4%;
 }
 
 .calendar-table th:not(.time-column),
 .calendar-table td:not(.time-column) {
-    width: 19.2%;
+	width: 19.2%;
 }
 
 .nav-buttons {
-    margin: 0 10px;
+	margin: 0 10px;
 }
 
 .calendar-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    justify-content: flex-start;
-    text-align: left;
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	justify-content: flex-start;
+	text-align: left;
 }
 
 #weekPicker {
-    cursor: pointer;
-    display: none;
+	cursor: pointer;
+	display: none;
 }
 
 .flatpickr-calendar .arrowDown {
-    transform: rotate(180deg);
+	transform: rotate(180deg);
 }
 
 .nav-buttons button {
-    font-size: 24px;
-    padding: 5px 10px;
-    border: none;
-    background: none;
-    cursor: pointer;
+	font-size: 24px;
+	padding: 5px 10px;
+	border: none;
+	background: none;
+	cursor: pointer;
 }
 
 .nav-buttons button:hover {
-    opacity: 0.7;
+	opacity: 0.7;
 }
 
 .arrow-button {
-    font-size: 24px;
-    cursor: pointer;
+	font-size: 24px;
+	cursor: pointer;
 }
 
 .arrow-button:hover {
-    opacity: 0.7;
+	opacity: 0.7;
 }
 
 .flatpickr-calendar {
-    font-family: "GDS Transport", Arial, sans-serif;
-    font-size: 16px;
-    color: #0b0c0c;
+	font-family: 'GDS Transport', Arial, sans-serif;
+	font-size: 16px;
+	color: #0b0c0c;
 	left: 700px !important;
 	top: 100px !important;
 }
 
 .centered-page-title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 0; 
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
 }
 
 .govuk-grid-column-full {
@@ -238,10 +238,10 @@ $font-family: arial, helvetica, sans-serif;
 }
 
 .home-cases-table th {
-    font-size: 18px;
-    font-weight: bold; 
+	font-size: 18px;
+	font-weight: bold;
 }
 
 .home-cases-table td {
-    font-size: 18px;
+	font-size: 18px;
 }
