@@ -19,7 +19,7 @@ The PoC provides a list of cases arranged in a table. The list displays:
 - LPA
 - Region
 - Case status
-- Case age
+- Case age ('weeks')
 - Linked cases
 - Final comments date
 - Programming status
@@ -30,7 +30,7 @@ There are also checkboxes to select cases for assignment and a checkbox at the t
 
 There is a dropdown to select an inspector from a predefined list of inspectors. The PoC uses a hardcoded list of inspectors, with real user IDs for integration with the Microsoft Graph API.
 
-After choosing an inspector from the dropdown, users can choose whether to view the inspector details or select the inspector. Selecting the inspector will reload the case list with a selection of filters that are appropriate for that inspector.
+After choosing an inspector from the dropdown, users can select the inspector. Selecting the inspector will reload the case list with a selection of filters that are appropriate for that inspector.
 
 #### Filtering
 
@@ -78,6 +78,8 @@ Each case on the map can be selected to show a modal with the case details.
 The inspector is shown on the map with a person icon.
 
 The map is centered on the average position of all cases.
+
+Case markers are colour coded to indicate age of the case, ranging from red/pink (older cases) to green (new cases)
 
 ### Case assignment
 
@@ -148,7 +150,7 @@ The case details include:
 
 ### Inspector details
 
-The inspector details page shows the details of a single inspector and a view of the inspector's calendar.
+The inspector details tab ('inspector' tab on home view) shows the details of a single inspector and a view of the inspector's calendar ('inspector calendar' tab on home view) with event details
 
 The inspector details include:
 
