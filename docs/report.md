@@ -220,6 +220,8 @@ The list of inspectors only shows a small group of hardcoded inspectors. If the 
 
 The Graph API call to retrieve an inspectors calendar is capped at 999 events. This could be an issue if the inspector has a large number of events in their calendar.
 
+The Graph API also limits events that are reccuring within the calendar view. This is an issue if a large number of events are scheduled weekly calls etc.
+
 When creating calendar events for case assignment the inspectors calendar is not loaded so there is no way to check for conflicts.
 
 ## Future work
