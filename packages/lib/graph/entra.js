@@ -80,8 +80,16 @@ export class EntraClient {
 	}
 
 	async getEvents(userId) {
+		const startDate = new Date();
+		startDate.setHours(0, 0, 0, 0);
+		const endDate = new Date();
+		endDate.setHours(23, 59, 59, 999);
+		endDate.setDate(endDate.getDate() + 90);
+
 		return this.#client
-			.api(`/users/${userId}/events?$top=999&$select=subject,start,end`)
+			.api(
+				`/users/${userId}/calendarView?startDateTime=${startDate.toISOString()}&endDateTime=${endDate.toISOString()}&&top=999&$select=subject,start,end`
+			)
 			.header('Prefer', 'outlook.timezone="Europe/London"')
 			.get();
 	}

@@ -57,8 +57,6 @@ function getPagination(req, total, formData) {
 		pageItems.push({ href: currentUrl + '&page=' + (i + 1), number: i + 1, current: i + 1 === formData.page });
 	}
 
-	console.log(currentUrl);
-
 	return {
 		pageItems,
 		nextPage:
