@@ -8,6 +8,7 @@
 {% from "views/layouts/components/map.njk" import map %}
 {% from "govuk/components/tabs/macro.njk" import govukTabs %}
 {% from "govuk/components/pagination/macro.njk" import govukPagination %}
+{% from "govuk/components/summary-list/macro.njk" import govukSummaryList %}
 
 {% block pageContent %}
 <div class="filter-container">
@@ -296,63 +297,273 @@
             </form>
         </div>
         <form method="post" action="/notify" novalidate>
-                 <input type="hidden" name="inspectorId" value="{{ data.inspectorId }}">
-                 <div class="align-right">
-                     <div class="govuk-form-group">
-                         <label class="govuk-label" for="assignment-date">Event date: </label>
-                     </div>
-                     <div class="govuk-form-group">
-                         <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
-                     </div>
-                     <div class="govuk-form-group">
-                         {{ govukButton({
-                             text: "Assign selected cases",
-                             type: "submit"
-                         }) }}
-                     </div>
-                 </div>
-                 {{ govukTable({
-                     classes: "govuk-!-font-size-14 home-cases-table",
-                     head: [
-                         { html: govukCheckboxes({
-                             idPrefix: "select-all",
-                             name: "select-all",
-                             classes: "govuk-checkboxes--small",
-                             items: [{ value: "select-all", text: " ", checked: false }]
-                         }) },
-                         { text: "Reference" },
-                         { text: "Type" },
-                         { text: "Procedure" },
-                         { text: "Band" },
-                         { text: "Level" },
-                         { text: "Location" },
-                         { text: "LPA" },
-                         { text: "Region" },
-                         { text: "Case Status" },
-                         { text: "Age" },
-                         { text: "Linked cases" },
-                         { text: "Final comments date" },
-                         { text: "Prog Status" }
-                     ],
-                     rows: caseRows
-                 }) }}
-             </form>
- 
-             <div class="govuk-form-group" style="display: flex; justify-content: space-between; align-items: center; margin: 0; padding: 0;">
-                 <div style="margin: 0; padding: 0;">
-                     {{ govukPagination({
-                         next: nextPage,
-                         previous: previousPage,
-                         items: pageItems
-                     }) }}
-                 </div>
-             </div>
-         {% endset %}
+                <input type="hidden" name="inspectorId" value="{{ data.inspectorId }}">
+                <div class="align-right">
+                    <div class="govuk-form-group">
+                        <label class="govuk-label" for="assignment-date">Event date: </label>
+                    </div>
+                    <div class="govuk-form-group">
+                        <input type="date" class="govuk-input" id="assignment-date" name="assignmentDate">
+                    </div>
+                    <div class="govuk-form-group">
+                        {{ govukButton({
+                            text: "Assign selected cases",
+                            type: "submit"
+                        }) }}
+                    </div>
+                </div>
+                {{ govukTable({
+                    classes: "govuk-!-font-size-14 home-cases-table",
+                    head: [
+                        { html: govukCheckboxes({
+                            idPrefix: "select-all",
+                            name: "select-all",
+                            classes: "govuk-checkboxes--small",
+                            items: [{ value: "select-all", text: " ", checked: false }]
+                        }) },
+                        { text: "Reference" },
+                        { text: "Type" },
+                        { text: "Procedure" },
+                        { text: "Band" },
+                        { text: "Level" },
+                        { text: "Location" },
+                        { text: "LPA" },
+                        { text: "Region" },
+                        { text: "Case status" },
+                        { text: "Weeks" },
+                        { text: "Linked cases" },
+                        { text: "Final comments date" },
+                        { text: "Prog Status" }
+                    ],
+                    rows: caseRows
+                }) }}
+            </form>
+
+            <div class="govuk-form-group" style="display: flex; justify-content: space-between; align-items: center; margin: 0; padding: 0;">
+                <div style="margin: 0; padding: 0;">
+                    {{ govukPagination({
+                        next: nextPage,
+                        previous: previousPage,
+                        items: pageItems
+                    }) }}
+                </div>
+            </div>
+        {% endset %}
 
         {% set mapView %}
             <div class="home-map">
                 {{ map(apiKey, cases, inspectorPin) }}
             </div>
+        {% endset %}
+
+        {% set inspectorDetails %}
+            <div class="pins-container-wide govuk-grid-row">
+                <div class="govuk-grid-column-one-half">
+                    <h2 class="govuk-heading-m">{{ inspectorPin.firstName + " " + inspectorPin.lastName }}</h2>
+                    <h2 class="govuk-heading-m">Contact details</h2>
+                        {{ govukSummaryList({
+                            rows: [
+                                { key: { text: "Address" }, value: { text: inspectorPin.address.addressLine1 + ", " + inspectorPin.address.postcode } },
+                                { key: { text: "Work phone" }, value: { text: inspectorPin.inspectorPhone } },
+                                { key: { text: "Mobile phone" }, value: { text: inspectorPin.inspectorPhone  } }
+                            ]
+                        }) }}
+
+                        <h2 class="govuk-heading-m">Work details</h2>
+                        {{ govukSummaryList({
+                            rows: [
+                                { key: { text: "Resource group" }, value: { text: "" } },
+                                { key: { text: "Grade" }, value: { text: inspectorPin.grade } },
+                                { key: { text: "FTE" }, value: { text: inspectorPin.fte } },
+                                { key: { text: "Charting officer" }, value: { text: inspectorPin.chartingOfficerId } },
+                                { key: { text: "Charting officer phone" }, value: { text: inspectorPin.chartingOfficerPhone } },
+                                { key: { text: "Inspector manager" }, value: { text: inspectorPin.inspectorManager } }
+                            ]
+                        }) }}    
+                </div>
+                <div class="govuk-grid-column-one-half govuk-!-margin-top-8">
+                    {{ govukTable({
+                        caption: "Specialisms",
+                        captionClasses: "govuk-table__caption--m",
+                        firstCellIsHeader: true,
+                        head: [
+                            { text: "Name", classes: "govuk-!-width-one-half" },
+                            { text: "Proficiency", classes: "govuk-!-width-one-quarter" },
+                            { text: "Valid from", classes: "govuk-!-width-one-quarter" }
+                        ],
+                        rows: [
+                            [ { text: "Advertisements" }, { text: "Trained" }, { text: "11/03/24" } ],
+                            [ { text: "Appeal against conditions" }, { text: "Trained" }, { text: "17/11/23" } ],
+                            [ { text: "General allocation" }, { text: "Trained" }, { text: "12/12/21" } ],
+                            [ { text: "Appearance design" }, { text: "Trained" }, { text: "02/06/23" } ],
+                            [ { text: "Green belt" }, { text: "Trained" }, { text: "29/11/24" } ],
+                            [ { text: "Hearings trained" }, { text: "Trained" }, { text: "01/01/19" } ],
+                            [ { text: "Special protection area" }, { text: "Trained" }, { text: "25/08/19" } ]
+                            ],
+                        classes: 'custom-table-header'
+                        }) }}
+                </div>
+            </div>
+        {% endset %}
+
+        {% set outlookView %}
+        <div class="calendar-container">
+            {% if calendarError %}
+                <div class="govuk-error-message">
+                    <span class="govuk-visually-hidden">Error:</span> {{ calendarError }}
+                </div>
+            {% else %}
+                <div class="calendar-header">
+                    <button onclick="goToToday()">Today</button>
+                    <div class="nav-buttons">
+                        <button onclick="prevWeek()">&lt;</button>
+                        <button onclick="nextWeek()">&gt;</button>
+                    </div>
+                    <h2 id="monthYear"></h2>
+                    <label for="weekPicker" class="arrow-button">↓</label>
+                    <input type="text" id="weekPicker" placeholder="Select date" readonly>
+                </div>
+                <table class="calendar-table">
+                    <thead>
+                        <tr>
+                            <th class="time-column"></th>
+                            <th id="mon"></th>
+                            <th id="tue"></th>
+                            <th id="wed"></th>
+                            <th id="thu"></th>
+                            <th id="fri"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="calendar-body">
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+        <script>
+            {% if not calendarError %}
+            let currentWeek = 0;
+            const year = new Date().getFullYear();
+            const events = {{ events | dump | safe }};
+
+            function getCurrentWeek() {
+                const today = new Date();
+                const startDate = new Date(year, 0, 1);
+                while (startDate.getDay() !== 1) {
+                    startDate.setDate(startDate.getDate() - 1);
+                }
+                const diff = Math.floor((today - startDate) / (7 * 24 * 60 * 60 * 1000));
+                return diff;
+            }
+
+            function generateCalendar(weekOffset) {
+                const startDate = new Date(year, 0, 1 + (weekOffset * 7));
+                while (startDate.getDay() !== 1) {
+                    startDate.setDate(startDate.getDate() - 1);
+                }
+
+                const weekStartDate = startDate.toLocaleDateString("en-GB");
+                const weekEndDate = new Date(startDate);
+                weekEndDate.setDate(weekEndDate.getDate() + 4);
+                weekEndDate.setHours(23, 59, 59, 999);
+                const formattedTitle = `${("0" + startDate.getDate()).slice(-2)}-${("0" + weekEndDate.getDate()).slice(-2)} ${startDate.toLocaleString('en-US', { month: 'long' })}, ${year}`;
+                document.getElementById("monthYear").innerText = formattedTitle;
+
+                const headers = ["mon", "tue", "wed", "thu", "fri"];
+                for (let i = 0; i < 5; i++) {
+                    const day = new Date(startDate);
+                    day.setDate(day.getDate() + i);
+                    document.getElementById(headers[i]).innerText = `${("0" + day.getDate()).slice(-2)} ${day.toLocaleString('en-US', { weekday: 'short' })}`;
+                }
+
+                const tbody = document.getElementById("calendar-body");
+                tbody.innerHTML = "";
+
+                for (let hour = 8; hour < 18; hour++) {
+                    for (let min of [0, 30]) {
+                        const row = document.createElement("tr");
+                        const timeCell = document.createElement("td");
+                        timeCell.classList.add("time-column");
+                        if (min === 0) {
+                            timeCell.innerText = `${hour}:00`;
+                        } else {
+                            timeCell.innerText = ``;
+                        }
+                        row.appendChild(timeCell);
+
+                        for (let i = 0; i < 5; i++) {
+                            const cell = document.createElement("td");
+                            cell.classList.add("calendar-cell");
+                            row.appendChild(cell);
+                        }
+                        tbody.appendChild(row);
+                    }
+                }
+
+                events.forEach(event => {
+                    const start = new Date(event.startDateTime);
+                    const end = new Date(event.endDateTime);
+
+                    if (start >= startDate && start <= weekEndDate) {
+                        const dayIndex = start.getDay() - 1;
+                        const startHour = start.getHours();
+                        const startMinutes = start.getMinutes();
+                        const endHour = end.getHours();
+                        const endMinutes = end.getMinutes();
+
+                        const startRow = (startHour - 8) * 2 + (startMinutes === 30 ? 1 : 0);
+                        const endRow = (endHour - 8) * 2 + (endMinutes === 30 ? 0 : -1);
+
+                        let backgroundColor = "lightblue";
+                        if (event.subject.includes("Planning")) {
+                            backgroundColor = "lightblue";
+                        } else if (event.subject.includes("Site Visit")) {
+                            backgroundColor = "lightcoral";
+                        } else if (event.subject.includes("Report")) {
+                            backgroundColor = "lightgrey";
+                        }
+
+                        const rows = tbody.querySelectorAll("tr");
+                        const validStartRow = Math.max(0, startRow);
+                        for (let i = validStartRow; i <= endRow && i < rows.length; i++) {
+                            const cell = rows[i].children[dayIndex + 1];
+                            cell.style.backgroundColor = backgroundColor;
+
+                            if (i === startRow) {
+                                cell.innerText = event.subject;
+                            } else {
+                                cell.innerText = "";
+                            }
+                        }
+                    }
+                });
+            }
+
+            function prevWeek() {
+                if (currentWeek > 0) {
+                    currentWeek--;
+                    generateCalendar(currentWeek);
+                }
+            }
+
+            function nextWeek() {
+                if (currentWeek < 51) {
+                    currentWeek++;
+                    generateCalendar(currentWeek);
+                }
+            }
+
+            function goToToday() {
+                currentWeek = getCurrentWeek();
+                generateCalendar(currentWeek);
+            }
+
+            document.addEventListener("DOMContentLoaded", function() {
+                currentWeek = getCurrentWeek();
+                generateCalendar(currentWeek);
+
+            });
+            {% endif %}
+        </script>
         {% endset %}
 
         {{ govukTabs({
@@ -366,6 +577,16 @@
                     label: "Map view",
                     id: "mapView",
                     panel: { html: mapView }
+                },
+                {
+                    label: "Inspector",
+                    id: "inspector",
+                    panel: { html: inspectorDetails }
+                },
+                {
+                    label: "Inspector calendar",
+                    id: "outlookView",
+                    panel: { html: outlookView }
                 }
             ]
         }) }}

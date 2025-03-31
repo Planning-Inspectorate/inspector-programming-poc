@@ -16,6 +16,7 @@ export function buildViewHome({ config }) {
 	return async (req, res) => {
 		const inspectors = await fetchInspectors(config);
 		const selectedInspector = inspectors.find((i) => req.query.inspectorId === i.id) || inspectors[3];
+		const { simplifiedEvents, calendarError } = await getSimplifiedEvents(req.entraClient, selectedInspector);
 		const filters = req.query.filters || selectedInspector.filters;
 		const sort = getSort(req.query.sort, selectedInspector);
 		const page = req.query.page ? parseInt(req.query.page) : 1;
@@ -29,6 +30,7 @@ export function buildViewHome({ config }) {
 			inspectorId: selectedInspector.id
 		};
 		const pagination = getPagination(req, total, formData);
+
 		return res.render('views/home/view.njk', {
 			pageHeading: 'Inspector Programming PoC',
 			containerClasses: 'pins-container-wide',
@@ -38,17 +40,11 @@ export function buildViewHome({ config }) {
 			...pagination,
 			data: formData,
 			apiKey: config.maps.key,
-			inspectorLatLong: selectedInspector.homeLatLong,
 			inspectorPin: {
-				id: selectedInspector.id,
-				homeLatLong: selectedInspector.homeLatLong,
-				firstName: selectedInspector.firstName,
-				lastName: selectedInspector.lastName,
-				address: selectedInspector.address.postcode,
-				grade: selectedInspector.grade,
-				fte: selectedInspector.fte,
-				caseSpecialisms: selectedInspector.filters.caseSpecialisms
-			}
+				...selectedInspector
+			},
+			events: simplifiedEvents,
+			calendarError
 		});
 	};
 }
@@ -134,4 +130,33 @@ export function buildPostHome({ logger }) {
 
 		return res.redirect(redirectUrl);
 	};
+}
+
+async function getSimplifiedEvents(entraClient, selectedInspector) {
+	let simplifiedEvents = [];
+	let calendarError = null;
+
+	try {
+		const eventsResponse = await entraClient.getEvents(selectedInspector.id);
+		const events = Array.isArray(eventsResponse.value) ? eventsResponse.value : [];
+
+		simplifiedEvents = events.map((event) => {
+			const startDateTime = new Date(event.start.dateTime);
+			const endDateTime = new Date(event.end.dateTime);
+			const durationMinutes = (endDateTime - startDateTime) / (1000 * 60);
+			const roundedDurationMinutes = Math.ceil(durationMinutes / 30) * 30;
+			const adjustedEndDateTime = new Date(startDateTime.getTime() + roundedDurationMinutes * 60 * 1000);
+
+			return {
+				subject: event.subject,
+				startDateTime: startDateTime.toISOString(),
+				endDateTime: adjustedEndDateTime.toISOString()
+			};
+		});
+	} catch (error) {
+		console.error('Error retrieving calendar events:', error);
+		calendarError = "Can't view this calendar";
+	}
+
+	return { simplifiedEvents, calendarError };
 }
